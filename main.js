@@ -76,6 +76,10 @@ function loadPrefs() {
       prefs.chatSize = clampChatSize(raw.chatSize.w, raw.chatSize.h);
       chatSize = prefs.chatSize; // 启动时应用记忆的对话框尺寸
     }
+    if (raw && raw.petSize && Number.isFinite(raw.petSize.w) && Number.isFinite(raw.petSize.h)) {
+      prefs.petSize = clampPetSize(raw.petSize.w, raw.petSize.h);
+      petSize = prefs.petSize;
+    }
     if (raw && typeof raw.lastUpdatePrompted === 'string') {
       prefs.lastUpdatePrompted = raw.lastUpdatePrompted.slice(0, 20);
     }
@@ -139,13 +143,35 @@ ipcMain.on('theme:set', (e, hex) => {
   });
 });
 
-/* ---------- 窗口基础尺寸（保持 400:560 比例） ---------- */
-const BASE_W = 400;
-const BASE_H = 560;
-const DEFAULT_SCALE = 0.6; // 默认/启动/重置尺寸 240×336
-const MIN_SCALE = 0.45;    // 最小 180×252
-const MAX_SCALE = 2.0;     // 最大 800×1120
-let petScale = DEFAULT_SCALE; // 默认以默认尺寸启动
+/* ---------- 宠物显示区域（独立宽高，缩放保持当前比例） ---------- */
+const PET_DEFAULT_SIZE = { w: 240, h: 336 };
+const PET_SIZE_LIMITS = { minW: 180, minH: 252, maxW: 1600, maxH: 1600 };
+let petSize = { ...PET_DEFAULT_SIZE };
+
+function clampPetSize(w, h) {
+  return {
+    w: Math.max(PET_SIZE_LIMITS.minW, Math.min(PET_SIZE_LIMITS.maxW, Math.round(w))),
+    h: Math.max(PET_SIZE_LIMITS.minH, Math.min(PET_SIZE_LIMITS.maxH, Math.round(h))),
+  };
+}
+
+function applyPetSize(w, h) {
+  if (!win || win.isDestroyed()) return;
+  const size = clampPetSize(w, h);
+  const [x, y] = win.getPosition();
+  const wasResizable = win.isResizable();
+  if (!wasResizable) win.setResizable(true);
+  win.setSize(size.w, size.h, false);
+  win.setResizable(wasResizable);
+  const wa = screen.getDisplayMatching(win.getBounds()).workArea;
+  win.setPosition(Math.max(wa.x, Math.min(x, wa.x + Math.max(0, wa.width - size.w))),
+    Math.max(wa.y, Math.min(y, wa.y + Math.max(0, wa.height - size.h))));
+  const [actualW, actualH] = win.getSize();
+  petSize = { w: actualW, h: actualH };
+  prefs.petSize = petSize;
+  savePrefs();
+  if (settingsWin && !settingsWin.isDestroyed()) settingsWin.webContents.send('pet:size-changed', petSize);
+}
 
 /* 聊天对话框尺寸（支持自定义大小，范围钳制） */
 const CHAT_W = 320;
@@ -158,8 +184,8 @@ let chatSize = { w: CHAT_W, h: CHAT_H }; // 当前对话框尺寸（自定义后
 
 function createWindow() {
   win = new BrowserWindow({
-    width: Math.round(BASE_W * petScale),
-    height: Math.round(BASE_H * petScale),
+    width: petSize.w,
+    height: petSize.h,
     transparent: true,
     frame: false,
     alwaysOnTop: true,
@@ -1320,23 +1346,30 @@ function startIdleTick() {
   }, 60000);
 }
 
-/* ---------- 窗口缩放（保持 400:560 比例） ---------- */
+/* ---------- 宠物显示区域与手柄缩放 ---------- */
+
+ipcMain.handle('pet:set-size', (e, payload) => {
+  const { w, h } = payload || {};
+  if (!Number.isInteger(w) || !Number.isInteger(h) ||
+      w < PET_SIZE_LIMITS.minW || w > PET_SIZE_LIMITS.maxW ||
+      h < PET_SIZE_LIMITS.minH || h > PET_SIZE_LIMITS.maxH) {
+    return { ok: false, message: '请输入范围内的整数像素：宽180–1600，高252–1600' };
+  }
+  if (!win || win.isDestroyed()) return { ok: false, message: '宠物窗口尚未就绪' };
+  applyPetSize(w, h);
+  return { ok: true, size: petSize };
+});
 
 ipcMain.on('pet:resize', (e, dir) => {
-  if (!win) return;
   if (dir === 'reset') {
-    petScale = DEFAULT_SCALE;
-  } else {
-    const step = dir > 0 ? 1.12 : 1 / 1.12;
-    petScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, petScale * step));
+    applyPetSize(PET_DEFAULT_SIZE.w, PET_DEFAULT_SIZE.h);
+    return;
   }
-  const [x, y] = win.getPosition();
-  // 窗口创建时 resizable:false，setSize 会被忽略——缩放前临时允许，完成后恢复
-  const wasResizable = win.isResizable();
-  if (!wasResizable) win.setResizable(true);
-  win.setSize(Math.round(BASE_W * petScale), Math.round(BASE_H * petScale), false);
-  win.setResizable(wasResizable);
-  win.setPosition(x, y);
+  if (dir !== 1 && dir !== -1) return;
+  const min = Math.max(PET_SIZE_LIMITS.minW / petSize.w, PET_SIZE_LIMITS.minH / petSize.h);
+  const max = Math.min(PET_SIZE_LIMITS.maxW / petSize.w, PET_SIZE_LIMITS.maxH / petSize.h);
+  const factor = Math.max(min, Math.min(max, dir > 0 ? 1.12 : 1 / 1.12));
+  applyPetSize(petSize.w * factor, petSize.h * factor);
 });
 
 /* ---------- 系统托盘 & 设置窗口 ---------- */
@@ -1414,6 +1447,7 @@ ipcMain.handle('settings:get-state', () => ({
   currentState: currentPetState,
   autoPose,
   silentMode,
+  petSize,
 }));
 
 /** 设置窗口 → 切换静默模式 */

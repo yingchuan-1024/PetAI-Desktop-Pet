@@ -69,6 +69,20 @@
             </button>
           </div>
 
+          <form class="pet-size-section" id="pet-size-form">
+            <div class="row-info">
+              <span class="row-title">宠物显示区域</span>
+              <span class="row-desc">独立设置宽高；手柄加减按当前比例缩放</span>
+            </div>
+            <div class="pet-size-inputs">
+              <label class="ai-field"><span class="ai-label">宽度（px）</span><input class="ai-input" id="pet-width" type="number" min="180" max="1600" step="1" required></label>
+              <label class="ai-field"><span class="ai-label">高度（px）</span><input class="ai-input" id="pet-height" type="number" min="252" max="1600" step="1" required></label>
+              <button class="reset-size-btn" type="submit">应用</button>
+            </div>
+            <span class="row-desc">宽 180–1600，高 252–1600 px；应用后自动保存</span>
+            <div class="ai-status" id="pet-size-status" role="status" aria-live="polite"></div>
+          </form>
+
           <div class="switch-row" id="row-reset">
             <div class="row-info">
               <span class="row-title">重置窗口大小</span>
