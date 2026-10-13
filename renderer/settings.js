@@ -12,6 +12,31 @@
   const btnClose = document.getElementById('btn-close');
   const btnQuit = document.getElementById('btn-quit');
 
+  const petWidth = document.getElementById('pet-width');
+  const petHeight = document.getElementById('pet-height');
+  const petSizeStatus = document.getElementById('pet-size-status');
+
+  function syncPetSize(size) {
+    if (!size) return;
+    petWidth.value = size.w;
+    petHeight.value = size.h;
+    petSizeStatus.textContent = '';
+  }
+  window.pet.onPetSizeChanged(syncPetSize);
+  document.getElementById('pet-size-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!event.currentTarget.reportValidity()) return;
+    try {
+      const result = await window.pet.setPetSize(petWidth.valueAsNumber, petHeight.valueAsNumber);
+      if (result.ok) syncPetSize(result.size);
+      petSizeStatus.textContent = result.ok ? '已应用并保存' : result.message;
+      petSizeStatus.className = 'ai-status ' + (result.ok ? 'ok' : 'err');
+    } catch (e) {
+      petSizeStatus.textContent = '应用失败，请重试';
+      petSizeStatus.className = 'ai-status err';
+    }
+  });
+
   /* ---------- 左列导航 ---------- */
 
   const navItems = Array.from(document.querySelectorAll('.nav-item'));
@@ -825,6 +850,7 @@
       swTop.setAttribute('aria-checked', String(!!state.alwaysOnTop));
       swAuto.setAttribute('aria-checked', String(!!state.autoPose));
       swSilent.setAttribute('aria-checked', String(!!state.silentMode));
+      syncPetSize(state.petSize);
       highlightPose(state.currentState || 'idle');
     } catch (e) {
       console.warn('[settings] 读取状态失败:', e.message);
