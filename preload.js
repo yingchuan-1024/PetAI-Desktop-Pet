@@ -91,6 +91,15 @@ contextBridge.exposeInMainWorld('pet', {
   /** AI：监听流式错误 */
   onAiError: (cb) => ipcRenderer.on('ai:stream-error', (e, msg) => cb(msg)),
 
+  /** AI：监听 Agent 工具调用状态（payload: { phase:'start'|'end', name, label, args, result }） */
+  onAiTool: (cb) => ipcRenderer.on('ai:tool', (e, p) => cb(p)),
+
+  /** 工具箱：读取配置（启用 / 手动所在地 / 天气 API 账号） */
+  getToolsConfig: () => ipcRenderer.invoke('tools:get-config'),
+
+  /** 工具箱：保存配置（含 oilToken、customTools），返回校验及保存结果 */
+  saveToolsConfig: (cfg) => ipcRenderer.invoke('tools:set-config', cfg),
+
   /** 屏幕识别：截取当前屏幕，返回 { ok, image(JPEG data URL), message } */
   captureScreen: () => ipcRenderer.invoke('screen:capture'),
 

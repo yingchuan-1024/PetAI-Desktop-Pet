@@ -191,6 +191,12 @@
   const aiSaveBtn = document.getElementById('ai-save');
   const aiCancelBtn = document.getElementById('ai-cancel');
   const aiAddBtn = document.getElementById('ai-add');
+  const swTools = document.getElementById('sw-tools');
+  const toolsCity = document.getElementById('tools-city');
+  const toolsId = document.getElementById('tools-id');
+  const toolsKey = document.getElementById('tools-key');
+  const toolsOilToken = document.getElementById('tools-oil-token');
+  const toolsStatus = document.getElementById('tools-status');
 
   let aiProfiles = [];
   let aiActiveId = null;
@@ -381,6 +387,129 @@
       maxContextMessages,
     });
     setAiPromptStatus('全局设置已保存', 'ok');
+  });
+
+  /* ---------- 智能工具（Agent） ---------- */
+
+  function setToolsStatus(msg, type) {
+    toolsStatus.textContent = msg;
+    toolsStatus.className = 'ai-status' + (type ? ' ' + type : '');
+  }
+
+  let customTools = [];
+  let customEditingName = null;
+  const ct = (id) => document.getElementById('ct-' + id);
+  const customEditor = document.getElementById('custom-tool-editor');
+
+  function renderCustomTools() {
+    const list = document.getElementById('custom-tool-list');
+    list.innerHTML = customTools.length ? customTools.map((t, i) => '<div class="ai-profile-card' + (t.enabled ? ' active' : '') + '"><span class="ai-profile-name">' + escapeHtml(t.label) + '</span><span class="ai-profile-model">' + escapeHtml(t.name) + ' · ' + t.method + ' · ' + (t.enabled ? '已启用' : '已停用') + '</span><div class="ai-profile-actions"><button class="ai-profile-btn use" data-index="' + i + '" data-action="toggle">' + (t.enabled ? '停用' : '启用') + '</button><button class="ai-profile-btn edit" data-index="' + i + '" data-action="edit">编辑</button><button class="ai-profile-btn del" data-index="' + i + '" data-action="delete">删除</button></div></div>').join('') : '<div class="ai-profile-empty">暂无自定义工具</div>';
+    list.querySelectorAll('[data-action]').forEach((b) => b.addEventListener('click', async () => {
+      const index = Number(b.dataset.index);
+      const t = customTools[index];
+      if (b.dataset.action === 'edit') return openCustomEditor(t);
+      if (b.dataset.action === 'delete' && !confirm('删除工具「' + t.label + '」？')) return;
+      const next = customTools.map((x) => ({ ...x }));
+      if (b.dataset.action === 'delete') next.splice(index, 1);
+      else next[index].enabled = !t.enabled;
+      if (await saveToolsConfig(next)) {
+        if (customEditingName === t.name) customEditor.hidden = true;
+        renderCustomTools();
+      }
+    }));
+  }
+
+  function addParameter(p) {
+    p = p || { name: '', description: '', type: 'string', required: false, source: 'model', value: '' };
+    const row = document.createElement('div');
+    row.className = 'ct-param';
+    row.innerHTML = '<label class="ai-field"><span class="ai-label">参数名</span><input class="ai-input" data-field="name" required pattern="[A-Za-z][A-Za-z0-9_]{0,63}"></label><label class="ai-field"><span class="ai-label">说明</span><input class="ai-input" data-field="description"></label><div class="ct-grid"><label class="ai-field"><span class="ai-label">类型</span><select class="ai-input ai-select" data-field="type"><option>string</option><option>number</option><option>boolean</option></select></label><label class="ai-field"><span class="ai-label">来源</span><select class="ai-input ai-select" data-field="source"><option value="model">模型提供</option><option value="fixed">固定值</option><option value="city">定位 city</option><option value="province">定位 province</option></select></label></div><label class="ai-field"><span class="ai-label">固定值（boolean 填 true / false）</span><input class="ai-input" data-field="value"></label><div class="ai-profile-actions"><label class="ai-label"><input type="checkbox" data-field="required"> 必填</label><button class="ai-profile-btn del" type="button">删除参数</button></div>';
+    row.querySelectorAll('[data-field]').forEach((el) => {
+      if (el.type === 'checkbox') el.checked = p[el.dataset.field] === true;
+      else el.value = p[el.dataset.field] == null ? '' : String(p[el.dataset.field]);
+    });
+    const update = () => { row.querySelector('[data-field="value"]').disabled = row.querySelector('[data-field="source"]').value !== 'fixed'; };
+    row.querySelector('[data-field="source"]').addEventListener('change', update);
+    row.querySelector('button').addEventListener('click', () => row.remove());
+    update();
+    ct('params').appendChild(row);
+  }
+
+  function syncCustomAuth() {
+    const enabled = ct('auth-mode').value !== 'none';
+    ct('auth-name').disabled = !enabled;
+    ct('auth-name').required = enabled;
+    ct('auth-source').disabled = !enabled;
+    ct('auth-value').disabled = !enabled || ct('auth-source').value === 'shared';
+  }
+
+  function openCustomEditor(t) {
+    customEditingName = t ? t.name : null;
+    const values = t || { name: '', label: '', description: '', url: '', method: 'GET', timeoutMs: 15000, authMode: 'none', authName: '', authSource: 'independent', authValue: '', parameters: [] };
+    Object.entries({ name: 'name', label: 'label', desc: 'description', url: 'url', method: 'method', timeout: 'timeoutMs', 'auth-mode': 'authMode', 'auth-name': 'authName', 'auth-source': 'authSource', 'auth-value': 'authValue' }).forEach(([id, key]) => { ct(id).value = values[key]; });
+    ct('name').readOnly = !!t;
+    ct('params').innerHTML = '';
+    values.parameters.forEach(addParameter);
+    ct('status').textContent = '';
+    customEditor.hidden = false;
+    syncCustomAuth();
+    customEditor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  document.getElementById('custom-tool-add').addEventListener('click', () => openCustomEditor(null));
+  ct('cancel').addEventListener('click', () => { customEditor.hidden = true; });
+  ct('param-add').addEventListener('click', () => addParameter());
+  ct('auth-mode').addEventListener('change', syncCustomAuth);
+  ct('auth-source').addEventListener('change', syncCustomAuth);
+  ct('save').addEventListener('click', async () => {
+    if ([...customEditor.querySelectorAll('input,textarea,select')].some((el) => !el.reportValidity())) return;
+    const tool = { name: ct('name').value.trim(), label: ct('label').value.trim(), description: ct('desc').value.trim(), url: ct('url').value.trim(), method: ct('method').value, timeoutMs: Number(ct('timeout').value), authMode: ct('auth-mode').value, authName: ct('auth-name').value.trim(), authSource: ct('auth-source').value, authValue: ct('auth-value').value.trim(), enabled: customEditingName ? customTools.find((t) => t.name === customEditingName).enabled : true, parameters: [...ct('params').querySelectorAll('.ct-param')].map((row) => Object.fromEntries([...row.querySelectorAll('[data-field]')].map((el) => [el.dataset.field, el.type === 'checkbox' ? el.checked : el.value]))) };
+    const next = customEditingName ? customTools.map((t) => t.name === customEditingName ? tool : t) : customTools.concat(tool);
+    if (await saveToolsConfig(next)) { customEditor.hidden = true; renderCustomTools(); }
+    else { ct('status').textContent = toolsStatus.textContent; ct('status').className = 'ai-status err'; }
+  });
+
+  /** 从主进程加载工具箱配置 */
+  async function loadToolsPanel() {
+    try {
+      const cfg = await window.pet.getToolsConfig();
+      swTools.setAttribute('aria-checked', String(cfg.enabled !== false));
+      toolsCity.value = cfg.manualCity || '';
+      toolsId.value = cfg.weatherId || '';
+      toolsKey.value = cfg.weatherKey || '';
+      toolsOilToken.value = cfg.oilToken || '';
+      customTools = cfg.customTools || [];
+      renderCustomTools();
+    } catch (e) {
+      console.warn('[settings] 工具箱配置读取失败:', e.message);
+    }
+  }
+
+  async function saveToolsConfig(nextTools) {
+    try {
+      const result = await window.pet.saveToolsConfig({
+        enabled: swTools.getAttribute('aria-checked') === 'true',
+        manualCity: toolsCity.value.trim(),
+        weatherId: toolsId.value.trim(),
+        weatherKey: toolsKey.value.trim(),
+        oilToken: toolsOilToken.value.trim(),
+        customTools: nextTools || customTools,
+      });
+      if (!result || !result.ok) { setToolsStatus(result && result.message || '保存失败', 'err'); return false; }
+      customTools = result.config.customTools;
+      setToolsStatus('工具设置已保存', 'ok');
+      return true;
+    } catch (e) { setToolsStatus('保存失败，请重试', 'err'); return false; }
+  }
+
+  swTools.addEventListener('click', () => {
+    const next = swTools.getAttribute('aria-checked') !== 'true';
+    swTools.setAttribute('aria-checked', String(next));
+    saveToolsConfig();
+  });
+
+  document.getElementById('tools-save').addEventListener('click', () => {
+    saveToolsConfig();
   });
 
   // 👁 显示/隐藏 API Key
@@ -899,6 +1028,7 @@
   async function init() {
     await refreshState();
     loadAiPanel();
+    loadToolsPanel();
     pollReminder();
     loadUserName();
     loadCompanionStats();

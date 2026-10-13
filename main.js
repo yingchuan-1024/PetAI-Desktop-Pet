@@ -8,6 +8,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 const { spawn } = require('child_process');
 const { pathToFileURL } = require('url');
+const { runAgent, DEFAULT_TOOLS_CONFIG, normalizeToolsConfig } = require('./agent');
 
 // 皮肤协议：允许渲染层从外部皮肤目录加载文件（必须在 app ready 前注册）
 protocol.registerSchemesAsPrivileged([
@@ -48,7 +49,7 @@ const companionFile = () => path.join(app.getPath('userData'), 'companion.json')
 const prefsFile = () => path.join(app.getPath('userData'), 'prefs.json');
 
 let companion = { firstSeen: Date.now(), lastSeen: Date.now(), interactions: 0, chats: 0 };
-let prefs = { userName: '', chatSize: null, lastUpdatePrompted: '', theme: '#e8a0bf', skinId: '' };
+let prefs = { userName: '', chatSize: null, lastUpdatePrompted: '', theme: '#e8a0bf', skinId: '', tools: DEFAULT_TOOLS_CONFIG };
 
 function loadCompanion() {
   try {
@@ -89,6 +90,7 @@ function loadPrefs() {
     if (raw && typeof raw.skinId === 'string') {
       prefs.skinId = raw.skinId.slice(0, 64);
     }
+    prefs.tools = normalizeToolsConfig(raw && raw.tools);
   } catch (e) { /* 默认 */ }
   return prefs;
 }
@@ -271,6 +273,7 @@ function createChatWindow() {
     },
   });
   chatWin.setAlwaysOnTop(true, 'screen-saver');
+  chatWin.setIgnoreMouseEvents(!chatVisible);
   chatWin.loadFile(path.join(__dirname, 'renderer', 'chat.html'));
   chatWin.on('closed', () => { chatWin = null; });
   layoutChatWindow();
@@ -320,6 +323,7 @@ function setChatVisible(v) {
   if (chatVisible === v) return;
   chatVisible = v;
   if (chatWin && !chatWin.isDestroyed()) {
+    chatWin.setIgnoreMouseEvents(!v);
     chatWin.webContents.send('chat:hover-state', v);
   }
 }
@@ -624,8 +628,8 @@ function parseNum(v) {
   return Number.isFinite(n) ? n : null;
 }
 
-/** 根据配置的 advanced 组装请求体（温度/最大 tokens/思考模式/附加参数） */
-function buildRequestBody(profile, messages) {
+/** 根据配置的 advanced 组装请求体（温度/最大 tokens/思考模式/附加参数/工具） */
+function buildRequestBody(profile, messages, tools) {
   const adv = profile.advanced || {};
   const body = { model: profile.model, messages, stream: true };
   const temp = parseNum(adv.temperature);
@@ -647,26 +651,36 @@ function buildRequestBody(profile, messages) {
       console.warn('[ai] 附加参数 JSON 解析失败:', e.message);
     }
   }
+  // Agent 工具清单（原生 function calling）；由 Agent 循环控制是否附带
+  // 若附加参数里已自定义 tools（如服务商联网搜索），则尊重用户配置不覆盖
+  if (Array.isArray(tools) && tools.length && !body.tools) {
+    body.tools = tools;
+    if (!body.tool_choice) body.tool_choice = 'auto';
+  }
   return body;
 }
 
-/** 解析 SSE 数据行，返回增量文本或 null */
-function parseSSE(line) {
+/** 解析 SSE 数据行，返回 delta 对象或 null */
+function parseSSEDelta(line) {
   if (!line.startsWith('data:')) return null;
   const payload = line.slice(5).trim();
   if (!payload || payload === '[DONE]') return null;
   try {
     const json = JSON.parse(payload);
-    return json.choices && json.choices[0] && json.choices[0].delta
-      ? (json.choices[0].delta.content || '')
-      : null;
+    const choice = json.choices && json.choices[0];
+    return (choice && choice.delta) || null;
   } catch (e) {
     return null;
   }
 }
 
-/** 调用 OpenAI 兼容接口（流式），逐段调用 onDelta 回调 */
-async function streamChat(profile, messages, onDelta) {
+/**
+ * 调用 OpenAI 兼容接口（流式）。
+ * opts.tools 传入工具清单时启用原生 function calling。
+ * @returns {Promise<{content:string, toolCalls:Array}>}
+ */
+async function streamChat(profile, messages, onDelta, opts) {
+  const tools = opts && opts.tools;
   const url = profile.baseURL.replace(/\/+$/, '') + '/chat/completions';
   // net.fetch：跟随系统代理（海外 API 需梯子时也能正常工作）
   const resp = await net.fetch(url, {
@@ -675,7 +689,7 @@ async function streamChat(profile, messages, onDelta) {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + (profile.apiKey || '').trim(),
     },
-    body: JSON.stringify(buildRequestBody(profile, messages)),
+    body: JSON.stringify(buildRequestBody(profile, messages, tools)),
   });
   if (!resp.ok) {
     let detail = '';
@@ -688,21 +702,40 @@ async function streamChat(profile, messages, onDelta) {
   const reader = resp.body.getReader();
   const decoder = new TextDecoder('utf-8');
   let buffer = '';
+  let content = '';
+  const toolAcc = [];
+  const handleLine = (line) => {
+    const delta = parseSSEDelta(line);
+    if (!delta) return;
+    if (typeof delta.content === 'string' && delta.content) {
+      content += delta.content;
+      onDelta(delta.content);
+    }
+    // 累积流式返回的 tool_calls 分片（按 index 拼接 name / arguments）
+    if (Array.isArray(delta.tool_calls)) {
+      for (const tc of delta.tool_calls) {
+        const idx = typeof tc.index === 'number' ? tc.index : toolAcc.length;
+        if (!toolAcc[idx]) toolAcc[idx] = { id: '', type: 'function', function: { name: '', arguments: '' } };
+        const slot = toolAcc[idx];
+        if (tc.id) slot.id = tc.id;
+        if (tc.type) slot.type = tc.type;
+        if (tc.function) {
+          if (tc.function.name) slot.function.name += tc.function.name;
+          if (tc.function.arguments) slot.function.arguments += tc.function.arguments;
+        }
+      }
+    }
+  };
   for (;;) {
     const { done, value } = await reader.read();
     if (done) break;
     buffer += decoder.decode(value, { stream: true });
     const lines = buffer.split('\n');
     buffer = lines.pop();
-    for (const line of lines) {
-      const delta = parseSSE(line.trim());
-      if (delta) onDelta(delta);
-    }
+    for (const line of lines) handleLine(line.trim());
   }
-  if (buffer.trim()) {
-    const delta = parseSSE(buffer.trim());
-    if (delta) onDelta(delta);
-  }
+  if (buffer.trim()) handleLine(buffer.trim());
+  return { content, toolCalls: toolAcc.filter(Boolean) };
 }
 
 /* AI IPC */
@@ -748,13 +781,32 @@ async function runAiChat(sender, text, image) {
   saveCompanion();
 
   const messages = buildMessages(s);
+  const toolsCfg = normalizeToolsConfig(prefs.tools);
+  // 屏幕识图等图片场景不启用工具，避免多模态与 function calling 冲突
+  const useTools = toolsCfg.enabled !== false && !image;
   let full = '';
   send('ai:stream-start', {});
   try {
-    await streamChat(profile, messages, (delta) => {
-      full += delta;
-      send('ai:stream-delta', { delta });
-    });
+    if (useTools) {
+      // Agent 模式：模型自主判断是否调用「定位 / 天气」等工具，再把结果整合成回答
+      const ctx = { fetch: (url, opts) => net.fetch(url, opts), config: toolsCfg };
+      const streamFn = (msgs, onDelta, opts) => streamChat(profile, msgs, onDelta, opts);
+      full = await runAgent(ctx, { streamFn }, messages, (delta) => {
+        send('ai:stream-delta', { delta });
+      }, (ev) => send('ai:tool', ev));
+    } else {
+      const r = await streamChat(profile, messages, (delta) => {
+        send('ai:stream-delta', { delta });
+      });
+      full = r.content || '';
+    }
+    // Agent 未产出文本时兜底：退回普通对话，避免空白气泡
+    if (useTools && !full) {
+      const r = await streamChat(profile, messages, (delta) => {
+        send('ai:stream-delta', { delta });
+      });
+      full = r.content || '';
+    }
     s.messages.push({ role: 'assistant', text: full, time: Date.now() });
     saveChatData();
     send('ai:stream-end', { full });
@@ -773,6 +825,20 @@ ipcMain.on('ai:send', (e, payload) => {
   const text = typeof payload === 'string' ? payload : (payload && payload.text || '');
   const image = payload && typeof payload.image === 'string' ? payload.image : undefined;
   runAiChat(e.sender, text, image);
+});
+
+/* ---------- Agent 工具箱（位置 / 天气）配置 ---------- */
+
+ipcMain.handle('tools:get-config', () => normalizeToolsConfig(prefs.tools));
+
+ipcMain.handle('tools:set-config', (e, cfg) => {
+  const normalized = normalizeToolsConfig(cfg);
+  if (cfg && cfg.customTools != null && (!Array.isArray(cfg.customTools) || normalized.customTools.length !== cfg.customTools.length)) {
+    return { ok: false, message: '自定义工具配置无效：请检查名称、HTTPS 地址、鉴权、参数及超时，名称不能重复或与内置工具冲突' };
+  }
+  prefs.tools = normalized;
+  savePrefs();
+  return { ok: true, config: normalized };
 });
 
 /* ---------- 屏幕识别（多模态特殊功能） ---------- */

@@ -3,6 +3,7 @@ node_modules/
 
 # 构建产物
 dist/
+dist-*/
 build/
 *.exe
 *.blockmap
@@ -10,6 +11,16 @@ build/
 # 皮肤素材（版权原因，不入仓库）
 skins/*/
 !skins/README.md
+
+# 本地凭证与用户数据
+.env
+.env.*
+!.env.example
+prefs.json
+ai-config.json
+chat-history.json
+reminders.json
+companion.json
 
 # 日志
 *.log

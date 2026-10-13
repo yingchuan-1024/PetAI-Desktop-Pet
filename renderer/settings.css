@@ -799,6 +799,12 @@ body {
 .ai-status.ok { color: #a5e8b8; }
 .ai-status.err { color: #ff9d9d; }
 
+.custom-tools-box { display: flex; flex-direction: column; gap: 12px; padding-top: 12px; border-top: 1px dashed rgba(255, 255, 255, 0.14); }
+.ct-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.ct-grid .ai-input { width: 100%; min-width: 0; }
+.ct-param { display: flex; flex-direction: column; gap: 8px; padding: 10px; margin-bottom: 8px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 12px; }
+.custom-tools-box .ai-input:disabled { opacity: 0.45; }
+
 /* 提醒面板 */
 .reminder-section {
   display: flex;

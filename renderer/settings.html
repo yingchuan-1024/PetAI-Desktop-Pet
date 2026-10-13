@@ -206,6 +206,53 @@
           </label>
           <button class="ai-btn save prompt-save" id="ai-prompt-save">保存全局设置</button>
           <div class="ai-status" id="ai-prompt-status"></div>
+
+          <!-- 智能工具（Agent 工具调用） -->
+          <div class="switch-row" id="row-tools">
+            <div class="row-info">
+              <span class="row-title">智能工具（Agent）</span>
+              <span class="row-desc">需要时自动调用「定位 / 天气 / 油价」等工具，再用真实数据回答</span>
+            </div>
+            <button class="switch" id="sw-tools" role="switch" aria-checked="true">
+              <span class="knob"></span>
+            </button>
+          </div>
+          <label class="ai-field">
+            <span class="ai-label">手动所在地（可选）</span>
+            <input class="ai-input" id="tools-city" type="text" placeholder="如：四川 绵阳；留空 = 自动 IP 定位" spellcheck="false">
+            <span class="ai-hint">自动定位不准或失败时填写，格式「省 市」或直接填城市</span>
+          </label>
+          <label class="ai-field">
+            <span class="ai-label">天气 API id</span>
+            <input class="ai-input" id="tools-id" type="text" placeholder="88888888" spellcheck="false">
+            <span class="ai-hint">apihz 账号 id，默认 88888888（公共测试号，可能限流）</span>
+          </label>
+          <label class="ai-field">
+            <span class="ai-label">天气 API key</span>
+            <input class="ai-input" id="tools-key" type="text" placeholder="88888888" spellcheck="false">
+          </label>
+          <label class="ai-field">
+            <span class="ai-label">共享起零 Token（油价及自定义工具可共用）</span>
+            <input class="ai-input" id="tools-oil-token" type="password" placeholder="填写起零数据 Token" maxlength="256" autocomplete="off" spellcheck="false">
+            <span class="ai-hint">油价沿用此 Token；自定义工具可选“共享起零 Token”，不会把 Token 发送给模型</span>
+          </label>
+          <div class="custom-tools-box">
+            <div class="ai-list-head"><div class="row-info"><span class="row-title">自定义 HTTP JSON 工具</span><span class="row-desc">无需写代码，添加后即可被 Agent 调用</span></div><button class="ai-add-btn" id="custom-tool-add" type="button">＋ 添加</button></div>
+            <div class="ai-profile-list" id="custom-tool-list"></div>
+            <div class="ai-form" id="custom-tool-editor" hidden>
+              <label class="ai-field"><span class="ai-label">稳定工具名（英文）</span><input class="ai-input" id="ct-name" pattern="[A-Za-z][A-Za-z0-9_]{0,63}" required></label>
+              <label class="ai-field"><span class="ai-label">中文显示名称</span><input class="ai-input" id="ct-label" required></label>
+              <label class="ai-field"><span class="ai-label">模型说明</span><textarea class="ai-input ai-textarea" id="ct-desc" rows="2" required></textarea></label>
+              <label class="ai-field"><span class="ai-label">HTTPS URL（可含固定查询参数）</span><input class="ai-input" id="ct-url" type="url" placeholder="https://example.com/api" required></label>
+              <div class="ct-grid"><label class="ai-field"><span class="ai-label">方法</span><select class="ai-input ai-select" id="ct-method"><option>GET</option><option>POST</option></select></label><label class="ai-field"><span class="ai-label">超时（毫秒）</span><input class="ai-input" id="ct-timeout" type="number" min="1000" max="60000" step="1" value="15000" required></label></div>
+              <div class="ct-grid"><label class="ai-field"><span class="ai-label">鉴权方式</span><select class="ai-input ai-select" id="ct-auth-mode"><option value="none">无</option><option value="query">Query 参数</option><option value="header">Header</option></select></label><label class="ai-field"><span class="ai-label">鉴权字段名</span><input class="ai-input" id="ct-auth-name" placeholder="token / Authorization"></label></div>
+              <div class="ct-grid"><label class="ai-field"><span class="ai-label">鉴权值来源</span><select class="ai-input ai-select" id="ct-auth-source"><option value="independent">独立填写</option><option value="shared">共享起零 Token</option></select></label><label class="ai-field"><span class="ai-label">鉴权值</span><input class="ai-input" id="ct-auth-value" type="password"></label></div>
+              <div class="ai-field"><span class="ai-label">参数行</span><div id="ct-params"></div><button class="ai-add-btn" id="ct-param-add" type="button">＋ 添加参数</button></div>
+              <div class="ai-actions"><button class="ai-btn save" id="ct-save" type="button">保存工具</button><button class="ai-btn cancel" id="ct-cancel" type="button">取消</button></div><div class="ai-status" id="ct-status"></div>
+            </div>
+          </div>
+          <button class="ai-btn save prompt-save" id="tools-save">保存工具设置</button>
+          <div class="ai-status" id="tools-status"></div>
         </div>
 
         <!-- 姿势 -->
