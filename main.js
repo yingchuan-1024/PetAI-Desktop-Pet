@@ -273,6 +273,7 @@ function createChatWindow() {
     },
   });
   chatWin.setAlwaysOnTop(true, 'screen-saver');
+  chatWin.setIgnoreMouseEvents(!chatVisible);
   chatWin.loadFile(path.join(__dirname, 'renderer', 'chat.html'));
   chatWin.on('closed', () => { chatWin = null; });
   layoutChatWindow();
@@ -322,6 +323,7 @@ function setChatVisible(v) {
   if (chatVisible === v) return;
   chatVisible = v;
   if (chatWin && !chatWin.isDestroyed()) {
+    chatWin.setIgnoreMouseEvents(!v);
     chatWin.webContents.send('chat:hover-state', v);
   }
 }
