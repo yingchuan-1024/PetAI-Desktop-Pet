@@ -1,24 +1,41 @@
-# PetAI 桌宠（AI Desktop Pet）
+<div align="center">
+
+# 🐾 PetAI 桌宠
+
+**AI Desktop Pet · 让桌面多一位会聊天、会查信息的小伙伴**
+
+![版本](https://img.shields.io/badge/版本-1.1.1-e8a0bf?style=flat-square)
+![平台](https://img.shields.io/badge/平台-Windows-0078D4?style=flat-square)
+![Electron](https://img.shields.io/badge/Electron-33-47848F?style=flat-square)
+![Spine](https://img.shields.io/badge/Spine-4.1%20%2F%204.2-FF9900?style=flat-square)
+
+透明悬浮 · 角色动画 · AI 多模态对话 · 可配置 Agent 工具
+
+[📦 项目仓库](https://github.com/yingchuan-1024/PetAI-Desktop-Pet) · [🐛 问题反馈](https://github.com/yingchuan-1024/PetAI-Desktop-Pet/issues)
+
+</div>
+
+---
 
 基于 Electron + Spine 的 AI 桌面宠物，支持透明悬浮窗、角色动画、AI 多模态对话、本地会话历史，以及可通过界面添加的 Agent 工具。
 
-当前仓库：https://github.com/yingchuan-1024/PetAI-Desktop-Pet
-
 本项目基于 [jinyuwan/PetAI-Desktop-Pet](https://github.com/jinyuwan/PetAI-Desktop-Pet) 改造，保留原有作者信息与许可。仓库不包含第三方角色皮肤素材，运行前需要自行准备并确认素材使用授权。
 
-## 功能
+## ✨ 功能
 
-- 桌宠本体：透明无边框窗口、置顶、拖拽、自主动作调度、姿态切换、静默模式和单实例运行。
-- AI 对话：OpenAI 兼容接口、流式回复、模型配置切换、自定义人设、多会话管理及本地历史导入导出。
-- 多模态：图片上传和屏幕识别，需要模型支持视觉输入；当前图片请求不走 Agent 工具循环。
-- Agent：由模型判断是否调用工具，将工具返回的 JSON 回填给模型，再结合人设生成回答；支持原生 function calling 和提示词 JSON 协议回退。
-- 内置工具：IP 近似定位、天气查询、油价查询。
-- 自定义工具：在设置面板新增、编辑、删除、启用或停用 HTTP JSON 工具，无需修改代码。
-- 显示设置：角色显示区域宽度、高度可修改并保存；头顶预留气泡空间，长提示最多显示两行。
-- Spine 模型：本地加载 4.1 / 4.2 runtime，支持版本分流及皮肤独立透明混合配置。
-- 提醒与陪伴：番茄钟、每日闹钟、系统通知、陪伴统计。
+| 功能 | 说明 |
+| --- | --- |
+| 🐾 桌宠本体 | 透明无边框窗口、置顶、拖拽、自主动作调度、姿态切换、静默模式和单实例运行 |
+| 💬 AI 对话 | OpenAI 兼容接口、流式回复、模型配置切换、自定义人设、多会话管理及本地历史导入导出 |
+| 🖼️ 多模态 | 图片上传和屏幕识别，需要模型支持视觉输入；当前图片请求不走 Agent 工具循环 |
+| 🤖 Agent | 模型判断是否调用工具，将返回的 JSON 回填后结合人设回答；支持原生 function calling 和提示词 JSON 协议回退 |
+| 🌤️ 内置工具 | IP 近似定位、天气查询、油价查询 |
+| 🧩 自定义工具 | 在设置面板新增、编辑、删除、启用或停用 HTTP JSON 工具，无需修改代码 |
+| 📐 显示设置 | 角色显示区域宽度、高度可修改并保存；头顶预留气泡空间，长提示最多显示两行 |
+| 🎭 Spine 模型 | 本地加载 4.1 / 4.2 runtime，支持版本分流及皮肤独立透明混合配置 |
+| ⏰ 提醒与陪伴 | 番茄钟、每日闹钟、系统通知、陪伴统计 |
 
-## 快速开始
+## 🚀 快速开始
 
 建议使用 Node.js 20 或更新版本及 npm。Windows 是当前主要运行与打包平台。
 
@@ -31,7 +48,7 @@ npm start
 
 启动前请准备皮肤，参见下方说明。退出时可使用系统托盘菜单中的退出选项；开发运行也可在启动终端按 Ctrl+C。
 
-## AI 配置
+## ⚙️ AI 配置
 
 打开设置 → AI，填写 OpenAI 兼容 API 地址、API Key、模型名称与人设 Prompt，保存后测试连接。
 
@@ -44,7 +61,7 @@ npm start
 
 原生工具调用需要模型和接口支持 `tools` / `tool_calls`。接口明确拒绝工具参数时会尝试提示词 JSON 协议回退；最终效果仍取决于模型能否遵循协议。模型连接测试成功并不代表所有工具调用都已验证。
 
-## Agent 与内置工具
+## 🤖 Agent 与内置工具
 
 打开设置 → AI → 智能工具，启用 Agent 并保存配置。
 
@@ -56,7 +73,7 @@ npm start
 
 所在地建议填写“省份 城市”，例如 `四川 成都`。油价等接口的 Token 输入框只填凭证本身，不要包含 `token=` 或 `&keyword=`。
 
-示例问题：
+### 💬 对话示例
 
 - “今天天气怎么样？”：模型可先定位，再查询天气并生成回答。
 - “成都 92 号汽油多少钱？”：模型可直接使用指定地区查询。
@@ -66,7 +83,7 @@ npm start
 
 第三方服务的授权、额度、网络限制及 HTTP 403 等错误需根据具体响应排查，不能仅凭 HTTP 状态码认定 Token 无效。
 
-## 通过界面添加工具
+## 🧩 通过界面添加工具
 
 进入设置 → AI → 智能工具 → 自定义 HTTP JSON 工具，点击添加，填写以下信息后保存。
 
@@ -82,6 +99,8 @@ npm start
 | 鉴权值来源 | 独立凭证或共享起零 Token；Bearer 鉴权需填写完整 `Bearer ...` 值 |
 | 请求超时 | 1–60 秒，默认 15 秒 |
 
+### 📝 参数来源
+
 每个参数支持填写名称、说明、类型、必填状态及来源：
 
 - 模型提供：由模型根据问题生成字符串、数字或布尔值。
@@ -90,7 +109,9 @@ npm start
 
 同一网站的接口只有在其文档明确支持共用凭证时，才应选择共享 Token。共享起零 Token 与内置油价工具使用同一个配置项。
 
-油价接口配置示例（已有内置油价工具，无需重复创建）：
+### ⛽ 配置示例
+
+以下为油价接口配置示例（已有内置油价工具，无需重复创建）：
 
 | 字段 | 示例 |
 | --- | --- |
@@ -104,7 +125,7 @@ npm start
 
 工具返回必须是 JSON。目前业务错误识别采用常见 `ok` / `success` / `code` 约定，`code` 为 `0` 或 `200` 视为成功；不同服务约定可能需要进一步适配。暂不支持文件上传、非 JSON 响应和复杂嵌套参数编辑。
 
-## 皮肤与模型
+## 🎭 皮肤与模型
 
 应用按以下顺序查找皮肤：
 
@@ -148,7 +169,7 @@ skins/<皮肤名>/
 
 更多皮肤配置参考 [skins/README.md](skins/README.md)。Spine runtime 使用须遵守文件中的官方许可条款。
 
-## 打包与验证
+## 📦 打包与验证
 
 ```powershell
 npm start
@@ -175,7 +196,7 @@ node tools/verify-custom-tools.js
 
 已完成工具模拟请求、Agent 结果回填、语法检查及 Windows 打包验证。模拟验证不代表真实第三方授权或真实模型端到端调用成功。当前程序版本仍为 `1.1.1`；本次源码更新未创建新的 GitHub Release。
 
-## 数据与隐私
+## 🔐 数据与隐私
 
 配置和聊天记录保存在 Electron `userData` 目录，常规 Windows 路径为 `%APPDATA%/desktop-pet/`：
 
@@ -191,7 +212,7 @@ node tools/verify-custom-tools.js
 
 AI 对话、图片及工具结果会发送到所配置的模型服务。启用 IP 定位时会访问第三方定位服务；自定义工具会向填写的接口发送其参数。请只添加可信接口，并注意发送的数据范围。
 
-## 版权与来源
+## 📜 版权与来源
 
 - 原项目：[jinyuwan/PetAI-Desktop-Pet](https://github.com/jinyuwan/PetAI-Desktop-Pet)。保留作者信息，代码许可见 [LICENSE](LICENSE)。
 - 第三方角色素材不入仓库；请自行获取合法使用授权，不要将无授权素材作为公共分发内容。
