@@ -219,33 +219,49 @@
       // 且 URL 不能带查询参数（否则扩展名破坏，误按二进制解析）
       const skinUrl = (file) => 'skin://local/' + encodeURIComponent(_skin.id) + '/' + file;
 
-      // 双版本兼容：spine-player 4.2 解析旧版 JSON 骨架本身没问题，
-      // 但「自动计算动画视口」在旧版数据上会算出非法边界（Animation bounds are invalid）。
-      // 解决：先读骨架版本，旧版（非 4.2）改用骨架 AABB 作为固定 viewport，跳过自动计算。
+      const binary = !/\.json$/i.test(_skin.spine.skeleton);
+      const res = await fetch(skinUrl(_skin.spine.skeleton));
+      if (!res.ok) throw new Error('骨架读取失败：HTTP ' + res.status);
+      let version, bounds;
+      if (binary) {
+        // Spine 4.x 二进制头：8 字节 hash、变长 UTF-8 版本字符串、4 个大端 float。
+        const bytes = new Uint8Array(await res.arrayBuffer());
+        let offset = 8, length = 0, shift = 0, b;
+        do {
+          if (offset >= bytes.length || shift > 28) throw new Error('无效的骨架二进制头');
+          b = bytes[offset++];
+          length |= (b & 127) << shift;
+          shift += 7;
+        } while (b & 128);
+        if (length < 2 || offset + length - 1 + 16 > bytes.length) throw new Error('无效的骨架版本');
+        version = new TextDecoder().decode(bytes.subarray(offset, offset + length - 1));
+        offset += length - 1;
+        if (!/^4\.[12]\./.test(version)) throw new Error('不支持的二进制 Spine 版本：' + version);
+        const view = new DataView(bytes.buffer, bytes.byteOffset + offset, 16);
+        bounds = { x: view.getFloat32(0), y: view.getFloat32(4), width: view.getFloat32(8), height: view.getFloat32(12) };
+      } else {
+        const json = await res.json();
+        bounds = json.skeleton || {};
+        version = bounds.spine || '';
+      }
+      if (token !== skinLoadToken) return;
+      const use41 = /^4\.1\./.test(version);
+      const runtime = use41 ? window.spine41 : window.spine42;
       let viewport = { padLeft: '4%', padRight: '4%', padTop: '2%', padBottom: '4%' };
-      try {
-        const res = await fetch(skinUrl(_skin.spine.skeleton));
-        if (res.ok) {
-          const json = await res.json();
-          const ver = (json.skeleton && json.skeleton.spine) || '';
-          const isNew = ver.indexOf('4.2') === 0;
-          if (!isNew && json.skeleton) {
-            const s = json.skeleton;
-            const w = s.width || 800, h = s.height || 800;
-            const pad = Math.max(w, h) * 0.04;
-            viewport = { x: (s.x || 0) - pad, y: (s.y || 0) - pad, width: w + pad * 2, height: h + pad * 2 };
-            console.log('[pet] 旧版骨架 (' + ver + ')，已使用固定 viewport');
-          }
-        }
-      } catch (e) { /* 读取失败则用默认百分比 viewport */ }
-
-      const p = new spine.SpinePlayer(playerEl, {
-        skeleton: skinUrl(_skin.spine.skeleton),
-        atlas: skinUrl(_skin.spine.atlas),
+      // 不使用骨架导出时的静态边界：播放器会采样当前动画的实际边界。
+      // 4.1 常规动作在加载成功后合并为稳定视口，4.2 保留原生自动适配。
+      console.log('[pet] Spine ' + version + ' → player ' + (use41 ? '4.1.24' : '4.2.119'), viewport);
+      const resources = use41
+        ? { [binary ? 'binaryUrl' : 'jsonUrl']: skinUrl(_skin.spine.skeleton), atlasUrl: skinUrl(_skin.spine.atlas) }
+        : { skeleton: skinUrl(_skin.spine.skeleton), atlas: skinUrl(_skin.spine.atlas) };
+      const p = new runtime.SpinePlayer(playerEl, {
+        ...resources,
         animation: resolveAnimation(basePose() || 'idle'),
         skin: _skin.spine.skin || undefined, // 皮肤可指定启用哪个 skin（多 skin 骨架：default 可能是空的）
         backgroundColor: '#00000000',
         alpha: true,
+        ...(typeof _skin.spine.premultipliedAlpha === 'boolean'
+          ? { premultipliedAlpha: _skin.spine.premultipliedAlpha } : {}),
         showControls: false,
         showLoading: true,
         viewport,
@@ -259,8 +275,30 @@
             return;
           }
           player = instance;
+          if (use41) {
+            const dailyAnimations = [...new Set(Object.values(_skin.states || {}))];
+            let left = Infinity, bottom = Infinity, right = -Infinity, top = -Infinity;
+            dailyAnimations.forEach((name) => {
+              const animation = instance.skeleton.data.findAnimation(name);
+              if (!animation) return;
+              const measured = {};
+              instance.calculateAnimationViewport(animation, measured);
+              left = Math.min(left, measured.x);
+              bottom = Math.min(bottom, measured.y);
+              right = Math.max(right, measured.x + measured.width);
+              top = Math.max(top, measured.y + measured.height);
+            });
+            if ([left, bottom, right, top].every(Number.isFinite) && right > left && top > bottom) {
+              const dailyViewport = { x: left, y: bottom, width: right - left, height: top - bottom };
+              dailyAnimations.forEach((name) => { instance.config.viewport.animations[name] = dailyViewport; });
+              console.log('[pet] daily animation viewport', dailyViewport);
+            }
+            instance.skeleton.setToSetupPose();
+          }
+          console.log('[pet] loaded', instance.skeleton.data.version, 'bones:', instance.skeleton.bones.length, 'slots:', instance.skeleton.slots.length);
           const pose = basePose();
           if (pose) setState(pose);
+          instance.play();
         },
         error: (instance, reason) => {
           if (token !== skinLoadToken) return; // 迟到的失败回调，忽略

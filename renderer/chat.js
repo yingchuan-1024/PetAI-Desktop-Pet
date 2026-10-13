@@ -22,6 +22,7 @@
   let waiting = false; // 是否正在等待 AI 回复
   let replyEl = null;  // 当前流式渲染中的回复气泡
   let pendingImage = null; // 待发送图片 data URL
+  let toolPhase = false;   // 当前回复是否处于工具调用提示阶段
 
   /* ---------- hover 显示/隐藏 ---------- */
   window.pet.onChatHover((inside) => {
@@ -230,10 +231,30 @@
   }
 
   window.pet.onAiStart(() => {
+    toolPhase = false;
     streamInto(replyEl, '');
   });
 
+  // Agent 工具调用状态：调用期间显示提示，正式文本到达时自动让位
+  const TOOL_LABELS = {
+    get_location: '正在获取你的位置…',
+    get_weather: '正在查询天气…',
+    get_oil_price: '正在查询油价…',
+  };
+
+  window.pet.onAiTool((ev) => {
+    if (!replyEl || !ev) return;
+    if (ev.phase === 'start') {
+      toolPhase = true;
+      streamInto(replyEl, '🔧 ' + (TOOL_LABELS[ev.name] || (ev.label ? '正在调用「' + ev.label + '」…' : '正在调用工具…')));
+    } else if (ev.phase === 'end' && ev.result && ev.result.ok === false) {
+      toolPhase = true;
+      streamInto(replyEl, '🔧 ' + (ev.result.message || '工具调用失败'));
+    }
+  });
+
   window.pet.onAiDelta((delta) => {
+    if (toolPhase) { toolPhase = false; streamInto(replyEl, ''); }
     streamInto(replyEl, (replyEl.textContent || '') + delta);
   });
 

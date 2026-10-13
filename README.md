@@ -1,121 +1,200 @@
 # PetAI 桌宠（AI Desktop Pet）
 
-一个基于 Electron + Spine 的 AI 桌面宠物。透明悬浮窗、自主动作、AI 多模态对话、本地会话历史。
+基于 Electron + Spine 的 AI 桌面宠物，支持透明悬浮窗、角色动画、AI 多模态对话、本地会话历史，以及可通过界面添加的 Agent 工具。
 
-> 仓库只包含**技术实现**，不包含皮肤素材（素材来自 B 站，见文末版权说明）。
+当前仓库：https://github.com/yingchuan-1024/PetAI-Desktop-Pet
 
-## ✨ 功能
+本项目基于 [jinyuwan/PetAI-Desktop-Pet](https://github.com/jinyuwan/PetAI-Desktop-Pet) 改造，保留原有作者信息与许可。仓库不包含第三方角色皮肤素材，运行前需要自行准备并确认素材使用授权。
 
-- 🐾 **桌宠本体**：透明无边框窗口、置顶、系统原生拖拽、自主动作调度（思考/看书/计划/工作随机切换）
-- 💬 **AI 对话**：任意 OpenAI 兼容接口（DeepSeek / 豆包 / 通义 / Ollama 本地模型均可）
-  - 流式打字机回复、自定义人设 Prompt、对话历史本地保存
-  - 多会话管理：新对话 / 历史切换 / 单删 / 清空
-  - 📎 图片上传（多模态识图）· 🖥 屏幕识别
-  - 🔎 对话历史导出 / 导入（JSON，备份与换机迁移）
-- 📐 **对话框自定义大小**：拖拽右下角手柄任意缩放，支持恢复默认，尺寸自动记忆
-- ⏰ **提醒**：番茄钟（25/45/60/90 分钟）+ 每日闹钟，到点宠物气泡 / 系统通知提醒
-- 🔄 **自动更新**：启动静默检查 GitHub 新版本，设置页一键下载、sha512 校验、静默安装自动重启
-- 🎛 **设置面板**：显示 / AI / 姿势 / 提醒 / 对话 / 关于，全部可视化配置
-- 🎀 **陪伴记录**：本地统计陪伴天数 / 互动次数 / 对话条数
-- 🌙 **静默模式**：仅保留桌宠与手柄，隐藏对话框
-- 🔒 **单实例**：防止多开导致数据互相覆盖
+## 功能
 
-## 📦 快速开始
+- 桌宠本体：透明无边框窗口、置顶、拖拽、自主动作调度、姿态切换、静默模式和单实例运行。
+- AI 对话：OpenAI 兼容接口、流式回复、模型配置切换、自定义人设、多会话管理及本地历史导入导出。
+- 多模态：图片上传和屏幕识别，需要模型支持视觉输入；当前图片请求不走 Agent 工具循环。
+- Agent：由模型判断是否调用工具，将工具返回的 JSON 回填给模型，再结合人设生成回答；支持原生 function calling 和提示词 JSON 协议回退。
+- 内置工具：IP 近似定位、天气查询、油价查询。
+- 自定义工具：在设置面板新增、编辑、删除、启用或停用 HTTP JSON 工具，无需修改代码。
+- 显示设置：角色显示区域宽度、高度可修改并保存；头顶预留气泡空间，长提示最多显示两行。
+- Spine 模型：本地加载 4.1 / 4.2 runtime，支持版本分流及皮肤独立透明混合配置。
+- 提醒与陪伴：番茄钟、每日闹钟、系统通知、陪伴统计。
 
-```bash
-# 1. 准备皮肤：在 skins/ 目录放入你的 Spine 皮肤（见下方说明）
-# 2. 安装依赖
-npm install
-# 3. 运行
+## 快速开始
+
+建议使用 Node.js 20 或更新版本及 npm。Windows 是当前主要运行与打包平台。
+
+```powershell
+git clone git@github.com:yingchuan-1024/PetAI-Desktop-Pet.git
+cd PetAI-Desktop-Pet
+npm ci
 npm start
 ```
 
-### 皮肤说明
+启动前请准备皮肤，参见下方说明。退出时可使用系统托盘菜单中的退出选项；开发运行也可在启动终端按 Ctrl+C。
 
-应用按以下顺序查找皮肤目录（同名皮肤优先用高优先级目录）：
+## AI 配置
 
-1. `%APPDATA%/desktop-pet/skins/` — **用户自定义皮肤的标准位置**（安装版也能用）
-2. 安装目录旁的 `skins/`（便携版 / 免安装版场景）
-3. 应用内置 `skins/`（随安装包分发）
+打开设置 → AI，填写 OpenAI 兼容 API 地址、API Key、模型名称与人设 Prompt，保存后测试连接。
 
-每个皮肤是独立文件夹，结构如下：
+| 字段 | 说明 |
+| --- | --- |
+| API 地址 | 模型平台的 OpenAI 兼容接口地址 |
+| API Key | 自己的模型平台密钥 |
+| 模型名 | 平台提供的模型或端点 ID |
+| 人设 Prompt | 角色回答风格，可使用 `{petName}` 占位符 |
 
-```
+原生工具调用需要模型和接口支持 `tools` / `tool_calls`。接口明确拒绝工具参数时会尝试提示词 JSON 协议回退；最终效果仍取决于模型能否遵循协议。模型连接测试成功并不代表所有工具调用都已验证。
+
+## Agent 与内置工具
+
+打开设置 → AI → 智能工具，启用 Agent 并保存配置。
+
+| 工具 | 配置与说明 |
+| --- | --- |
+| 定位 | 手动所在地优先；留空时通过网络出口 IP 获取近似省市，代理可能导致定位偏差 |
+| 天气 | 配置天气 API 的 ID 和 Key；默认公共测试值可能限流，建议使用自己的账号 |
+| 油价 | 配置起零数据共享 Token，查询省市的 98 / 95 / 92 号汽油和 0 号柴油价格及涨跌 |
+
+所在地建议填写“省份 城市”，例如 `四川 成都`。油价等接口的 Token 输入框只填凭证本身，不要包含 `token=` 或 `&keyword=`。
+
+示例问题：
+
+- “今天天气怎么样？”：模型可先定位，再查询天气并生成回答。
+- “成都 92 号汽油多少钱？”：模型可直接使用指定地区查询。
+- “我这里的油价怎么样？”：模型可结合定位结果查询油价。
+
+油价接口：`https://api.istero.com/resource/v2/oilprice`。价格返回的数据日期、更新时间和下次调价日期可能不同，应以服务返回为准，不能仅凭查询时间认为价格已更新。
+
+第三方服务的授权、额度、网络限制及 HTTP 403 等错误需根据具体响应排查，不能仅凭 HTTP 状态码认定 Token 无效。
+
+## 通过界面添加工具
+
+进入设置 → AI → 智能工具 → 自定义 HTTP JSON 工具，点击添加，填写以下信息后保存。
+
+| 字段 | 说明 |
+| --- | --- |
+| 稳定工具名 | 唯一英文标识，不与内置工具重名；创建后编辑时锁定 |
+| 中文显示名称 | 用于列表及聊天中的工具调用状态 |
+| 模型说明 | 说明何时使用工具、需要什么输入、返回内容的含义 |
+| HTTPS URL | 接口地址，可包含固定查询参数 |
+| 请求方法 | GET 或 POST；GET 使用查询参数，POST 使用 JSON 请求体 |
+| 鉴权方式 | 无鉴权、Query 参数或 Header |
+| 鉴权字段名 | 例如 `token`、`key`、`Authorization`，按接口文档填写 |
+| 鉴权值来源 | 独立凭证或共享起零 Token；Bearer 鉴权需填写完整 `Bearer ...` 值 |
+| 请求超时 | 1–60 秒，默认 15 秒 |
+
+每个参数支持填写名称、说明、类型、必填状态及来源：
+
+- 模型提供：由模型根据问题生成字符串、数字或布尔值。
+- 固定值：请求时使用已配置的值。
+- 定位城市 / 定位省份：自动获取位置后注入，只支持字符串类型。
+
+同一网站的接口只有在其文档明确支持共用凭证时，才应选择共享 Token。共享起零 Token 与内置油价工具使用同一个配置项。
+
+油价接口配置示例（已有内置油价工具，无需重复创建）：
+
+| 字段 | 示例 |
+| --- | --- |
+| 稳定工具名 | `query_oil_price` |
+| 显示名称 | 油价查询 |
+| 模型说明 | 查询指定省市油价及涨跌，回答注明数据日期 |
+| URL | `https://api.istero.com/resource/v2/oilprice` |
+| 方法 | GET |
+| 鉴权 | Query，字段名 `token`，值来源为共享起零 Token |
+| 参数 | `keyword`，字符串，来源为模型提供或定位城市 |
+
+工具返回必须是 JSON。目前业务错误识别采用常见 `ok` / `success` / `code` 约定，`code` 为 `0` 或 `200` 视为成功；不同服务约定可能需要进一步适配。暂不支持文件上传、非 JSON 响应和复杂嵌套参数编辑。
+
+## 皮肤与模型
+
+应用按以下顺序查找皮肤：
+
+1. `%APPDATA%/desktop-pet/skins/` 用户皮肤目录。
+2. 安装目录旁的 `skins/`。
+3. 应用内置 `skins/`。
+
+每个皮肤需在直接子目录中提供 `skin.json`。骨架、图集及贴图可以位于下级目录，路径相对于皮肤目录。
+
+```text
 skins/<皮肤名>/
-├─ skin.json          # 皮肤元数据（名称 / 状态映射）
-├─ xxx-skeleton.json  # Spine 骨架
-├─ xxx.atlas          # Spine 图集
-└─ xxx.png            # Spine 贴图
+├─ skin.json
+├─ character.skel
+├─ character.atlas
+└─ character.png
 ```
 
-`skin.json` 示例：
+骨架可使用兼容版本的 JSON 或二进制 `.skel`。以下为 4.1 模型的配置示例，动画名称需对应自己的模型：
 
 ```json
 {
-  "name": "皮肤显示名",
-  "author": "作者名",
-  "version": "1.0",
-  "spine": { "skeleton": "xxx-skeleton.json", "atlas": "xxx.atlas", "png": "xxx.png" },
+  "name": "角色名称",
+  "petName": "角色称呼",
+  "spine": {
+    "skeleton": "character.skel",
+    "atlas": "character.atlas",
+    "png": "character.png",
+    "premultipliedAlpha": false
+  },
   "states": {
-    "idle": "e",
-    "reading": "a",
-    "planning": "a_win",
-    "thinking": "b",
-    "task_done": "c",
-    "working": "d",
-    "work_done": "d_win"
+    "idle": "idle",
+    "stand": "stand"
+  },
+  "extraStates": {
+    "skill": "skill01_1"
   }
 }
 ```
 
-**姿态完全自定义**：`states` 里的每个键就是姿态名（可自由命名，支持中文），值是对应的动画名。`poseNames` 可选，为姿态提供显示名（设置 → 姿势 里看到的文字），未提供则显示姿态名本身。应用没有内置的"默认姿态"，也不会自动补映射——皮肤定义几个姿态就是几个；AI / 互动触发时按语义关键词（思考/完成/看书…）在当前姿态里匹配，找不到则回退到 `idle`（或第一个）姿态，不会报错。所以**只写 `"idle": "xxx"` 也能用**，想姿势丰富就多写几个。
+`states` 用于常规动作，`extraStates` 用于手动触发的大幅动作。`premultipliedAlpha` 需与贴图实际编码一致：straight alpha 贴图设为 `false`，不要对所有模型统一关闭。当前已验证过 4.1 模型的待机与站立显示；其他模型和技能动作需自行验证。
 
-放好后重启应用即可加载（设置 → 关于皮肤 可切换 / 查看映射）；如无皮肤，应用会提示"未找到皮肤"。傻瓜式图文教程见 [skins/README.md](skins/README.md)。
+更多皮肤配置参考 [skins/README.md](skins/README.md)。Spine runtime 使用须遵守文件中的官方许可条款。
 
-## ⚙️ AI 配置
+## 打包与验证
 
-打开设置 → AI：
-
-| 字段 | 说明 | 示例 |
-|---|---|---|
-| API 地址 | OpenAI 兼容接口地址 | `https://api.deepseek.com` |
-| API Key | 平台密钥，仅存本机 | `sk-xxxx` |
-| 模型名 | 模型/端点 ID | `deepseek-chat` |
-| 人设 Prompt | 可选，留空则不注入人设 | `你是...` |
-
-> 图片识别需要模型支持视觉多模态（如 `gpt-4o`、`qwen-vl-max`），不支持时自动提示。
-
-## 🖥 平台与打包
-
-```bash
-npm start       # 开发运行
-npm run dist    # 打包 Windows 安装包（electron-builder，输出到 dist/）
+```powershell
+npm start
+npm run dev
+npm run dist
 ```
 
-需要自行签名请配置 `build.win.signAndEditExecutable` 并准备证书。
+默认输出到 `dist/`：
 
-## 📁 数据存储
+- `PetAI Setup <版本>.exe`：Windows 安装包。
+- `win-unpacked/PetAI.exe`：免安装启动程序，必须保留整个 `win-unpacked` 目录。
 
-| 数据 | 位置 |
-|---|---|
-| 对话历史 | `%APPDATA%/desktop-pet/chat-history.json` |
-| AI 配置 | `%APPDATA%/desktop-pet/ai-config.json` |
-| 用户偏好（称呼 / 对话框尺寸等） | `%APPDATA%/desktop-pet/prefs.json` |
-| 提醒（番茄钟 / 闹钟） | `%APPDATA%/desktop-pet/reminders.json` |
-| 陪伴记录 | `%APPDATA%/desktop-pet/companion.json` |
+可指定独立目录，避免旧产物被运行中的程序占用：
 
-## 🔒 隐私说明
+```powershell
+npm run dist -- --publish never --config.directories.output=dist-tools
+```
 
-- **API Key 仅存本机**：你的 API Key 只保存在自己电脑的 `%APPDATA%/desktop-pet/` 中，不会随程序、安装包或代码仓库分发，也不会上传到任何服务器
-- **程序与数据分离**：安装包仅包含程序代码，不携带任何个人数据（Key / 对话记录）。对方安装后需自行填写自己的 Key
-- **对话记录本地保存**：聊天历史只写入本机文件，程序不采集、不上报任何使用数据
-- **注意**：使用识图 / 屏幕识别 / AI 对话时，图片与文本会发送到你配置的模型服务商（如 DeepSeek / 豆包 / OpenAI）进行处理，请勿发送敏感信息
+自定义工具模拟验证：
 
-## ⚠️ 版权说明
+```powershell
+node tools/verify-custom-tools.js
+```
 
-- 皮肤素材来自网络（bilibili@森哈_Yeah、绝区零虚狩绘本），**仅供个人学习**，请勿商用或二次传播
-- 本仓库代码部分可自由使用，使用图片素材需自行确认授权
+已完成工具模拟请求、Agent 结果回填、语法检查及 Windows 打包验证。模拟验证不代表真实第三方授权或真实模型端到端调用成功。当前程序版本仍为 `1.1.1`；本次源码更新未创建新的 GitHub Release。
 
-## 🧱 技术栈
+## 数据与隐私
 
-Electron 33 · Spine Player 4.2 · 原生 JS（无框架）· electron-builder
+配置和聊天记录保存在 Electron `userData` 目录，常规 Windows 路径为 `%APPDATA%/desktop-pet/`：
+
+| 文件 | 内容 |
+| --- | --- |
+| `ai-config.json` | 模型配置及 API Key |
+| `prefs.json` | 用户偏好、角色尺寸、工具配置及工具凭证 |
+| `chat-history.json` | 本地对话历史 |
+| `reminders.json` | 提醒配置 |
+| `companion.json` | 陪伴记录 |
+
+凭证保存在本机配置文件中，不随源码仓库分发；目前并非操作系统凭据库加密存储，请勿公开这些文件。调用服务时，相关凭证会发送到所配置的服务地址用于鉴权。
+
+AI 对话、图片及工具结果会发送到所配置的模型服务。启用 IP 定位时会访问第三方定位服务；自定义工具会向填写的接口发送其参数。请只添加可信接口，并注意发送的数据范围。
+
+## 版权与来源
+
+- 原项目：[jinyuwan/PetAI-Desktop-Pet](https://github.com/jinyuwan/PetAI-Desktop-Pet)。保留作者信息，代码许可见 [LICENSE](LICENSE)。
+- 第三方角色素材不入仓库；请自行获取合法使用授权，不要将无授权素材作为公共分发内容。
+- Spine runtime 许可见本地 vendor 文件中的许可声明。
+
+技术栈：Electron 33、Spine Player 4.1 / 4.2、原生 JavaScript、electron-builder。
