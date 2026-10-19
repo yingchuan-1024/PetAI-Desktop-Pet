@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="8c5cbdfb-9d38-4449-acf6-bea1e4fad000" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Split Text Remove Empty Item sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="96f9887a-dd98-4f7d-be2f-7ef9fa776a1c" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" v_Comment="Not Remove Empty Item" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SplitTextCommand" CommandID="31a63781-e7e2-4d83-bfe0-2d1c66f5b406" CommandName="SplitTextCommand" IsCommented="false" SelectionName="Split Text" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_userVariableName="hey,hello,hi,,,ok,yes,," v_splitCharacter="," v_applyConvertToUserVariableName="vList" v_RemoveEmptyItem="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertListToVisualizedTextCommand" CommandID="20d82080-f4e4-435d-97d3-3653f59b3ffa" CommandName="ConvertListToVisualizedTextCommand" IsCommented="false" SelectionName="Convert List To Visualized Text" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vList" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="07fb3e0b-2a15-48bb-9715-0272688ab75f" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="5" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="5f507223-2ca1-4f81-a803-5a68252047e7" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="6" PauseBeforeExeucution="false" v_Comment="Remove Empty Item" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SplitTextCommand" CommandID="9f2b8e57-96a3-4619-bc11-fca03b1068a5" CommandName="SplitTextCommand" IsCommented="false" SelectionName="Split Text" DefaultPause="0" LineNumber="7" PauseBeforeExeucution="false" CommandEnabled="true" v_userVariableName="hey,hello,hi,,,ok,yes,," v_splitCharacter="," v_applyConvertToUserVariableName="vList" v_RemoveEmptyItem="Yes" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertListToVisualizedTextCommand" CommandID="99b8d6e1-1f16-40c8-a204-c011768fc1c3" CommandName="ConvertListToVisualizedTextCommand" IsCommented="false" SelectionName="Convert List To Visualized Text" DefaultPause="0" LineNumber="8" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vList" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="b90cdf38-4884-437c-a534-06b86c9ae16e" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="9" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.15</TasktVersion>
+    <Author />
+    <LastRunTime>2024-12-01T13:40:45.3259333+09:00</LastRunTime>
+    <RunTimes>1</RunTimes>
+    <Revision>2</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>vList</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>view</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

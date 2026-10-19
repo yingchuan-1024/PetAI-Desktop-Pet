@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="2445ff60-4235-45d2-8e72-40ec4ddfe6fd" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Create JSON Variable sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CreateJSONVariableCommand" CommandID="6035042e-6caa-4fe0-9247-f5ce90b0c5a8" CommandName="CreateJSONVariableCommand" IsCommented="false" SelectionName="Create JSON Variable" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" CommandEnabled="true" v_Json="vJSON" v_Value="⦃ &quot;name&quot;: &quot;taskt&quot;, &quot;rpa&quot;: &quot;yes&quot; ⦄" v_ValueType="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="38d97404-0fde-4892-8afb-73c50a74d50f" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="⦃vJSON⦄" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.10</TasktVersion>
+    <Author />
+    <LastRunTime>2024-11-03T12:02:00.2869622+09:00</LastRunTime>
+    <RunTimes>2</RunTimes>
+    <Revision>3</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>vJSON</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

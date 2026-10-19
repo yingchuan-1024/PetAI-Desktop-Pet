@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="3b935190-d550-4aa4-821e-dfd9846ea0f0" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Send Special Keystrokes To WebElement sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserCreateWebBrowserInstanceCommand" CommandID="eb7a70ad-9fdb-4551-88ad-7c7b8d19878f" CommandName="SeleniumBrowserCreateWebBrowserInstanceCommand" IsCommented="false" SelectionName="Create Web Browser Instance" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" CommandEnabled="true" v_InstanceName="RPABrowser" v_EngineType="Edge" v_InstanceTracking="" v_BrowserWindowOption="" v_SeleniumOptions="" v_Handle="" v_BrowserPath="" v_WebDriverPath="" v_HeadlessMode="No" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserNavigateToURLCommand" CommandID="a8c88076-adc5-4b33-9a2d-6a423e239230" CommandName="SeleniumBrowserNavigateToURLCommand" IsCommented="false" SelectionName="Navigate To URL" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_InstanceName="RPABrowser" v_URL="https://rcktrncn.github.io/rpa-web/sample_form.html" v_UseHttps="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="2b8878be-cb0e-433f-b384-4344b88839b6" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" v_Comment="Get Name Textbox" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserSearchWebElementCommand" CommandID="ca1db827-553c-416f-ae2e-0e2b37a95a01" CommandName="SeleniumBrowserSearchWebElementCommand" IsCommented="false" SelectionName="Search WebElement" DefaultPause="0" LineNumber="5" PauseBeforeExeucution="false" CommandEnabled="true" v_InstanceName="RPABrowser" v_SeleniumSearchType="Find Element By XPath" v_SeleniumSearchParameter="//input[@id=&quot;name&quot;]" v_ElementIndex="" v_Result="vElem" v_WaitTime="120" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserClickWebElementCommand" CommandID="cd48c930-388b-4588-af84-955cb23acd26" CommandName="SeleniumBrowserClickWebElementCommand" IsCommented="false" SelectionName="Click WebElement" DefaultPause="0" LineNumber="6" PauseBeforeExeucution="false" CommandEnabled="true" v_WebElement="⦃vElem⦄" v_ClickType="Invoke Click" v_InstanceName="RPABrowser" v_XOffset="10" v_YOffset="136" v_WhenFailClick="" v_ScrollToElement="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="d4b3f96c-a466-4557-ad10-a3f06a54a522" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="7" PauseBeforeExeucution="false" v_Comment="Send Tab to Name Textbox" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserSendSpecialKeystrokesToWebElementCommand" CommandID="cd5d461a-69a3-43a3-a882-656a29d690be" CommandName="SeleniumBrowserSendSpecialKeystrokesToWebElementCommand" IsCommented="false" SelectionName="Send Special Keystrokes To WebElement" DefaultPause="0" LineNumber="8" PauseBeforeExeucution="false" CommandEnabled="true" v_WebElement="⦃vElem⦄" v_SendKey="Tab" v_ControlKey="No" v_ShiftKey="No" v_AltKey="No" v_WhenSetNotSupported="" v_ScrollToElement="" v_InstanceName="RPABrowser" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="c987a10d-965d-402d-806f-3d037b26c72c" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="9" PauseBeforeExeucution="false" v_Comment="Focus moves to E-Mail Textbox" CommandEnabled="true" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.17</TasktVersion>
+    <Author />
+    <LastRunTime>2025-01-02T14:25:04.6861401+09:00</LastRunTime>
+    <RunTimes>1</RunTimes>
+    <Revision>2</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>vElem</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

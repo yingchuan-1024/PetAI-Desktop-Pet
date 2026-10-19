@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="4589f1f9-b358-4d39-98a3-653472838c51" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Remove Dictionary Item sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="4589f1f9-b358-4d39-98a3-653472838c51" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" v_Comment="Create ⦃ &quot;name&quot;: &quot;tom&quot;, &quot;age&quot;: 25, &quot;contry&quot;: &quot;USA&quot; ⦄ (JSON like)" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CreateDictionaryCommand" CommandID="31d11a7b-28e8-47d3-881c-7b006b44f063" CommandName="CreateDictionaryCommand" IsCommented="false" SelectionName="Create Dictionary" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_Dictionary="vDic">
+        <v_ColumnNameDataTable>
+          <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+            <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="ColumnNameDataTable122121.033621" msdata:UseCurrentLocale="true">
+              <xs:complexType>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                  <xs:element name="ColumnNameDataTable122121.033621">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Keys" type="xs:string" minOccurs="0" />
+                        <xs:element name="Values" type="xs:string" minOccurs="0" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:choice>
+              </xs:complexType>
+            </xs:element>
+          </xs:schema>
+          <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
+            <DocumentElement>
+              <ColumnNameDataTable122121.033621 diffgr:id="ColumnNameDataTable122121.0336211" msdata:rowOrder="0" diffgr:hasChanges="modified">
+                <Keys>name</Keys>
+                <Values>Tom</Values>
+              </ColumnNameDataTable122121.033621>
+              <ColumnNameDataTable122121.033621 diffgr:id="ColumnNameDataTable122121.0336212" msdata:rowOrder="1" diffgr:hasChanges="modified">
+                <Keys>age</Keys>
+                <Values>25</Values>
+              </ColumnNameDataTable122121.033621>
+              <ColumnNameDataTable122121.033621 diffgr:id="ColumnNameDataTable122121.0336213" msdata:rowOrder="2" diffgr:hasChanges="modified">
+                <Keys>contry</Keys>
+                <Values>USA</Values>
+              </ColumnNameDataTable122121.033621>
+            </DocumentElement>
+            <diffgr:before>
+              <ColumnNameDataTable122121.033621 diffgr:id="ColumnNameDataTable122121.0336211" msdata:rowOrder="0">
+                <Keys>name</Keys>
+                <Values>Tom</Values>
+              </ColumnNameDataTable122121.033621>
+              <ColumnNameDataTable122121.033621 diffgr:id="ColumnNameDataTable122121.0336212" msdata:rowOrder="1">
+                <Keys>age</Keys>
+                <Values>25</Values>
+              </ColumnNameDataTable122121.033621>
+              <ColumnNameDataTable122121.033621 diffgr:id="ColumnNameDataTable122121.0336213" msdata:rowOrder="2">
+                <Keys>contry</Keys>
+                <Values>USA</Values>
+              </ColumnNameDataTable122121.033621>
+            </diffgr:before>
+          </diffgr:diffgram>
+        </v_ColumnNameDataTable>
+      </ScriptCommand>
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="ec21a419-40d5-4a2e-b669-4f9f5666d92f" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" v_Comment="Show vDic" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertDictionaryToVisualizedTextCommand" CommandID="52feb52b-6bf8-468f-b203-d5cd453519c4" CommandName="ConvertDictionaryToVisualizedTextCommand" IsCommented="false" SelectionName="Covnert Dictionary To Visualized Text" DefaultPause="0" LineNumber="5" PauseBeforeExeucution="false" CommandEnabled="true" v_Dictionary="vDic" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="cb20c272-2362-4edc-b0a8-ce96abdeea6f" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="6" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="4589f1f9-b358-4d39-98a3-653472838c51" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="7" PauseBeforeExeucution="false" v_Comment="Remove key &quot;contry&quot;" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="RemoveDictionaryItemCommand" CommandID="57889421-4a30-4c32-a3de-c1077c11f6cd" CommandName="RemoveDictionaryItemCommand" IsCommented="false" SelectionName="Remove Dictionary Item" DefaultPause="0" LineNumber="8" PauseBeforeExeucution="false" CommandEnabled="true" v_Dictionary="vDic" v_Key="contry" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="c2a721c9-e50a-4dc1-86d3-f7efa5a6b7fa" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="9" PauseBeforeExeucution="false" v_Comment="Show vDic" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertDictionaryToVisualizedTextCommand" CommandID="eb81b425-49e5-4b19-bfef-ff13b72aa1cc" CommandName="ConvertDictionaryToVisualizedTextCommand" IsCommented="false" SelectionName="Covnert Dictionary To Visualized Text" DefaultPause="0" LineNumber="10" PauseBeforeExeucution="false" CommandEnabled="true" v_Dictionary="vDic" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="80e99d53-e7a7-4446-8b8a-1a42231d8229" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="11" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.4</TasktVersion>
+    <Author />
+    <LastRunTime>2024-09-07T11:50:28.7107752+09:00</LastRunTime>
+    <RunTimes>2</RunTimes>
+    <Revision>2</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>vDic</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>view</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

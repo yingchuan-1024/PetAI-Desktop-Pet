@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="872bed80-bea0-49aa-9c18-63f540f63a7b" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Copy Folder In Same Location sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="604c7b2a-e9ca-4310-96c4-59178be07070" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" v_Comment="Copy sample_folder to Desktop" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CopyFolderCommand" CommandID="962bef44-5896-4d57-87ad-5788660e36e8" CommandName="CopyFolderCommand" IsCommented="false" SelectionName="Copy Folder" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetFolderPath="⦃Folder.SamplesPath⦄\Resources\sample_folder" v_WaitTimeForFolder="10" v_BeforeFolderPathResult="" v_AfterFolderPathResult="" v_DestinationFolderPath="⦃Folder.Desktop⦄" v_CreateDirectory="" v_WhenDestinationIsSame="" v_WhenDestinationExists="" v_CopySubFolder="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="f73a10f4-b622-4c95-8143-7f8d5c3d80f5" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" v_Comment="Copy sample_foldere as special_folder" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CopyFolderInSamLocationCommand" CommandID="4670ac49-82fb-4404-b628-daf390c9debb" CommandName="CopyFolderInSamLocationCommand" IsCommented="false" SelectionName="Copy Folder In Same Location" DefaultPause="0" LineNumber="5" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetFolderPath="⦃Folder.Desktop⦄\sample_folder" v_WaitTimeForFolder="10" v_BeforeFolderPathResult="" v_AfterFolderPathResult="" v_NewFolderName="special_folder" v_WhenFolderNameSame="" v_WhenDestinationExists="" v_CopySubFolder="" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.22</TasktVersion>
+    <Author />
+    <LastRunTime>2025-02-19T22:26:53.2542567+09:00</LastRunTime>
+    <RunTimes>2</RunTimes>
+    <Revision>2</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables />
+</Script>

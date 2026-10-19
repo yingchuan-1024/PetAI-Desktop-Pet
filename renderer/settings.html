@@ -28,6 +28,7 @@
         <button class="nav-item" data-panel="ai">AI</button>
         <button class="nav-item" data-panel="pose">姿势</button>
         <button class="nav-item" data-panel="reminder">提醒</button>
+        <button class="nav-item" data-panel="automation">自动化</button>
         <button class="nav-item" data-panel="chat">对话</button>
         <button class="nav-item" data-panel="about-skin">关于皮肤</button>
         <button class="nav-item" data-panel="about-app">关于 PetAI</button>
@@ -316,6 +317,22 @@
             <div class="alarm-list" id="alarm-list">
               <div class="ai-profile-empty">暂无闹钟，添加一个试试吧</div>
             </div>
+          </div>
+        </div>
+
+        <div class="panel" id="panel-automation">
+          <div class="automation-section">
+            <h2>Taskt 工作流</h2>
+            <p class="row-desc">在 Taskt 独立编辑器中录制、设计并保存 XML，然后选择 XML 登记到桌宠。</p>
+            <details class="automation-guide"><summary>运行与停止说明</summary><p>登记只做只读格式预校验，不代表工作流安全。请在编辑器审阅后运行，已登记任务将直接执行。F9 请求引擎取消；阻塞命令可能延迟响应，外部进程可能仍活动。旧 UIA 录制数据保留，但不作为 Taskt 工作流执行。</p></details>
+            <label class="ai-field"><span class="ai-label">任务名称</span><input class="ai-input" id="automation-name" maxlength="120" placeholder="例如：填写每日工作记录" required></label>
+            <label class="ai-field"><span class="ai-label">任务描述（选填）</span><input class="ai-input" id="automation-description" maxlength="2000" placeholder="记录使用的程序和起始页面"></label>
+            <div class="automation-actions"><button class="ai-btn save" id="automation-record">选择 XML 并登记</button><button class="ai-btn cancel" id="automation-stop-record">打开 Taskt</button><button class="ai-btn cancel" id="automation-stop" disabled>停止执行</button></div>
+            <div class="ai-status" id="automation-status" role="status" aria-live="polite"></div>
+            <p class="automation-help" id="automation-help" hidden></p>
+            <progress id="automation-progress" aria-label="任务执行进度" hidden></progress>
+            <div class="automation-list-heading"><h3>已保存的任务</h3><button class="automation-refresh" id="automation-refresh" type="button">刷新</button></div>
+            <div class="automation-list" id="automation-list" aria-label="已保存的自动化任务"></div>
           </div>
         </div>
 

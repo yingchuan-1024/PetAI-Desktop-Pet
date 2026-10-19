@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="d47a76bd-51b8-4481-b057-2e1ceb4ba47e" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Show HTML Input sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowHTMLInputDialogCommand" CommandID="5f3310f5-24b4-4f73-be47-d5db3dbcdc50" CommandName="ShowHTMLInputDialogCommand" IsCommented="false" SelectionName="Show HTML Input Dialog" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" CommandEnabled="true" v_InputHTML="&lt;!DOCTYPE html&gt;&#xA;&lt;html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;&#xA;&lt;head&gt;&#xA;  &lt;meta charset=&quot;utf-8&quot; /&gt;&#xA;  &lt;title&gt;Please Provide Information&lt;/title&gt;&#xA;&lt;/head&gt;&#xA;&lt;body&gt;&#xA;  &lt;nav&gt;&#xA;      &lt;h1&gt;taskt&lt;/h1&gt;&#xA;      &lt;small&gt;free and open-source process automation&lt;/small&gt;&#xA;  &lt;/nav&gt;&#xA;  &lt;br /&gt;&#xA;  &lt;div&gt;&#xA;&lt;h1&gt;Directions&lt;/h1&gt;&#xA;&lt;p&gt;This a sample data collection form that can be presented to a user.  You can add and implement as many fields as you need or choose standard form inputs. Note, each field will require a &lt;b&gt;data-variable&lt;/b&gt; or &lt;b&gt;v_applyToVariable&lt;/b&gt; attribute specifying which variable should contain the respective value for the input field.&lt;br&gt;&#xA;&lt;b&gt;DO NOT USE&lt;/b&gt; form tags to enclose the element. The variable information will not be retrieved correctly.&lt;/p&gt;&#xA;&lt;p&gt;The &lt;b&gt;OK&lt;/b&gt; button should call &lt;b&gt;chrome.webview.hostObjects.fm.OK();&lt;/b&gt; with onclick attribute, etc.&lt;br&gt;&#xA;Similarly, The &lt;b&gt;Cancel&lt;/b&gt; button should call &lt;b&gt;chrome.webview.hostObjects.fm.Cancel();&lt;/b&gt; with onclick attribute, etc.&lt;/p&gt; &#xA;    &lt;hr /&gt;&#xA;      &lt;div&gt;&#xA;        &lt;div&gt;&#xA;          &lt;label for=&quot;inputEmail4&quot;&gt;Email&lt;/label&gt;&#xA;          &lt;input type=&quot;email&quot; id=&quot;inputEmail4&quot; data-variable=&quot;vInput&quot; placeholder=&quot;Email&quot;&gt;&#xA;        &lt;/div&gt;&#xA;        &lt;div&gt;&#xA;          &lt;label for=&quot;inputPassword4&quot;&gt;Password&lt;/label&gt;&#xA;          &lt;input type=&quot;password&quot; id=&quot;inputPassword4&quot; data-variable=&quot;vPass&quot; placeholder=&quot;Password&quot;&gt;&#xA;        &lt;/div&gt;&#xA;      &lt;/div&gt;&#xA;      &lt;div&gt;&#xA;        &lt;label for=&quot;inputAddress&quot;&gt;Address&lt;/label&gt;&#xA;        &lt;input type=&quot;text&quot; id=&quot;inputAddress&quot; data-variable=&quot;vAddress&quot; placeholder=&quot;1234 Main St&quot;&gt;&#xA;      &lt;/div&gt;&#xA;      &lt;div&gt;&#xA;        &lt;label for=&quot;inputAddress2&quot;&gt;Address 2&lt;/label&gt;&#xA;        &lt;input type=&quot;text&quot; id=&quot;inputAddress2&quot; data-variable=&quot;vAddress2&quot; placeholder=&quot;Apartment, studio, or floor&quot;&gt;&#xA;      &lt;/div&gt;&#xA;      &lt;div&gt;&#xA;        &lt;div&gt;&#xA;          &lt;label for=&quot;inputCity&quot;&gt;City&lt;/label&gt;&#xA;          &lt;input type=&quot;text&quot; id=&quot;inputCity&quot; data-variable=&quot;vCity&quot;&gt;&#xA;        &lt;/div&gt;&#xA;        &lt;div&gt;&#xA;          &lt;label for=&quot;inputState&quot;&gt;State&lt;/label&gt;&#xA;          &lt;input type=&quot;text&quot; id=&quot;inputState&quot; data-variable=&quot;vState&quot;&gt;&#xA;        &lt;/div&gt;&#xA;        &lt;div&gt;&#xA;          &lt;label for=&quot;inputZip&quot;&gt;Zip&lt;/label&gt;&#xA;          &lt;input type=&quot;text&quot; id=&quot;inputZip&quot; data-variable=&quot;vZip&quot;&gt;&#xA;        &lt;/div&gt;&#xA;      &lt;/div&gt;&#xA;      &lt;div&gt;&#xA;        &lt;div&gt;&#xA;          &lt;input type=&quot;checkbox&quot; id=&quot;gridCheck&quot; data-variable=&quot;vCheck&quot;&gt;&#xA;          &lt;label for=&quot;gridCheck&quot;&gt;&#xA;              Check me out&#xA;          &lt;/label&gt;&#xA;        &lt;/div&gt;&#xA;      &lt;/div&gt;&#xA;      &lt;div&gt;&#xA;        &lt;label for=&quot;exampleFormControlSelect1&quot;&gt;Example select&lt;/label&gt;&#xA;        &lt;select id=&quot;exampleFormControlSelect1&quot; data-variable=&quot;vSelected&quot;&gt;&#xA;          &lt;option&gt;1&lt;/option&gt;&#xA;          &lt;option&gt;2&lt;/option&gt;&#xA;          &lt;option&gt;3&lt;/option&gt;&#xA;          &lt;option&gt;4&lt;/option&gt;&#xA;          &lt;option&gt;5&lt;/option&gt;&#xA;        &lt;/select&gt;&#xA;      &lt;/div&gt;&#xA;      &lt;div&gt;&#xA;        &lt;p&gt;Free input area&lt;/p&gt;&#xA;        &lt;textarea id=&quot;freeInput&quot; data-variable=&quot;vFree&quot;&gt;&lt;/textarea&gt;&#xA;      &lt;/div&gt;&#xA;      &lt;p&gt;&lt;button onclick=&quot;chrome.webview.hostObjects.fm.OK();&quot;&gt;Ok&lt;/button&gt;&lt;br /&gt;&#xA;      &lt;button onclick=&quot;chrome.webview.hostObjects.fm.Cancel();&quot;&gt;Close&lt;/button&gt;&lt;/p&gt;&#xA;  &lt;/div&gt;&#xA;&lt;/body&gt;&#xA;&lt;/html&gt;" v_ErrorOnClose="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="bc867362-0eb6-4855-8b00-acfbb330facb" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="Email: ⦃vInput⦄&#xD;&#xA;Pass: ⦃vPass⦄&#xD;&#xA;Address: ⦃vAddress⦄&#xD;&#xA;Address2: ⦃vAddress2⦄&#xD;&#xA;City: ⦃vCity⦄&#xD;&#xA;State: ⦃vState⦄&#xD;&#xA;Zip: ⦃vZip⦄&#xD;&#xA;vCheck: ⦃vCheck⦄&#xD;&#xA;vSelected: ⦃vSelected⦄&#xD;&#xA;Free: ⦃vFree⦄" v_AutoCloseAfter="0" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.4</TasktVersion>
+    <Author />
+    <LastRunTime>2024-09-15T11:36:32.7813398+09:00</LastRunTime>
+    <RunTimes>13</RunTimes>
+    <Revision>14</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>vAddress</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vAddress2</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vCheck</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vCity</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vFree</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vInput</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vPass</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vSelected</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vState</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vZip</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

@@ -1,0 +1,16 @@
+{
+  "scope": "Dedicated in-process WinForms fixture only; no hooks, desktop input, screenshots, or user UI data",
+  "before": [
+    { "test": "button_name_only_provider", "matchCount": 2, "reasonCode": "ambiguous" },
+    { "test": "after_action_dispose", "reasonCode": "ElementNotAvailableException" },
+    { "test": "button_root", "rootConsistent": true }
+  ],
+  "after": [
+    { "test": "text_descendant_to_button", "matchCount": 1, "rootConsistent": true },
+    { "test": "button_name_only_with_parent_chain", "matchCount": 1 },
+    { "test": "mouseup_after_dispose", "reasonCode": "snapshot_recorded", "steps": 1 },
+    { "test": "disposed_element", "reasonCode": "ElementNotAvailableException" },
+    { "test": "dpi", "dpi": 96, "scale125Verified": false }
+  ],
+  "limitations": ["Chromium proxy provider not runtime tested", "Windows 125% DPI not runtime tested", "Physical low-level hook timing not exercised; the controlled test directly uses owned UIA handles"]
+}

@@ -1,0 +1,25 @@
+{
+	"taskt": {
+		"name": "taskt",
+		"rpa": "yes",
+		"oss": "yes",
+		"values": [ 1, 2, 3, 4 ]
+	},
+	"persons": [
+		{
+			"name": "Alice",
+			"age": 28,
+			"contry": "USA"
+		},
+		{
+			"name": "Tom",
+			"age": 17,
+			"contry": "Canada"
+		},
+		{
+			"name": "John",
+			"age": 58,
+			"contry": "Singapore"
+		}
+	]
+}

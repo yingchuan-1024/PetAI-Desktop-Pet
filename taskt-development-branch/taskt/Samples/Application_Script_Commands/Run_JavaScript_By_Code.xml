@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="544f8056-5386-4686-bd6c-55ab80b843c2" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Run JavaScript By Code sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="b3d182b2-1576-4f9d-9ac7-f297db521d8e" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" v_Comment="return (1 + 1)" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="RunJavaScriptByCodeCommand" CommandID="ec07cca0-a2fe-4586-a636-c351f16b1a15" CommandName="RunJavaScriptByCodeCommand" IsCommented="false" SelectionName="Run JavaScript By Code" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_ScriptCode="let a = 1;&#xD;&#xA;let b = 1;&#xD;&#xA;return (a + b);" v_Arguments="" v_ReplaceScriptVariables="" v_Result="vResult" v_DeleteScriptFile="Yes" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="2476ac85-3c7d-4b92-90df-933d712771ce" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="⦃vResult⦄" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.24</TasktVersion>
+    <Author />
+    <LastRunTime>2025-03-16T21:19:16.6749362+09:00</LastRunTime>
+    <RunTimes>4</RunTimes>
+    <Revision>6</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>vResult</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

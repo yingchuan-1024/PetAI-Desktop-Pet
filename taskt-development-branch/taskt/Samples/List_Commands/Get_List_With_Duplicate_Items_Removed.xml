@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="6dec2703-dd45-4780-b09e-b44045aab24e" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Get List With Duplicate Items Removed sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="812c7c60-cc14-4b34-94d5-f2d4052fbf46" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" v_Comment="Create List [ A, B, C, A, B, C, D ]" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CreateListCommand" CommandID="89dc76d8-4713-4285-b366-c996be6a761a" CommandName="CreateListCommand" IsCommented="false" SelectionName="Create List" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vList">
+        <v_ListValues>
+          <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+            <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="ListValues022025.102655" msdata:UseCurrentLocale="true">
+              <xs:complexType>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                  <xs:element name="ListValues022025.102655">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Values" type="xs:string" minOccurs="0" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:choice>
+              </xs:complexType>
+            </xs:element>
+          </xs:schema>
+          <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
+            <DocumentElement>
+              <ListValues022025.102655 diffgr:id="ListValues022025.1026551" msdata:rowOrder="0" diffgr:hasChanges="modified">
+                <Values>A</Values>
+              </ListValues022025.102655>
+              <ListValues022025.102655 diffgr:id="ListValues022025.1026552" msdata:rowOrder="1" diffgr:hasChanges="modified">
+                <Values>B</Values>
+              </ListValues022025.102655>
+              <ListValues022025.102655 diffgr:id="ListValues022025.1026553" msdata:rowOrder="2" diffgr:hasChanges="modified">
+                <Values>C</Values>
+              </ListValues022025.102655>
+              <ListValues022025.102655 diffgr:id="ListValues022025.1026554" msdata:rowOrder="3" diffgr:hasChanges="modified">
+                <Values>A</Values>
+              </ListValues022025.102655>
+              <ListValues022025.102655 diffgr:id="ListValues022025.1026555" msdata:rowOrder="4" diffgr:hasChanges="modified">
+                <Values>B</Values>
+              </ListValues022025.102655>
+              <ListValues022025.102655 diffgr:id="ListValues022025.1026556" msdata:rowOrder="5" diffgr:hasChanges="modified">
+                <Values>D</Values>
+              </ListValues022025.102655>
+            </DocumentElement>
+            <diffgr:before>
+              <ListValues022025.102655 diffgr:id="ListValues022025.1026551" msdata:rowOrder="0">
+                <Values>A</Values>
+              </ListValues022025.102655>
+              <ListValues022025.102655 diffgr:id="ListValues022025.1026552" msdata:rowOrder="1">
+                <Values>B</Values>
+              </ListValues022025.102655>
+              <ListValues022025.102655 diffgr:id="ListValues022025.1026553" msdata:rowOrder="2">
+                <Values>C</Values>
+              </ListValues022025.102655>
+              <ListValues022025.102655 diffgr:id="ListValues022025.1026554" msdata:rowOrder="3">
+                <Values>A</Values>
+              </ListValues022025.102655>
+              <ListValues022025.102655 diffgr:id="ListValues022025.1026555" msdata:rowOrder="4">
+                <Values>B</Values>
+              </ListValues022025.102655>
+              <ListValues022025.102655 diffgr:id="ListValues022025.1026556" msdata:rowOrder="5">
+                <Values>D</Values>
+              </ListValues022025.102655>
+            </diffgr:before>
+          </diffgr:diffgram>
+        </v_ListValues>
+      </ScriptCommand>
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="54822ff4-560f-4c8d-a608-62f74d8d765d" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" v_Comment="Remove Duplicate Items" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="GetListWithDuplicateItemsRemoved" CommandID="212e182e-4414-4b85-bdb4-6e55865b3354" CommandName="GetListWithDuplicateItemsRemoved" IsCommented="false" SelectionName="Get List With Duplicate Items Removed" DefaultPause="0" LineNumber="5" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetList="vList" v_NewList="vResult" v_CaseSenstive="" v_RemovedItemsList="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="ac2a8ba1-310c-44e8-8d3e-0f295320953b" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="6" PauseBeforeExeucution="false" v_Comment="Show Result" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertListToVisualizedTextCommand" CommandID="c974144e-522b-4958-b2f5-3e07d656ebc3" CommandName="ConvertListToVisualizedTextCommand" IsCommented="false" SelectionName="Convert List To Visualized Text" DefaultPause="0" LineNumber="7" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vResult" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="1c040bed-4be0-4b5e-afe7-74b1832d133f" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="8" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.22</TasktVersion>
+    <Author />
+    <LastRunTime>2025-02-20T22:28:50.9347987+09:00</LastRunTime>
+    <RunTimes>1</RunTimes>
+    <Revision>2</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>view</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vList</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vResult</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

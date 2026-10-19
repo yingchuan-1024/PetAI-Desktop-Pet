@@ -1,0 +1,6 @@
+{
+	"name": "taskt",
+	"rpa": "yes",
+	"oss": "yes",
+	"values": [ 1, 2, 3, 4]
+}

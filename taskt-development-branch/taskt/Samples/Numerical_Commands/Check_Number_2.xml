@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="d5ecbd1c-dec5-4177-bfd8-0512ea777702" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Check Number sample 2" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="0dc1a069-4293-4cc3-b9ea-6c7aec710d9f" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" v_Comment="vValue is 5" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CreateNumericalVariableCommand" CommandID="ba86b343-6c1d-4a83-8acd-489c032b3a85" CommandName="CreateNumericalVariableCommand" IsCommented="false" SelectionName="Create Numerical Variable" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_VariableName="vValue" v_NumberValue="5" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="dce9bda0-d07e-476e-a86a-6523f00ac645" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" v_Comment="Is Equal To" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CheckNumberCommand" CommandID="131d7aab-e1db-4352-86a2-e4f43978db2a" CommandName="CheckNumberCommand" IsCommented="false" SelectionName="Check Number" DefaultPause="0" LineNumber="5" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetValue="⦃vValue⦄" v_CheckMethod="Is Equal To" v_ComparedValue1="5" v_ComparedValue2="" v_Result="vResult" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="cb2ca771-f479-43e1-9f38-044b1d6bc548" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="6" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="vValue is Equal To 5 ? Result: ⦃vResult⦄" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="a04e4316-e42e-4354-9812-c616c7d66184" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="7" PauseBeforeExeucution="false" v_Comment="Is Greater Than" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CheckNumberCommand" CommandID="5033d908-a6c6-4440-a748-0f6dd30a3dec" CommandName="CheckNumberCommand" IsCommented="false" SelectionName="Check Number" DefaultPause="0" LineNumber="8" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetValue="⦃vValue⦄" v_CheckMethod="Is Greater Than" v_ComparedValue1="10" v_ComparedValue2="" v_Result="vResult" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="b75411c3-4317-4036-b193-af55e6baabbc" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="9" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="vValue is Greater Than 10 ? Result: ⦃vResult⦄" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="2b5f8b84-08d6-4963-ac4b-98f68208a298" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="10" PauseBeforeExeucution="false" v_Comment="Is Less Than" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CheckNumberCommand" CommandID="9d1aaac7-f56e-48c5-b36a-40a4ee3f42a3" CommandName="CheckNumberCommand" IsCommented="false" SelectionName="Check Number" DefaultPause="0" LineNumber="11" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetValue="⦃vValue⦄" v_CheckMethod="Is Less Than" v_ComparedValue1="10" v_ComparedValue2="" v_Result="vResult" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="f51d2435-a6c3-43c4-9896-242332f3af0c" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="12" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="vValue is Less Than 10 ? Result: ⦃vResult⦄" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="4097a28e-76ab-42dd-baac-30635fbc193a" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="13" PauseBeforeExeucution="false" v_Comment="Is Between" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CheckNumberCommand" CommandID="d2b42dbe-a999-4c94-87ba-3a246b294780" CommandName="CheckNumberCommand" IsCommented="false" SelectionName="Check Number" DefaultPause="0" LineNumber="14" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetValue="⦃vValue⦄" v_CheckMethod="Is Between" v_ComparedValue1="2" v_ComparedValue2="4" v_Result="vResult" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="161587cd-fb5a-43cf-9cb1-2e72181fcfc3" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="15" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="vValue is Between 2 and 4 ? Result: ⦃vResult⦄" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.25</TasktVersion>
+    <Author />
+    <LastRunTime>2025-02-23T11:10:02.9175514+09:00</LastRunTime>
+    <RunTimes>1</RunTimes>
+    <Revision>3</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>vResult</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vValue</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

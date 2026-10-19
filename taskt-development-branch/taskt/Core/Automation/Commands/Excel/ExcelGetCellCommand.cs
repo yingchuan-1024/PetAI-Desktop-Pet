@@ -1,0 +1,49 @@
+﻿using System;
+using System.Xml.Serialization;
+using taskt.Core.Automation.Attributes.PropertyAttributes;
+
+namespace taskt.Core.Automation.Commands
+{
+    [Serializable]
+    [Attributes.ClassAttributes.Group("Excel")]
+    [Attributes.ClassAttributes.SubGruop("Cell")]
+    [Attributes.ClassAttributes.CommandSettings("Get Cell")]
+    [Attributes.ClassAttributes.Description("This command gets text from a specified Excel Cell.")]
+    [Attributes.ClassAttributes.UsesDescription("Use this command when you want to get a value from a specific cell.")]
+    [Attributes.ClassAttributes.ImplementationDescription("This command implements 'Excel Interop' to achieve automation.")]
+    [Attributes.ClassAttributes.CommandIcon(nameof(Properties.Resources.command_spreadsheet))]
+    [Attributes.ClassAttributes.EnableAutomateRender(true)]
+    [Attributes.ClassAttributes.EnableAutomateDisplayText(true)]
+    public sealed class ExcelGetCellCommand : AExcelCellActionCommands
+    {
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(ExcelControls), nameof(ExcelControls.v_InputInstanceName))]
+        //public string v_InstanceName { get; set; }
+
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(ExcelControls), nameof(ExcelControls.v_CellRangeLocation))]
+        //[PropertyParameterOrder(6000)]
+        //public string v_CellLocation { get; set; }
+
+        [XmlAttribute]
+        [PropertyVirtualProperty(nameof(GeneralPropertyControls), nameof(GeneralPropertyControls.v_Result))]
+        [PropertyParameterOrder(6500)]
+        public string v_Result { get; set; }
+
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(ExcelControls), nameof(ExcelControls.v_ValueType))]
+        //[PropertyParameterOrder(6002)]
+        //public string v_ValueType { get; set; }
+
+        public ExcelGetCellCommand()
+        {
+        }
+
+        public override void RunCommand(Engine.AutomationEngineInstance engine)
+        {
+            var rg = this.ExpandValueOrVariableAsExcelSingleCellLocation(engine);
+            var func = this.ExpandValueOrVariableAsGetValueFunction(engine);
+            func(rg).StoreInUserVariable(engine, v_Result);
+        }
+    }
+}

@@ -1,0 +1,11 @@
+PetAI Taskt modifications, 2026-10-19
+Localized generated command descriptions (including optional/default/example wrappers), painted file/variable helper links, classic settings captions/tooltips and dynamic settings navigation/pages. Business ComboBox items and navigation node IDs retain their original values. Settings import/export and common confirmation messages use Chinese display text.
+Extended --petai-ui-check to render real StartApplication editor controls and construct classic settings plus nine dynamic settings pages without showing windows or loading/saving user settings. Checks cover Chinese field/helper display, original Yes/No and startup mode values, layout overlap and existing fake-hook recorder regressions.
+Taskt remains licensed under Apache License 2.0; see LICENSE.
+Added --petai-check, --petai-run, --petai-validate and isolated --petai-editor entry points.
+Bridge execution reports engine completion through atomic JSON response files and accepts cooperative cancellation through a private control file.
+PetAI settings disable startup updates, remote server connections and anti-idle input. The unauthenticated local HTTP listener is disabled in this distribution.
+Cancellation is cooperative and does not guarantee termination of external processes launched by a workflow.
+Added display-only Simplified Chinese localization for common Taskt menus, welcome screen, toolbar, recorder, engine and command editor labels; command tree and command selector use translated drawing while retaining original business names and Tag values. Command tree search matches Chinese and English.
+Added --petai-ui-check for non-visible WinForms construction and display invariant checks; build-taskt.ps1 supports -Offline with cached dependencies. Technical IDs, XML names, enum/input values, third-party licenses and low-level errors remain unchanged.
+Fixed localized recorder Start/Stop and engine Pause/Resume/Close actions to use explicit state instead of display captions. Recorder restores idle state on hook completion and rolls back failed starts; dynamic stop-key hints remain Chinese. UI self-check exercises the recorder click path with fake hooks, bilingual captions, stop callbacks, restart and start-failure rollback without capturing desktop input.

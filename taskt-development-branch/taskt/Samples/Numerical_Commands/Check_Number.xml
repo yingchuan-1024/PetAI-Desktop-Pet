@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="cbdfc801-e6d4-4d73-a999-85c33a472b82" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Check Number sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="d443a519-86a6-44f3-a185-bbd8dcc4ecac" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" v_Comment="Is Number" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CheckNumberCommand" CommandID="6eb710bb-108f-444d-ba1a-e6fb57824cac" CommandName="CheckNumberCommand" IsCommented="false" SelectionName="Check Number" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetValue="1" v_CheckMethod="Is Number" v_Result="vResult" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="1b5085d0-ef7a-4257-80c8-00e753c3f8c4" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="1 is Number ? : ⦃vResult⦄" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CheckNumberCommand" CommandID="6892197a-d7d7-4087-a8a1-be8c870fe644" CommandName="CheckNumberCommand" IsCommented="false" SelectionName="Check Number" DefaultPause="0" LineNumber="5" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetValue="a" v_CheckMethod="Is Number" v_Result="vResult" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="855eff74-ac79-49f2-9735-a564bb940372" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="6" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="a is Number ? : ⦃vResult⦄" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="890ae1ba-ba3c-4890-af4b-1c7fff321a14" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="7" PauseBeforeExeucution="false" v_Comment="Is Odd Number" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CheckNumberCommand" CommandID="65b54750-5f61-4b4f-a84e-f8425101b434" CommandName="CheckNumberCommand" IsCommented="false" SelectionName="Check Number" DefaultPause="0" LineNumber="8" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetValue="1" v_CheckMethod="Is Odd Number" v_Result="vResult" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="1696325a-a42e-4478-9a04-2def8dc1e936" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="9" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="1 is Odd Number ? : ⦃vResult⦄" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="029b744a-4da3-49ca-87c0-211405bce397" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="10" PauseBeforeExeucution="false" v_Comment="Is Even Number" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CheckNumberCommand" CommandID="cb1da7e5-ec16-4e16-99ad-b69f79da7eef" CommandName="CheckNumberCommand" IsCommented="false" SelectionName="Check Number" DefaultPause="0" LineNumber="11" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetValue="1" v_CheckMethod="Is Even Number" v_Result="vResult" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="b851a4ca-8409-4224-8ddc-064d2e221ea6" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="12" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="1 is Even Number ? : ⦃vResult⦄" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="735141a9-9cff-40eb-916b-0e82d67e7ec0" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="13" PauseBeforeExeucution="false" v_Comment="Is Zero" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CheckNumberCommand" CommandID="21caebad-a03d-4992-8957-a41ac8bdabc4" CommandName="CheckNumberCommand" IsCommented="false" SelectionName="Check Number" DefaultPause="0" LineNumber="14" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetValue="1" v_CheckMethod="Is Zero" v_Result="vResult" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="059fd25a-106b-44d4-af28-3c52625a3477" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="15" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="1 is Zero ? : ⦃vResult⦄" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="594066b4-7146-4516-bdf8-1ab60c4ea655" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="16" PauseBeforeExeucution="false" v_Comment="Is Positive Value" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CheckNumberCommand" CommandID="b5ea185e-7b69-479f-88a9-82d06518ffc2" CommandName="CheckNumberCommand" IsCommented="false" SelectionName="Check Number" DefaultPause="0" LineNumber="17" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetValue="1" v_CheckMethod="Is Positive Value" v_Result="vResult" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="f86c2699-5517-498a-8f19-8a72599a0105" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="18" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="1 is Positive Value ? : ⦃vResult⦄" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="0f2e1070-4b08-4758-bccc-d474adc02a1a" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="19" PauseBeforeExeucution="false" v_Comment="Is Negative Value" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CheckNumberCommand" CommandID="e12e0923-e9e3-4d3e-8166-118c23a91da0" CommandName="CheckNumberCommand" IsCommented="false" SelectionName="Check Number" DefaultPause="0" LineNumber="20" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetValue="1" v_CheckMethod="Is Negative Value" v_Result="vResult" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="2d5d3ec7-a60b-448f-a912-d617fd2be51b" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="21" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="1 is Negative Value ? : ⦃vResult⦄" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="1cbce616-629c-4d23-99c9-f866cb7eea12" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="22" PauseBeforeExeucution="false" v_Comment="Is Integer" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CheckNumberCommand" CommandID="17b34425-30ae-45ce-8b16-0af1247444a2" CommandName="CheckNumberCommand" IsCommented="false" SelectionName="Check Number" DefaultPause="0" LineNumber="23" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetValue="3.14" v_CheckMethod="Is Integer" v_Result="vResult" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="e91d9c4d-2345-4166-a5a4-bf6a245a2d01" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="24" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="3.14 is Integer ? : ⦃vResult⦄" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.22</TasktVersion>
+    <Author />
+    <LastRunTime>2025-02-23T10:15:03.9100531+09:00</LastRunTime>
+    <RunTimes>3</RunTimes>
+    <Revision>3</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>vResult</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

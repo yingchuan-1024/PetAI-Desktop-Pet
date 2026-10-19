@@ -43,7 +43,10 @@ const REGION_ALIAS = {
 };
 
 /** 提供给模型的工具清单（OpenAI function calling 格式） */
+const AUTOMATION_NAMES = ['list_automation_tasks', 'run_automation_task'];
 const TOOL_SPECS = [
+  { type: 'function', function: { name: 'list_automation_tasks', description: '列出已登记的 Taskt XML 工作流名称、描述和任务ID。', parameters: { type: 'object', properties: {}, additionalProperties: false } } },
+  { type: 'function', function: { name: 'run_automation_task', description: '直接执行已登记 Taskt 工作流。只能传taskId，禁止传输入值、命令、路径或脚本。以返回的引擎结果判断执行状态；取消请求不等于已取消，外部进程可能仍活动。', parameters: { type: 'object', properties: { taskId: { type: 'string' } }, required: ['taskId'], additionalProperties: false } } },
   {
     type: 'function',
     function: {
@@ -142,10 +145,10 @@ function normalizeCustomTools(raw) {
   });
 }
 
-function getToolSpecs(config) {
+function getToolSpecs(config, automation) {
   const cfg = normalizeToolsConfig(config);
   if (!cfg.enabled) return [];
-  return TOOL_SPECS.concat(cfg.customTools.filter((t) => t.enabled).map((t) => {
+  return TOOL_SPECS.filter(s => !AUTOMATION_NAMES.includes(s.function.name) || (automation && typeof automation.list === 'function' && typeof automation.run === 'function')).concat(cfg.customTools.filter((t) => t.enabled).map((t) => {
     const properties = {};
     const required = [];
     t.parameters.filter((p) => p.source === 'model').forEach((p) => {
@@ -156,9 +159,9 @@ function getToolSpecs(config) {
   }));
 }
 
-function getPromptProtocol(config) {
-  return ['【工具调用协议】', '你可以调用以下工具获取真实数据：',
-    ...getToolSpecs(config).map((s) => '- ' + s.function.name + '：' + s.function.description + '\n参数 JSON Schema：' + JSON.stringify(s.function.parameters)),
+function getPromptProtocol(config, automation) {
+  return ['【工具调用协议】', '你可以调用以下工具：',
+    ...getToolSpecs(config, automation).map((s) => '- ' + s.function.name + '：' + s.function.description + '\n参数 JSON Schema：' + JSON.stringify(s.function.parameters)),
     '需要工具时只输出一行 JSON：{"tool":"工具名","args":{}}。收到工具结果后继续调用或用自然语言回答。价格数据须注明数据日期，保留更新时间和下次调价日期，不得把旧数据称为今日实时价格，不猜测接口未注明的单位。'].join('\n');
 }
 
@@ -397,10 +400,21 @@ async function getOilPrice(ctx, args) {
 async function executeTool(ctx, name, args) {
   const config = normalizeToolsConfig(ctx.config);
   const safeCtx = { ...ctx, config };
-  if (!getToolSpecs(config).some((s) => s.function.name === name)) return { ok: false, message: '工具未注册或已停用' };
+  if (!getToolSpecs(config, ctx.automation).some((s) => s.function.name === name)) return { ok: false, message: '工具未注册或已停用' };
   let result;
   try {
-    if (name === 'get_location') result = await getLocation(safeCtx);
+    if (AUTOMATION_NAMES.includes(name)) {
+      if (!args || typeof args !== 'object' || Array.isArray(args) || Object.keys(args).some(key => name === 'run_automation_task' ? key !== 'taskId' : true)) return { ok: false, message: '自动化工具只接受任务ID，输入参数请在设置面板填写' };
+      if (name === 'list_automation_tasks') {
+        const listed = await ctx.automation.list();
+        result = listed.ok ? { ok: true, tasks: listed.tasks.map(t => ({ id: t.id, name: t.name, description: t.description })) } : { ok: false, message: '任务列表不可用' };
+      } else {
+        if (typeof args.taskId !== 'string') return { ok: false, message: '无效任务ID' };
+        result = await ctx.automation.run({ taskId: args.taskId });
+        result = { ok: result.ok === true, message: result.message, status: result.status, engineResult: result.engineResult, error: result.error, executionTimeMs: result.executionTimeMs, cancelRequested: result.cancelRequested, cancelConfirmed: result.cancelConfirmed, timedOut: result.timedOut, externalProcessesMayBeActive: result.externalProcessesMayBeActive };
+      }
+    }
+    else if (name === 'get_location') result = await getLocation(safeCtx);
     else if (name === 'get_weather') result = await getWeather(safeCtx, args);
     else if (name === 'get_oil_price') result = await getOilPrice(safeCtx, args);
     else result = await executeCustomTool(safeCtx, config.customTools.find((t) => t.name === name), args);
@@ -459,13 +473,14 @@ async function runAgent(ctx, deps, messages, onDelta, onEvent) {
   const convo = messages.slice();
   ctx = { ...ctx, config: normalizeToolsConfig(ctx.config) };
   const notify = (ev) => {
+    if (AUTOMATION_NAMES.includes(ev.name) && ev.args) ev = { ...ev, args: ev.name === 'run_automation_task' && typeof ev.args.taskId === 'string' ? { taskId: ev.args.taskId } : {} };
     if (typeof onEvent === 'function') onEvent(redactToolData(ctx.config, { ...ev, label: ctx.config.customTools.find((t) => t.name === ev.name)?.label }));
   };
 
   for (let round = 0; round < MAX_ROUNDS; round += 1) {
     let res;
     try {
-      res = await streamFn(convo, onDelta, { tools: getToolSpecs(ctx.config) });
+      res = await streamFn(convo, onDelta, { tools: getToolSpecs(ctx.config, ctx.automation) });
     } catch (err) {
       // 服务商不支持原生 function calling → 回退提示词协议
       if (isToolUnsupported(err)) return runAgentPrompt(ctx, deps, messages, onDelta, notify);
@@ -499,9 +514,9 @@ async function runAgentPrompt(ctx, deps, messages, onDelta, onEvent) {
   const convo = messages.slice();
   const sysIdx = convo.findIndex((m) => m.role === 'system');
   if (sysIdx >= 0) {
-    convo[sysIdx] = { role: 'system', content: String(convo[sysIdx].content) + '\n\n' + getPromptProtocol(ctx.config) };
+    convo[sysIdx] = { role: 'system', content: String(convo[sysIdx].content) + '\n\n' + getPromptProtocol(ctx.config, ctx.automation) };
   } else {
-    convo.unshift({ role: 'system', content: getPromptProtocol(ctx.config) });
+    convo.unshift({ role: 'system', content: getPromptProtocol(ctx.config, ctx.automation) });
   }
 
   for (let round = 0; round < MAX_ROUNDS; round += 1) {

@@ -1,0 +1,47 @@
+﻿using System;
+using System.Xml.Serialization;
+using taskt.Core.Automation.Attributes.PropertyAttributes;
+
+namespace taskt.Core.Automation.Commands
+{
+    [Serializable]
+    [Attributes.ClassAttributes.Group("DataTable")]
+    [Attributes.ClassAttributes.SubGruop("Column Action")]
+    [Attributes.ClassAttributes.CommandSettings("Delete DataTable Column")]
+    [Attributes.ClassAttributes.Description("This command allows you to delete a column to a DataTable")]
+    [Attributes.ClassAttributes.UsesDescription("Use this command when you want to delete a column to a DataTable.")]
+    [Attributes.ClassAttributes.ImplementationDescription("")]
+    [Attributes.ClassAttributes.CommandIcon(nameof(Properties.Resources.command_spreadsheet))]
+    [Attributes.ClassAttributes.EnableAutomateRender(true)]
+    [Attributes.ClassAttributes.EnableAutomateDisplayText(true)]
+    public sealed class DeleteDataTableColumnCommand : ADataTableColumnCommands
+    {
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(DataTableControls), nameof(DataTableControls.v_BothDataTableName))]
+        //public string v_DataTable { get; set; }
+
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(DataTableControls), nameof(DataTableControls.v_ColumnType))]
+        //public string v_ColumnType { get; set; }
+
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(DataTableControls), nameof(DataTableControls.v_ColumnNameIndex))]
+        //public string v_ColumnIndex { get; set; }
+
+        public DeleteDataTableColumnCommand()
+        {
+            //this.CommandName = "DeleteDataTableColumnCommand";
+            //this.SelectionName = "Delete DataTable Column";
+            //this.CommandEnabled = true;
+            //this.CustomRendering = true;
+        }
+
+        public override void RunCommand(Engine.AutomationEngineInstance engine)
+        {
+            //(var myDT, var colIndex) = this.ExpandUserVariablesAsDataTableAndColumnIndex(nameof(v_DataTable), nameof(v_ColumnType), nameof(v_ColumnIndex), engine);
+            (var myDT, var colIndex, _) = this.ExpandValueOrUserVariableAsDataTableAndColumn(engine);
+
+            myDT.Columns.RemoveAt(colIndex);
+        }
+    }
+}

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="995aee23-61cb-408e-9d3b-1065f48a1759" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Log Data Write Default Log sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="LogDataCommand" CommandID="3c84dac1-4319-4dbe-bb43-746a7024a2a0" CommandName="LogDataCommand" IsCommented="false" SelectionName="Log Data" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" CommandEnabled="true" v_LogFile="myLog" v_LogText="Hello, Log Data command executed!" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="f497cca5-706d-42c7-aa3a-d724e605e2ed" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" v_Comment="Please check &quot;taskt myLog Logs.txt&quot;" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="fc9b3918-5d07-4d0f-b3e6-fc319641c353" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" v_Comment="In Documents\taskt\Logs " CommandEnabled="true" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.33</TasktVersion>
+    <Author />
+    <LastRunTime>2025-06-15T15:32:58.6088565+09:00</LastRunTime>
+    <RunTimes>2</RunTimes>
+    <Revision>5</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables />
+</Script>

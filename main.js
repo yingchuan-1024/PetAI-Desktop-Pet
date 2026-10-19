@@ -2,13 +2,17 @@
  * AI 桌面宠物 — Electron 主进程
  * 职责：透明悬浮窗、置顶、系统原生拖拽、皮肤目录扫描、状态机 IPC
  */
-const { app, BrowserWindow, ipcMain, Menu, screen, Tray, nativeImage, desktopCapturer, shell, Notification, dialog, protocol, net } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, screen, Tray, nativeImage, desktopCapturer, shell, Notification, dialog, protocol, net, globalShortcut } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const { spawn } = require('child_process');
 const { pathToFileURL } = require('url');
 const { runAgent, DEFAULT_TOOLS_CONFIG, normalizeToolsConfig } = require('./agent');
+const { createTasktService } = require('./taskt');
+let automation = null;
+let automationRunning = false;
+let automationDisposed = false;
 
 // 皮肤协议：允许渲染层从外部皮肤目录加载文件（必须在 app ready 前注册）
 protocol.registerSchemesAsPrivileged([
@@ -789,7 +793,7 @@ async function runAiChat(sender, text, image) {
   try {
     if (useTools) {
       // Agent 模式：模型自主判断是否调用「定位 / 天气」等工具，再把结果整合成回答
-      const ctx = { fetch: (url, opts) => net.fetch(url, opts), config: toolsCfg };
+      const ctx = { fetch: (url, opts) => net.fetch(url, opts), config: toolsCfg, automation: automation ? { list: () => automation.list(), run: options => runAutomationTask(options) } : null };
       const streamFn = (msgs, onDelta, opts) => streamChat(profile, msgs, onDelta, opts);
       full = await runAgent(ctx, { streamFn }, messages, (delta) => {
         send('ai:stream-delta', { delta });
@@ -1323,7 +1327,7 @@ ipcMain.on('update:download', async (e, payload) => {
       } catch (err) { /* ignore */ }
     }
     // /S 静默安装 + --updated 标记：覆盖旧版本，安装完成后自动启动新版本
-    const proc = spawn(file, ['/S', '--updated'], { detached: true, stdio: 'ignore' });
+    const proc = spawn(file, ['/S', '--updated'], { detached: true, shell: false, stdio: 'ignore' });
     proc.unref();
     isQuitting = true;
     setTimeout(() => app.quit(), 800); // 给安装器一点启动时间再退出
@@ -1564,9 +1568,67 @@ ipcMain.on('settings:reset-size', () => {
   settingsWin.setSize(520, 620, false);
 });
 
+let automationShortcutKeys = [];
+let automationShortcutMode = 'idle';
+function updateAutomationShortcuts(mode) {
+  if (mode === automationShortcutMode) return;
+  automationShortcutMode = mode;
+  for (const key of automationShortcutKeys) globalShortcut.unregister(key);
+  automationShortcutKeys = [];
+  if (mode === 'idle') return;
+  const handler = () => {
+    if (!automation || automationDisposed || automation.getState().mode === 'idle') return;
+    automation.stop().catch(error => broadcastAutomationState({ ...automation.getState(), message: error.message }));
+  };
+  if (globalShortcut.register('F9', handler)) automationShortcutKeys.push('F9');
+}
+function broadcastAutomationState(state) {
+  if (!state || typeof state !== 'object') return;
+  updateAutomationShortcuts(state.mode);
+  for (const target of [settingsWin, chatWin]) if (target && !target.isDestroyed()) target.webContents.send('automation:state', state);
+}
+
+async function runAutomationTask(options) {
+  if (!automation || automationDisposed) return { ok: false, message: '自动化服务不可用' };
+  if (!options || typeof options.taskId !== 'string' || Object.keys(options).some(key => key !== 'taskId')) return { ok: false, message: '只接受已登记 taskId' };
+  if (automationRunning) return { ok: false, message: '已有自动化任务正在启动或运行' };
+  if (automation.getState().mode !== 'idle') return { ok: false, message: '请等待 Taskt 引擎完成当前任务' };
+  automationRunning = true;
+  const hiddenWindows = [];
+  try {
+    const listed = await automation.list();
+    if (!listed.ok) return listed;
+    const task = listed.tasks.find(item => item.id === options.taskId);
+    if (!task) return { ok: false, message: '任务不存在' };
+    for (const target of [settingsWin, chatWin]) {
+      if (target && !target.isDestroyed() && target.isVisible()) {
+        hiddenWindows.push(target);
+        target.hide();
+      }
+    }
+    return await automation.run({ taskId: task.id });
+  } finally {
+    automationRunning = false;
+    if (!automationDisposed) for (const target of hiddenWindows) if (!target.isDestroyed()) target.showInactive();
+  }
+}
+
+ipcMain.handle('automation:list', () => automation ? automation.list() : { ok: false, message: '自动化服务不可用' });
+ipcMain.handle('automation:register', async (e, options) => {
+  if (!automation || !options || typeof options.name !== 'string' || typeof options.description !== 'string') return { ok: false, message: '请填写任务名称和描述' };
+  const selected = await dialog.showOpenDialog(BrowserWindow.fromWebContents(e.sender), { title: '选择 Taskt XML 工作流', properties: ['openFile'], filters: [{ name: 'Taskt XML', extensions: ['xml'] }] });
+  if (selected.canceled || selected.filePaths.length !== 1) return { ok: false, message: '已取消选择' };
+  return automation.register({ name: options.name, description: options.description, scriptPath: selected.filePaths[0] });
+});
+ipcMain.handle('automation:open', (e, taskId) => automation ? automation.open(taskId) : { ok: false, message: 'Taskt 服务不可用' });
+ipcMain.handle('automation:run', (e, options) => runAutomationTask(options));
+ipcMain.handle('automation:stop', () => automation ? automation.stop() : { ok: false, message: '自动化服务不可用' });
+ipcMain.handle('automation:remove', (e, taskId) => automation ? automation.remove(taskId) : { ok: false, message: '自动化服务不可用' });
+
 /* ---------- 应用生命周期 ---------- */
 
 app.whenReady().then(() => {
+  automation = createTasktService({ userData: app.getPath('userData'), executable: path.join(app.isPackaged ? path.join(process.resourcesPath, 'taskt') : path.join(__dirname, 'taskt-runtime'), 'taskt.exe'), onState: broadcastAutomationState });
   loadCompanion();
   companionDailyCheck();
   loadPrefs();
@@ -1585,6 +1647,15 @@ app.whenReady().then(() => {
 });
 
 // 托盘常驻：关闭所有窗口不退出（除非用户明确退出）
+app.on('before-quit', () => {
+  for (const key of automationShortcutKeys) globalShortcut.unregister(key);
+  automationShortcutKeys = [];
+  if (automation && !automationDisposed) {
+    automationDisposed = true;
+    automation.dispose().catch(() => {});
+  }
+});
+
 app.on('window-all-closed', () => {
   if (isQuitting) {
     app.quit();

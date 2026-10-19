@@ -1,0 +1,94 @@
+﻿using System;
+using System.Xml.Serialization;
+using taskt.Core.Automation.Attributes.PropertyAttributes;
+
+namespace taskt.Core.Automation.Commands
+{
+    [Serializable]
+    [Attributes.ClassAttributes.Group("List")]
+    [Attributes.ClassAttributes.SubGruop("List Item")]
+    [Attributes.ClassAttributes.CommandSettings("Set List Item")]
+    [Attributes.ClassAttributes.Description("This command allows you want to set an item in a List")]
+    [Attributes.ClassAttributes.UsesDescription("Use this command when you want to set an item in a List.")]
+    [Attributes.ClassAttributes.ImplementationDescription("")]
+    [Attributes.ClassAttributes.CommandIcon(nameof(Properties.Resources.command_function))]
+    [Attributes.ClassAttributes.EnableAutomateRender(true)]
+    [Attributes.ClassAttributes.EnableAutomateDisplayText(true)]
+    public sealed class SetListItemCommand : AListIndexCommands
+    {
+        [XmlAttribute]
+        [PropertyVirtualProperty(nameof(ListControls), nameof(ListControls.v_BothListName))]
+        public override string v_List { get; set; }
+
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(ListControls), nameof(ListControls.v_ListIndex))]
+        //public string v_Index { get; set; }
+
+        [XmlAttribute]
+        [PropertyVirtualProperty(nameof(GeneralPropertyControls), nameof(GeneralPropertyControls.v_OneLineTextBox))]
+        [PropertyDescription("Value to Set")]
+        [PropertyDetailSampleUsage("**1**", PropertyDetailSampleUsage.ValueType.Value, "Value to Set")]
+        [PropertyDetailSampleUsage("**{{{vValue}}}**", PropertyDetailSampleUsage.ValueType.VariableValue, "Value to Set")]
+        [PropertyValidationRule("Value", PropertyValidationRule.ValidationRuleFlags.Empty)]
+        [PropertyDisplayText(true, "Value")]
+        [PropertyParameterOrder(7000)]
+        public string v_NewValue { get; set; }
+
+        public SetListItemCommand()
+        {
+            //this.CommandName = "SetListItemCommand";
+            //this.SelectionName = "Set List Item";
+            //this.CommandEnabled = true;
+            //this.CustomRendering = true;
+        }
+
+        public override void RunCommand(Engine.AutomationEngineInstance engine)
+        {
+            //var listVariable = v_ListName.GetRawVariable(engine);
+            //if (listVariable == null)
+            //{
+            //    throw new Exception("Complex Variable '" + v_ListName + "' or '" + v_ListName.ApplyVariableFormatting(engine) + "' not found. Ensure the variable exists before attempting to modify it.");
+            //}
+
+            //List<string> targetList;
+            //if (listVariable.VariableValue is List<string>)
+            //{
+            //    targetList = (List<string>)listVariable.VariableValue;
+            //}
+            //else
+            //{
+            //    throw new Exception(v_ListName + " is not List");
+            //}
+
+            //int index = 0;
+            //if (String.IsNullOrEmpty(v_ItemIndex))
+            //{
+            //    index = listVariable.CurrentPosition;
+            //}
+            //else
+            //{
+            //    string itemIndex = v_ItemIndex.ConvertToUserVariable(sender);
+            //    index = int.Parse(itemIndex);
+            //}
+            //if (index < 0)
+            //{
+            //    index = targetList.Count + index;
+            //}
+
+            //(var list, var index) = this.ExpandUserVariablesAsListAndIndex(nameof(v_List), nameof(v_Index), engine);
+
+            //if ((index >= 0) && (index < list.Count))
+            //{
+            //    list[index] = v_NewValue.ExpandValueOrUserVariable(engine);
+            //}
+            //else
+            //{
+            //    throw new Exception("Strange index " + v_Index + ", parsed " + index);
+            //}
+
+            (var list, var index, _) = this.ExpandValueOrUserVariableAsListAndIndexAndValue(engine);
+
+            list[index] = v_NewValue.ExpandValueOrUserVariable(engine);
+        }
+    }
+}
