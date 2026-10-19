@@ -31,7 +31,8 @@
 | 🤖 Agent | 模型判断是否调用工具，将返回的 JSON 回填后结合人设回答；支持原生 function calling 和提示词 JSON 协议回退 |
 | 🌤️ 内置工具 | IP 近似定位、天气查询、油价查询 |
 | 🧩 自定义工具 | 在设置面板新增、编辑、删除、启用或停用 HTTP JSON 工具，无需修改代码 |
-| 📐 显示设置 | 角色显示区域宽度、高度可修改并保存；头顶预留气泡空间，长提示最多显示两行 |
+| �️ 桌面自动化 | 使用 Taskt 录制和编辑 XML 工作流，在桌宠登记后通过面板或 AI 对话运行，支持状态反馈和 F9 请求停止 |
+| � 显示设置 | 角色显示区域宽度、高度可修改并保存；头顶预留气泡空间，长提示最多显示两行 |
 | 🎭 Spine 模型 | 本地加载 4.1 / 4.2 runtime，支持版本分流及皮肤独立透明混合配置 |
 | ⏰ 提醒与陪伴 | 番茄钟、每日闹钟、系统通知、陪伴统计 |
 
@@ -46,7 +47,7 @@ npm ci
 npm start
 ```
 
-启动前请准备皮肤，参见下方说明。退出时可使用系统托盘菜单中的退出选项；开发运行也可在启动终端按 Ctrl+C。
+启动前请准备皮肤，参见下方说明。源码仓库不包含生成的 `taskt-runtime/`；需要自动化功能或制作完整安装包时，请先按“打包与验证”章节构建 Taskt。退出时可使用系统托盘菜单中的退出选项；开发运行也可在启动终端按 Ctrl+C。
 
 ## ⚙️ AI 配置
 
@@ -125,25 +126,40 @@ npm start
 
 工具返回必须是 JSON。目前业务错误识别采用常见 `ok` / `success` / `code` 约定，`code` 为 `0` 或 `200` 视为成功；不同服务约定可能需要进一步适配。暂不支持文件上传、非 JSON 响应和复杂嵌套参数编辑。
 
-## 自动化任务
+## 🛠️ Taskt 自动化工作流
 
-在设置的“自动化”页填写名称并开始录制。请先打开目标应用并恢复流程起点；F8 保存，F9 取消录制或停止执行。暂停后按 F8 只保存此前的有效步骤，任务会标记为流程不完整。运行前会显示确认，执行期间暂时收起桌宠、设置和对话窗口，结束后恢复。
+当前使用 Taskt 独立编辑器录制和设计工作流，桌宠负责登记 XML、通过对话调用以及显示运行结果。Taskt 随桌宠安装包一起分发，以独立进程运行；常用菜单、录制器、命令编辑器和设置页面已提供中文显示，部分技术名称和底层错误仍可能为英文。
 
-当前适合稳定页面上的重复点击、表单填写和滚动。录制通过 UI Automation 识别控件，回放重新定位并要求唯一匹配。浏览器网页的定位保留到 Document 的父链，兼容旧任务中包含动态 Chromium 代理窗口编号的记录。查找时会等待页面加载，最多滚动三次；每步无进度超过 30 秒才回收辅助进程。失败提示显示具体步骤和原因，遇到歧义不会猜测目标。
+### 📝 创建与登记
 
-文本输入保存为 `input_1` 等参数，运行前填写；它通过 UIA Value 设置整个输入框的值，不保存原始输入内容。目标须支持 UIA Value。编辑框内的 Ctrl、Alt、Win 组合键会暂停录制，避免误录成文本。拖拽、双击、复杂焦点切换、图像识别、数据抓取、流程分支和任意时长的页面等待均未完整支持。录制后请展开“查看步骤”检查，并先在可撤回的场景试运行。
+1. 打开桌宠设置 → 自动化，点击“打开 Taskt”。
+2. 在 Taskt 中录制操作或添加命令，检查点击、输入、等待和异常处理步骤，保存为 XML 文件。
+3. 回到桌宠自动化页，填写任务名称和描述（选填）。描述建议写明用途、目标程序和所需起始页面，帮助模型选择任务。
+4. 点击“选择 XML 并登记”，选择刚保存的文件。登记会进行只读格式预校验，不会执行工作流；预校验通过不代表实际运行一定成功。
+5. 在任务列表中打开编辑、运行或删除登记。删除登记不会删除原 XML 文件。
 
-若找不到目标，请打开录制时的应用及页面，关闭弹窗，并保持桌宠与目标应用权限一致。页面结构或控件名称变化时需要重新录制。浏览器工具栏等 Document 之外的控件仍依赖其原始标识，不保证跨窗口重建可用。任务保存在 `%APPDATA%/desktop-pet/automation-tasks.json`；输入值只通过运行时协议传递。
+登记保存的是 XML 的原始路径，不会复制脚本。请将 XML 放在固定位置；移动或重命名后需要重新登记，原文件的修改会影响后续运行。旧版 UIA 录制数据保留，但不能直接作为 Taskt 工作流执行；原来的 F8 保存方式不再适用于此面板，录制操作以 Taskt 编辑器为准。
 
-开发验证：
+### 💬 通过对话运行
 
-```powershell
-node tools/verify-automation.js
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/automation-helper.ps1 -SelfTest
-node tools/verify-automation-browser.js
-```
+配置可用的 AI 模型，并在设置 → AI → 智能工具中启用 Agent。登记任务后，可在纯文本对话中说：
 
-最后一项使用独立的本地 Chromium 测试窗口和临时配置，不访问个人浏览器页面。验证范围和剩余限制见 [AUTOMATION_REVIEW.md](AUTOMATION_REVIEW.md)。
+- “列出我已经登记的自动化任务。”
+- “运行‘填写每日工作记录’任务。”
+
+Agent 通过 `list_automation_tasks` 获取任务 ID、名称和描述，再通过 `run_automation_task` 执行指定任务。当前调用只接受已登记的 `taskId`，不接受模型提供的脚本路径，也不提供运行时参数输入；变量和输入内容需在 Taskt 工作流中配置。也可以直接在自动化页点击运行。
+
+### ▶️ 运行与停止
+
+已登记任务会直接执行，不再弹出桌宠的运行确认框；Windows 自身的权限提示不受此设置控制。执行期间暂时隐藏设置和对话窗口，保留桌宠小人，调用返回后恢复此前可见的窗口。同一时间只允许运行一个任务。
+
+运行时按 F9 或点击“停止执行”，会向 Taskt 引擎发送协作取消请求。阻塞命令可能延迟响应，“已请求停止”不代表已经停止；工作流启动的浏览器或其他外部程序可能继续运行。默认运行超过 5 分钟会请求取消，仍需等待引擎确认；未确认完成时不会启动新任务。
+
+### 🔎 定位与排错
+
+点击和输入的定位方式取决于所选 Taskt 命令及其配置。录制得到的坐标不会由桌宠自动转换为控件识别，也没有额外接入截图模板匹配、ORB 或 FCN。目标位置或页面结构变化时，需要在 Taskt 中调整定位、等待、滚动和失败处理步骤。
+
+执行前请打开目标应用并恢复工作流起点。若操作失败，检查 Taskt 返回的具体错误、窗口标题、焦点、缩放及命令配置，并保持桌宠与目标应用权限一致。仅凭执行失败不能认定是管理员权限问题。实际业务流程及高 DPI 布局仍需在目标环境验证。
 
 ## 🎭 皮肤与模型
 
@@ -191,13 +207,25 @@ skins/<皮肤名>/
 
 ## 📦 打包与验证
 
+### 构建 Taskt
+
+Taskt 基于 C# / WinForms / .NET Framework 4.8，请在 Windows 上安装 .NET Framework 4.8 运行环境。从项目根目录执行：
+
 ```powershell
-npm start
-npm run dev
-npm run dist
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\taskt-development-branch\build-taskt.ps1
 ```
 
-默认输出到 `dist/`：
+首次构建需要联网下载 NuGet、构建工具和依赖。脚本生成 COM 互操作程序集、编译 Taskt，并将运行文件、示例、手册和许可复制到根目录 `taskt-runtime/`，最后执行基础自检。仅在所需工具和依赖已缓存时，才可在命令末尾添加 `-Offline`。
+
+### 打包桌宠
+
+先完成 `npm ci` 和 Taskt 构建，再执行：
+
+```powershell
+npm run dist -- --publish never
+```
+
+打包配置会将 `taskt-runtime/` 复制到应用资源目录 `resources/taskt/`，无需用户另行安装 Taskt。默认输出到 `dist-taskt/`：
 
 - `PetAI Setup <版本>.exe`：Windows 安装包。
 - `win-unpacked/PetAI.exe`：免安装启动程序，必须保留整个 `win-unpacked` 目录。
@@ -207,6 +235,18 @@ npm run dist
 ```powershell
 npm run dist -- --publish never --config.directories.output=dist-tools
 ```
+
+### 开发验证
+
+Taskt 构建完成后，可执行集成验证和中文界面自检：
+
+```powershell
+node tools/verify-taskt.js
+$tasktCheck = Start-Process -FilePath .\taskt-runtime\taskt.exe -ArgumentList '--petai-ui-check' -Wait -PassThru
+$tasktCheck.ExitCode
+```
+
+集成验证覆盖基础引擎自检、工作流成功/失败/取消、只读预校验和任务 ID 限制；中文界面自检构建不显示的 WinForms 窗体，检查常用编辑器、设置页面和录制器状态。退出码 `0` 表示界面自检通过。这些检查不能代替真实业务流程或高 DPI 下的人工验证。
 
 自定义工具模拟验证：
 
@@ -227,6 +267,10 @@ node tools/verify-custom-tools.js
 | `chat-history.json` | 本地对话历史 |
 | `reminders.json` | 提醒配置 |
 | `companion.json` | 陪伴记录 |
+| `Taskt/taskt-tasks-v1.json` | Taskt 任务登记信息，含任务 ID、名称、描述和 XML 绝对路径 |
+| `Taskt/editor/` | Taskt 编辑器独立配置目录 |
+
+Taskt XML 保存在用户选择的位置，登记不将其导入应用目录。工作流可能包含输入文本、文件路径或凭证，请在分享 XML 前自行检查。执行时 `Taskt/bridge-*` 目录用于本机请求、状态和取消通信，相关进程结束并完成清理后移除。
 
 凭证保存在本机配置文件中，不随源码仓库分发；目前并非操作系统凭据库加密存储，请勿公开这些文件。调用服务时，相关凭证会发送到所配置的服务地址用于鉴权。
 
@@ -236,8 +280,9 @@ AI 对话、图片及工具结果会发送到所配置的模型服务。启用 I
 
 - 原项目：[jinyuwan/PetAI-Desktop-Pet](https://github.com/jinyuwan/PetAI-Desktop-Pet)。保留作者信息，代码许可见 [LICENSE](LICENSE)。
 - 第三方角色素材不入仓库；请自行获取合法使用授权，不要将无授权素材作为公共分发内容。
+- Taskt：[saucepleez/taskt](https://github.com/saucepleez/taskt)，采用 Apache License 2.0；许可、版权声明与本项目修改说明分别见 [LICENSE](taskt-development-branch/LICENSE)、[NOTICE.txt](taskt-development-branch/NOTICE.txt) 和 [PETAI-CHANGES.txt](taskt-development-branch/PETAI-CHANGES.txt)，运行包同时附带第三方许可。
 - Spine runtime 许可见本地 vendor 文件中的许可声明。
 - 模型下载推荐：[摸之屋](https://www.aplaybox.com/)。
 - API三方平台：[起零数据服务](https://api.istero.com/)。
 
-技术栈：Electron 33、Spine Player 4.1 / 4.2、原生 JavaScript、electron-builder。
+技术栈：Electron 33、Spine Player 4.1 / 4.2、原生 JavaScript、electron-builder、Taskt（C# / WinForms / .NET Framework 4.8）。
