@@ -237,5 +237,7 @@ AI 对话、图片及工具结果会发送到所配置的模型服务。启用 I
 - 原项目：[jinyuwan/PetAI-Desktop-Pet](https://github.com/jinyuwan/PetAI-Desktop-Pet)。保留作者信息，代码许可见 [LICENSE](LICENSE)。
 - 第三方角色素材不入仓库；请自行获取合法使用授权，不要将无授权素材作为公共分发内容。
 - Spine runtime 许可见本地 vendor 文件中的许可声明。
+- 模型下载推荐：[摸之屋](https://www.aplaybox.com/)。
+- API三方平台：[起零数据服务](https://api.istero.com/)。
 
 技术栈：Electron 33、Spine Player 4.1 / 4.2、原生 JavaScript、electron-builder。

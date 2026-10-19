@@ -261,7 +261,7 @@
         backgroundColor: '#00000000',
         alpha: true,
         ...(typeof _skin.spine.premultipliedAlpha === 'boolean'
-          ? { premultipliedAlpha: _skin.spine.premultipliedAlpha } : {}),
+           ? { premultipliedAlpha: _skin.spine.premultipliedAlpha } : {}),
         showControls: false,
         showLoading: true,
         viewport,
