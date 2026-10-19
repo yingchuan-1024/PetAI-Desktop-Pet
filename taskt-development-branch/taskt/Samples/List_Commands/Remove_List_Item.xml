@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="3801a123-0f0c-4c70-a049-5b3c3104d1b3" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Remove List Item Sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="3801a123-0f0c-4c70-a049-5b3c3104d1b3" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" v_Comment="Create List, now [ &quot;abc&quot;, &quot;def&quot;, &quot;ghi&quot;, &quot;jkl&quot; ]" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CreateListCommand" CommandID="630ceffa-7f97-44d4-b16b-6ec8e9f7d041" CommandName="CreateListCommand" IsCommented="false" SelectionName="Create List" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vList">
+        <v_ListValues>
+          <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+            <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="ListValues122921.033024" msdata:UseCurrentLocale="true">
+              <xs:complexType>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                  <xs:element name="ListValues122921.033024">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Values" type="xs:string" minOccurs="0" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:choice>
+              </xs:complexType>
+            </xs:element>
+          </xs:schema>
+          <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
+            <DocumentElement>
+              <ListValues122921.033024 diffgr:id="ListValues122921.0330241" msdata:rowOrder="0" diffgr:hasChanges="modified">
+                <Values>abc</Values>
+              </ListValues122921.033024>
+              <ListValues122921.033024 diffgr:id="ListValues122921.0330242" msdata:rowOrder="1" diffgr:hasChanges="modified">
+                <Values>def</Values>
+              </ListValues122921.033024>
+              <ListValues122921.033024 diffgr:id="ListValues122921.0330243" msdata:rowOrder="2" diffgr:hasChanges="modified">
+                <Values>ghi</Values>
+              </ListValues122921.033024>
+              <ListValues122921.033024 diffgr:id="ListValues122921.0330244" msdata:rowOrder="3" diffgr:hasChanges="modified">
+                <Values>jkl</Values>
+              </ListValues122921.033024>
+            </DocumentElement>
+            <diffgr:before>
+              <ListValues122921.033024 diffgr:id="ListValues122921.0330241" msdata:rowOrder="0">
+                <Values>abc</Values>
+              </ListValues122921.033024>
+              <ListValues122921.033024 diffgr:id="ListValues122921.0330242" msdata:rowOrder="1">
+                <Values>def</Values>
+              </ListValues122921.033024>
+              <ListValues122921.033024 diffgr:id="ListValues122921.0330243" msdata:rowOrder="2">
+                <Values>ghi</Values>
+              </ListValues122921.033024>
+              <ListValues122921.033024 diffgr:id="ListValues122921.0330244" msdata:rowOrder="3">
+                <Values>jkl</Values>
+              </ListValues122921.033024>
+            </diffgr:before>
+          </diffgr:diffgram>
+        </v_ListValues>
+      </ScriptCommand>
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="3801a123-0f0c-4c70-a049-5b3c3104d1b3" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" v_Comment="Remove first Item" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="RemoveListItemCommand" CommandID="d6550003-f5cf-46cd-8d6a-9079a062b736" CommandName="RemoveListItemCommand" IsCommented="false" SelectionName="Remove List Item" DefaultPause="0" LineNumber="5" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vList" v_Index="0" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="ab7f2853-cfb9-4790-8877-d5bb957964fd" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="6" PauseBeforeExeucution="false" v_Comment="Show vList" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertListToVisualizedTextCommand" CommandID="2f8dbc51-7544-4add-91ee-e96f44fefc22" CommandName="ConvertListToVisualizedTextCommand" IsCommented="false" SelectionName="Convert List To Visualized Text" DefaultPause="0" LineNumber="7" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vList" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="9075eca0-9dc7-47d6-aef2-76deb2a8d538" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="8" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="460bdba9-555e-45bc-80cb-fad0c2ed39f4" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="9" PauseBeforeExeucution="false" v_Comment="Remove last Item" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="RemoveListItemCommand" CommandID="a0e639c4-6f13-4850-9538-3bc1ffb8dbcc" CommandName="RemoveListItemCommand" IsCommented="false" SelectionName="Remove List Item" DefaultPause="0" LineNumber="10" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vList" v_Index="-1" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="7b1a41f3-99ac-43ac-94b7-323371941834" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="11" PauseBeforeExeucution="false" v_Comment="Show vList" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertListToVisualizedTextCommand" CommandID="815ee54c-7789-4e99-88ac-b76c597ec79b" CommandName="ConvertListToVisualizedTextCommand" IsCommented="false" SelectionName="Convert List To Visualized Text" DefaultPause="0" LineNumber="12" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vList" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="41ba67e0-e5f2-49c6-8884-79f018626572" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="13" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.15</TasktVersion>
+    <Author />
+    <LastRunTime>2024-12-01T14:15:45.9995827+09:00</LastRunTime>
+    <RunTimes>5</RunTimes>
+    <Revision>5</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>view</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vList</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

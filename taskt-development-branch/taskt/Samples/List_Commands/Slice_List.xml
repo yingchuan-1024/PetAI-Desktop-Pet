@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="b81f4912-17ee-4024-b6d8-afba782f0bcf" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Slice List sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="7234bad0-1016-424f-9d9c-62bdf0f03ac2" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" v_Comment="vList [ a, b, c, d, e, f, g, h, i, j ]" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CreateListCommand" CommandID="ed5120d4-c340-4a0b-b920-1b9a8dad66a5" CommandName="CreateListCommand" IsCommented="false" SelectionName="Create List" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vList">
+        <v_ListValues>
+          <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+            <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="ListValues022325.101823" msdata:UseCurrentLocale="true">
+              <xs:complexType>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                  <xs:element name="ListValues022325.101823">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Values" type="xs:string" minOccurs="0" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:choice>
+              </xs:complexType>
+            </xs:element>
+          </xs:schema>
+          <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
+            <DocumentElement>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018231" msdata:rowOrder="0" diffgr:hasChanges="modified">
+                <Values>a</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018232" msdata:rowOrder="1" diffgr:hasChanges="modified">
+                <Values>b</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018233" msdata:rowOrder="2" diffgr:hasChanges="modified">
+                <Values>c</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018234" msdata:rowOrder="3" diffgr:hasChanges="modified">
+                <Values>d</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018235" msdata:rowOrder="4" diffgr:hasChanges="modified">
+                <Values>e</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018236" msdata:rowOrder="5" diffgr:hasChanges="modified">
+                <Values>f</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018237" msdata:rowOrder="6" diffgr:hasChanges="modified">
+                <Values>g</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018238" msdata:rowOrder="7" diffgr:hasChanges="modified">
+                <Values>h</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018239" msdata:rowOrder="8" diffgr:hasChanges="modified">
+                <Values>i</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.10182310" msdata:rowOrder="9" diffgr:hasChanges="modified">
+                <Values>j</Values>
+              </ListValues022325.101823>
+            </DocumentElement>
+            <diffgr:before>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018231" msdata:rowOrder="0">
+                <Values>a</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018232" msdata:rowOrder="1">
+                <Values>b</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018233" msdata:rowOrder="2">
+                <Values>c</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018234" msdata:rowOrder="3">
+                <Values>d</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018235" msdata:rowOrder="4">
+                <Values>e</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018236" msdata:rowOrder="5">
+                <Values>f</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018237" msdata:rowOrder="6">
+                <Values>g</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018238" msdata:rowOrder="7">
+                <Values>h</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.1018239" msdata:rowOrder="8">
+                <Values>i</Values>
+              </ListValues022325.101823>
+              <ListValues022325.101823 diffgr:id="ListValues022325.10182310" msdata:rowOrder="9">
+                <Values>j</Values>
+              </ListValues022325.101823>
+            </diffgr:before>
+          </diffgr:diffgram>
+        </v_ListValues>
+      </ScriptCommand>
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="87e6f4c6-43e4-4469-b068-10f89eedb09d" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" v_Comment="Slice Index 1 to 3" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SliceListCommand" CommandID="462f1a76-8e39-4014-a31c-74cdf1d8aca2" CommandName="SliceListCommand" IsCommented="false" SelectionName="Slice List" DefaultPause="0" LineNumber="5" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetList="vList" v_NewList="vNewList" v_SliceMethod="Range" v_Index1="1" v_Index2="3" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertListToVisualizedTextCommand" CommandID="6925e35d-0517-45ce-922e-e1beb2020234" CommandName="ConvertListToVisualizedTextCommand" IsCommented="false" SelectionName="Convert List To Visualized Text" DefaultPause="0" LineNumber="6" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vNewList" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="c5633fae-5282-4638-ac4d-eff3af3e52fa" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="7" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="b19be54f-5ba7-4e7a-bcd9-d72e2deaf8aa" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="8" PauseBeforeExeucution="false" v_Comment="Slice First 4 items" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SliceListCommand" CommandID="2a43082a-f7a3-498e-be96-059bb794bcd3" CommandName="SliceListCommand" IsCommented="false" SelectionName="Slice List" DefaultPause="0" LineNumber="9" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetList="vList" v_NewList="vNewList" v_SliceMethod="From First To Nth" v_Index1="4" v_Index2="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertListToVisualizedTextCommand" CommandID="bf695bb3-fe45-4cd2-b3b4-b00b8ae7dee6" CommandName="ConvertListToVisualizedTextCommand" IsCommented="false" SelectionName="Convert List To Visualized Text" DefaultPause="0" LineNumber="10" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vNewList" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="8b8e94ed-7671-4e99-8ccd-62fd8e00ddd9" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="11" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="854dbcd7-527d-48e2-be51-50d86cf8215c" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="12" PauseBeforeExeucution="false" v_Comment="Slice Last 4 items" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SliceListCommand" CommandID="1fb9d487-944d-4c6c-9c95-6dd3c0a073c3" CommandName="SliceListCommand" IsCommented="false" SelectionName="Slice List" DefaultPause="0" LineNumber="13" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetList="vList" v_NewList="vNewList" v_SliceMethod="From Last To Nth" v_Index1="4" v_Index2="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertListToVisualizedTextCommand" CommandID="6bb5155e-b857-4410-8935-1bbe9e1603b8" CommandName="ConvertListToVisualizedTextCommand" IsCommented="false" SelectionName="Convert List To Visualized Text" DefaultPause="0" LineNumber="14" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vNewList" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="6432b992-740d-4d31-aaa8-ce21810f5458" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="15" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="fe84844c-5449-485e-98cd-c8921f6c3e69" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="16" PauseBeforeExeucution="false" v_Comment="Windows Custom Print Page Like" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SliceListCommand" CommandID="9c238644-4dbb-4d88-878c-e3959409ac63" CommandName="SliceListCommand" IsCommented="false" SelectionName="Slice List" DefaultPause="0" LineNumber="17" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetList="vList" v_NewList="vNewList" v_SliceMethod="Custom Print Like Specifications" v_Index1="2,5,7-9" v_Index2="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertListToVisualizedTextCommand" CommandID="bd457129-0c87-4ab5-b68e-8781f53ef3af" CommandName="ConvertListToVisualizedTextCommand" IsCommented="false" SelectionName="Convert List To Visualized Text" DefaultPause="0" LineNumber="18" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vNewList" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="612294cb-ec13-493d-9f1f-901c9ef4d5e5" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="19" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.22</TasktVersion>
+    <Author />
+    <LastRunTime>2025-02-23T10:23:00.5506207+09:00</LastRunTime>
+    <RunTimes>3</RunTimes>
+    <Revision>4</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>vList</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vNewList</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>view</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="bf1a1664-c3b2-4688-b013-3b3ac484a5a6" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Create Folder By Path sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="ba2ff62b-7dbc-4ee2-80d5-e5f1efbe8d0d" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" v_Comment="create myFolder in Desktop" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CreateFolderByPathCommand" CommandID="7e8f9b35-e734-421a-9b2f-592f7f8ae694" CommandName="CreateFolderByPathCommand" IsCommented="false" SelectionName="Create Folder By Path" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetFolderPath="⦃Folder.Desktop⦄\myFolder" v_WhenFolderExists="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="06431dd6-55e1-4643-a9f1-8cd477e013cb" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" v_Comment="create myFolder\a\b in Desktop" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CreateFolderByPathCommand" CommandID="89e19e04-54d1-4ef8-b6f9-1232676d7c48" CommandName="CreateFolderByPathCommand" IsCommented="false" SelectionName="Create Folder By Path" DefaultPause="0" LineNumber="5" PauseBeforeExeucution="false" CommandEnabled="true" v_TargetFolderPath="⦃Folder.Desktop⦄\myFolder\a\b" v_WhenFolderExists="" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.23</TasktVersion>
+    <Author />
+    <LastRunTime>2025-02-19T22:28:54.8562363+09:00</LastRunTime>
+    <RunTimes>1</RunTimes>
+    <Revision>3</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables />
+</Script>

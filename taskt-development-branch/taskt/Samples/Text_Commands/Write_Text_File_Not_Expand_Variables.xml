@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="5a4f1998-ca5b-4c9d-8767-4004ae1cd5c9" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Write Text Not Expand Variables sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="9db5fe07-de24-4212-b334-f28f4bd21d39" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" v_Comment="Set vValue is &quot;hello&quot;" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CreateTextVariableCommand" CommandID="e768fdb2-6125-4be3-a6f9-680341cde344" CommandName="CreateTextVariableCommand" IsCommented="false" SelectionName="Create Text Variable" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_userVariableName="vValue" v_Value="hello" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="WriteTextFileCommand" CommandID="48081bc3-bfa1-4101-b8b9-c7188ea4eb0b" CommandName="WriteTextFileCommand" IsCommented="false" SelectionName="Write Text File" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" CommandEnabled="true" v_FilePath="⦃Folder.Desktop⦄\myText.txt" v_TextToWrite="I say ⦃vValue⦄" v_Overwrite="" v_ReplaceToLineBreak="" v_ReplaceScriptVariables="No" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="38564205-506b-4fd6-88d3-04721db1a6f2" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="5" PauseBeforeExeucution="false" v_Comment="Please check myText.txt in Desktop." CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="041e3133-a740-4747-ab4f-35845078da66" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="6" PauseBeforeExeucution="false" v_Comment="The contents of the text file is" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="f257ac32-bfca-47c9-8614-f93069404016" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="7" PauseBeforeExeucution="false" v_Comment="I say ⦃vValue⦄" CommandEnabled="true" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.24</TasktVersion>
+    <Author />
+    <LastRunTime>2025-03-16T18:36:13.9106142+09:00</LastRunTime>
+    <RunTimes>1</RunTimes>
+    <Revision>5</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>vValue</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

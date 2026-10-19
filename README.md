@@ -125,6 +125,26 @@ npm start
 
 工具返回必须是 JSON。目前业务错误识别采用常见 `ok` / `success` / `code` 约定，`code` 为 `0` 或 `200` 视为成功；不同服务约定可能需要进一步适配。暂不支持文件上传、非 JSON 响应和复杂嵌套参数编辑。
 
+## 自动化任务
+
+在设置的“自动化”页填写名称并开始录制。请先打开目标应用并恢复流程起点；F8 保存，F9 取消录制或停止执行。暂停后按 F8 只保存此前的有效步骤，任务会标记为流程不完整。运行前会显示确认，执行期间暂时收起桌宠、设置和对话窗口，结束后恢复。
+
+当前适合稳定页面上的重复点击、表单填写和滚动。录制通过 UI Automation 识别控件，回放重新定位并要求唯一匹配。浏览器网页的定位保留到 Document 的父链，兼容旧任务中包含动态 Chromium 代理窗口编号的记录。查找时会等待页面加载，最多滚动三次；每步无进度超过 30 秒才回收辅助进程。失败提示显示具体步骤和原因，遇到歧义不会猜测目标。
+
+文本输入保存为 `input_1` 等参数，运行前填写；它通过 UIA Value 设置整个输入框的值，不保存原始输入内容。目标须支持 UIA Value。编辑框内的 Ctrl、Alt、Win 组合键会暂停录制，避免误录成文本。拖拽、双击、复杂焦点切换、图像识别、数据抓取、流程分支和任意时长的页面等待均未完整支持。录制后请展开“查看步骤”检查，并先在可撤回的场景试运行。
+
+若找不到目标，请打开录制时的应用及页面，关闭弹窗，并保持桌宠与目标应用权限一致。页面结构或控件名称变化时需要重新录制。浏览器工具栏等 Document 之外的控件仍依赖其原始标识，不保证跨窗口重建可用。任务保存在 `%APPDATA%/desktop-pet/automation-tasks.json`；输入值只通过运行时协议传递。
+
+开发验证：
+
+```powershell
+node tools/verify-automation.js
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/automation-helper.ps1 -SelfTest
+node tools/verify-automation-browser.js
+```
+
+最后一项使用独立的本地 Chromium 测试窗口和临时配置，不访问个人浏览器页面。验证范围和剩余限制见 [AUTOMATION_REVIEW.md](AUTOMATION_REVIEW.md)。
+
 ## 🎭 皮肤与模型
 
 应用按以下顺序查找皮肤：

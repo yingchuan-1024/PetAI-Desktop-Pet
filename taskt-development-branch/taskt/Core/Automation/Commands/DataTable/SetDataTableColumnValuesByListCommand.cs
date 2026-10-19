@@ -1,0 +1,100 @@
+﻿using System;
+using System.Xml.Serialization;
+using System.Collections.Generic;
+using taskt.Core.Automation.Attributes.PropertyAttributes;
+
+namespace taskt.Core.Automation.Commands
+{
+    [Serializable]
+    [Attributes.ClassAttributes.Group("DataTable")]
+    [Attributes.ClassAttributes.SubGruop("Column Action")]
+    [Attributes.ClassAttributes.CommandSettings("Set DataTable Column Values By List")]
+    [Attributes.ClassAttributes.Description("This command allows you to set a column to a DataTable by a List")]
+    [Attributes.ClassAttributes.UsesDescription("Use this command when you want to set a column to a DataTable by a List.")]
+    [Attributes.ClassAttributes.ImplementationDescription("")]
+    [Attributes.ClassAttributes.CommandIcon(nameof(Properties.Resources.command_spreadsheet))]
+    [Attributes.ClassAttributes.EnableAutomateRender(true)]
+    [Attributes.ClassAttributes.EnableAutomateDisplayText(true)]
+    public sealed class SetDataTableColumnValuesByListCommand : ADataTableBothColumnCommands, ICanHandleList
+    {
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(DataTableControls), nameof(DataTableControls.v_BothDataTableName))]
+        //public override string v_DataTable { get; set; }
+
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(DataTableControls), nameof(DataTableControls.v_ColumnType))]
+        //public string v_ColumnType { get; set; }
+
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(DataTableControls), nameof(DataTableControls.v_ColumnNameIndex))]
+        //public string v_ColumnIndex { get; set; }
+
+        [XmlAttribute]
+        [PropertyVirtualProperty(nameof(ListControls), nameof(ListControls.v_InputListName))]
+        [PropertyParameterOrder(8000)]
+        public string v_SetListName { get; set; }
+
+        [XmlAttribute]
+        [PropertyVirtualProperty(nameof(DataTableControls), nameof(DataTableControls.v_WhenLessRows))]
+        [PropertyDescription("When there are Less Rows than List to set")]
+        [PropertyParameterOrder(8001)]
+        public string v_IfRowNotEnough { set; get; }
+
+        [XmlAttribute]
+        [PropertyVirtualProperty(nameof(DataTableControls), nameof(DataTableControls.v_WhenGreaterRows))]
+        [PropertyParameterOrder(8002)]
+        public string v_IfListNotEnough { set; get; }
+
+        public SetDataTableColumnValuesByListCommand()
+        {
+            //this.CommandName = "SetDataTableColumnByListCommand";
+            //this.SelectionName = "Set DataTable Column Values By List";
+            //this.CommandEnabled = true;
+            //this.CustomRendering = true;
+        }
+
+        public override void RunCommand(Engine.AutomationEngineInstance engine)
+        {
+            //(var myDT, var colIndex) = this.ExpandUserVariablesAsDataTableAndColumnIndex(nameof(v_DataTable), nameof(v_ColumnType), nameof(v_ColumnIndex), engine);
+            //string trgColumnName = myDT.Columns[colIndex].ColumnName;
+            (var myDT, _, var trgColumnName) = this.ExpandValueOrUserVariableAsDataTableAndColumn(engine);
+
+            //List<string> myList = v_SetListName.ExpandUserVariableAsList(engine);
+            var myList = this.ExpandUserVariableAsList(nameof(v_SetListName), engine);
+
+            string ifRowNotEnough = this.ExpandValueOrUserVariableAsSelectionItem(nameof(v_IfRowNotEnough), "Row Not Enough", engine);
+            // rows check
+            if (myDT.Rows.Count < myList.Count)
+            {
+                switch (ifRowNotEnough)
+                {
+                    case "ignore":
+                    case "add rows":
+                        break;
+                    case "error":
+                        throw new Exception("The number of rows is less than the List");
+                }
+            }
+
+            string ifListNotEnough = this.ExpandValueOrUserVariableAsSelectionItem(nameof(v_IfListNotEnough), "List Not Enough", engine);
+            if ((myDT.Rows.Count > myList.Count) && (ifListNotEnough == "error"))
+            {
+                throw new Exception("The number of List items is less than the rows");
+            }
+
+            int maxRow = (myDT.Rows.Count > myList.Count) ? myList.Count : myDT.Rows.Count;
+            for (int i = 0; i < maxRow; i++)
+            {
+                myDT.Rows[i][trgColumnName] = myList[i];
+            }
+            if ((myDT.Rows.Count < myList.Count) && (ifRowNotEnough == "add rows"))
+            {
+                for (int i = myDT.Rows.Count; i < myList.Count; i++)
+                {
+                    myDT.Rows.Add();
+                    myDT.Rows[i][trgColumnName] = myList[i];
+                }
+            }
+        }
+    }
+}

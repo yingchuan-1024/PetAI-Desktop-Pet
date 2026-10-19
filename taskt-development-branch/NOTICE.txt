@@ -1,0 +1,5 @@
+Taskt
+Copyright (c) 2019 Jason Bayldon and Taskt contributors.
+Licensed under the Apache License, Version 2.0. See LICENSE.
+This distribution includes PetAI modifications described in PETAI-CHANGES.txt.
+Third-party notices and package license metadata are included in third-party-licenses.

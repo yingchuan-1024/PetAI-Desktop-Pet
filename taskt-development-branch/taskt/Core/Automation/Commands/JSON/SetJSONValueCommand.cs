@@ -1,0 +1,70 @@
+﻿using System;
+using System.Xml.Serialization;
+using Newtonsoft.Json.Linq;
+using taskt.Core.Automation.Attributes.PropertyAttributes;
+
+namespace taskt.Core.Automation.Commands
+{
+    [Serializable]
+    [Attributes.ClassAttributes.Group("JSON")]
+    [Attributes.ClassAttributes.SubGruop("Get/Set")]
+    [Attributes.ClassAttributes.CommandSettings("Set JSON Value")]
+    [Attributes.ClassAttributes.Description("This command allows you to set value in JSON.")]
+    [Attributes.ClassAttributes.UsesDescription("")]
+    [Attributes.ClassAttributes.ImplementationDescription("")]
+    [Attributes.ClassAttributes.CommandIcon(nameof(Properties.Resources.command_function))]
+    [Attributes.ClassAttributes.EnableAutomateRender(true)]
+    [Attributes.ClassAttributes.EnableAutomateDisplayText(true)]
+    public sealed class SetJSONValueCommand : AJSONAddInsertSetJContainerCommands
+    {
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(JSONControls), nameof(JSONControls.v_BothJSONName))]
+        //public string v_Json { get; set; }
+
+        [XmlAttribute]
+        //[PropertyVirtualProperty(nameof(JSONControls), nameof(JSONControls.v_JSONPath))]
+        [PropertyDetailSampleUsage("**$.names[0]**", "Specify the First item in the Array of **names** Property")]
+        public override string v_JsonExtractor { get; set; }
+
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(JSONControls), nameof(JSONControls.v_ValueToAdd))]
+        //[PropertyDescription("Value to Set")]
+        //public string v_Value { get; set; }
+
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(JSONControls), nameof(JSONControls.v_ValueType))]
+        //[PropertyDescription("Value Type to Set")]
+        //public string v_ValueType { get; set; }
+
+        public SetJSONValueCommand()
+        {
+            //this.CommandName = "SetJSONValue";
+            //this.SelectionName = "Set JSON Value";
+            //this.CommandEnabled = true;
+            //this.CustomRendering = true;
+        }
+
+        public override void RunCommand(Engine.AutomationEngineInstance engine)
+        {
+            //Action<JToken> setValueFunc = new Action<JToken>((searchResult) =>
+            //{
+            //    var valueToSet = this.GetJSONValue(nameof(v_Value), nameof(v_ValueType), "Set", engine);
+            //    searchResult.Replace(JToken.FromObject(valueToSet));
+            //});
+            //this.JSONModifyByJSONPath(nameof(v_Json), nameof(v_JsonExtractor), setValueFunc, setValueFunc, engine);
+
+            (var root, var json, _) = this.ExpandUserVariableAsJSONByJSONPath(engine);
+            var v = this.ExpandValueOrVariableValueAsJSONSupportedValueInJSONValue(engine);
+
+            try
+            {
+                json.Replace(v);
+                this.StoreJSONInUserVariable(root, engine);
+            }
+            catch
+            {
+                throw new Exception($"Extraction Result is NOT Supported Type. Result: '{json}', JSONPath: '{v_JsonExtractor}'");
+            }
+        }
+    }
+}

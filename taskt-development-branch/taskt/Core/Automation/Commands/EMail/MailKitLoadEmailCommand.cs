@@ -1,0 +1,60 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Xml.Serialization;
+using taskt.Core.Automation.Attributes.PropertyAttributes;
+
+namespace taskt.Core.Automation.Commands
+{
+    [Serializable]
+    [Attributes.ClassAttributes.Group("EMail")]
+    [Attributes.ClassAttributes.SubGruop("")]
+    [Attributes.ClassAttributes.CommandSettings("Load EMail")]
+    [Attributes.ClassAttributes.Description("This command allows you to load EMail from File.")]
+    [Attributes.ClassAttributes.UsesDescription("Use this command when you want to load EMail from File.")]
+    [Attributes.ClassAttributes.ImplementationDescription("")]
+    [Attributes.ClassAttributes.CommandIcon(nameof(Properties.Resources.command_function))]
+    [Attributes.ClassAttributes.EnableAutomateRender(true)]
+    [Attributes.ClassAttributes.EnableAutomateDisplayText(true)]
+    public sealed class MailKitLoadEMailCommand : ScriptCommand, IFileExistsFilePathProperties
+    {
+        [XmlAttribute]
+        [PropertyVirtualProperty(nameof(EMailControls), nameof(EMailControls.v_EMailPath))]
+        [PropertyDescription("Path to the EMail")]
+        [PropertyFilePathSetting(false, PropertyFilePathSetting.ExtensionBehavior.RequiredExtensionAndExists, PropertyFilePathSetting.FileCounterBehavior.NoSupport, "eml,msg,txt")]
+        //[PropertyVirtualProperty(nameof(GeneralPropertyControls), nameof(GeneralPropertyControls.v_DisallowNewLine_OneLineTextBox))]
+        //[PropertyUIHelper(PropertyUIHelper.UIAdditionalHelperType.ShowFileSelectionHelper)]
+        //[InputSpecification("Path", true)]
+        ////[SampleUsage("**C:\\Temp\\mymail.eml** or **{{{vPath}}}**")]
+        //[PropertyDetailSampleUsage("**C:\\temp\\mymail.eml**", PropertyDetailSampleUsage.ValueType.Value, "Path")]
+        //[PropertyDetailSampleUsage("**{{{vPath}}}**", PropertyDetailSampleUsage.ValueType.VariableValue, "Path")]
+        //[PropertyValidationRule("Path", PropertyValidationRule.ValidationRuleFlags.Empty)]
+        //[PropertyDisplayText(true, "Path")]
+        public string v_TargetFilePath { get; set; }
+
+        [XmlAttribute]
+        [PropertyVirtualProperty(nameof(EMailControls), nameof(EMailControls.v_OutputEMailName))]
+        public string v_MailName { get; set; }
+
+        [XmlAttribute]
+        [PropertyVirtualProperty(nameof(FilePathControls), nameof(FilePathControls.v_WaitTime))]
+        public string v_WaitTimeForFile { get; set; }
+
+        public MailKitLoadEMailCommand()
+        {
+            //this.CommandName = "MailKitLoadEmailCommand";
+            //this.SelectionName = "Load Email";
+            //this.CommandEnabled = true;
+            //this.CustomRendering = true;
+        }
+
+        public override void RunCommand(Engine.AutomationEngineInstance engine)
+        {
+            //string path = FilePathControls.FormatFilePath_NoFileCounter(v_FilePath, engine, new List<string>() { "eml", "msg", "txt" }, true);
+            //string path = FilePathControls.WaitForFile(this, nameof(v_TargetFilePath), nameof(v_WaitTimeForFile), engine);
+            var path = this.WaitForFile(engine);
+
+            var mail = MimeKit.MimeMessage.Load(path);
+            mail.StoreInUserVariable(engine, v_MailName);
+        }
+    }
+}

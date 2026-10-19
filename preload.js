@@ -100,6 +100,14 @@ contextBridge.exposeInMainWorld('pet', {
   /** 工具箱：保存配置（含 oilToken、customTools），返回校验及保存结果 */
   saveToolsConfig: (cfg) => ipcRenderer.invoke('tools:set-config', cfg),
 
+  listAutomationTasks: () => ipcRenderer.invoke('automation:list'),
+  registerTasktTask: (options) => ipcRenderer.invoke('automation:register', options),
+  openTaskt: (taskId) => ipcRenderer.invoke('automation:open', taskId),
+  runAutomationTask: (options) => ipcRenderer.invoke('automation:run', options),
+  stopAutomation: () => ipcRenderer.invoke('automation:stop'),
+  removeAutomationTask: (taskId) => ipcRenderer.invoke('automation:remove', taskId),
+  onAutomationState: (cb) => ipcRenderer.on('automation:state', (e, state) => cb(state)),
+
   /** 屏幕识别：截取当前屏幕，返回 { ok, image(JPEG data URL), message } */
   captureScreen: () => ipcRenderer.invoke('screen:capture'),
 

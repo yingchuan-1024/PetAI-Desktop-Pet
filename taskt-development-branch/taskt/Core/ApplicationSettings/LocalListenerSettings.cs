@@ -1,0 +1,38 @@
+﻿using System;
+
+namespace taskt.Core
+{
+    /// <summary>
+    /// Defines Server settings for tasktServer if using the server component to manage the client
+    /// </summary>
+    [Serializable]
+    public sealed class LocalListenerSettings : ILocalListenerSettings
+    {
+        public bool StartListenerOnStartup { get; set; }
+        public bool LocalListeningEnabled { get; set; }
+        public bool RequireListenerAuthenticationKey { get; set; }
+        public int ListeningPort { get; set; }
+        public string AuthKey { get; set; }
+        public bool EnableWhitelist { get; set; }
+        public string IPWhiteList { get; set; }
+        public LocalListenerSettings()
+        {
+            StartListenerOnStartup = false;
+            LocalListeningEnabled = false;
+            RequireListenerAuthenticationKey = false;
+            EnableWhitelist = false;
+            ListeningPort = 19312;
+            AuthKey = Guid.NewGuid().ToString();
+            IPWhiteList = "";
+        }
+
+        /// <summary>
+        /// clone instance
+        /// </summary>
+        /// <returns></returns>
+        public LocalListenerSettings Clone()
+        {
+            return (LocalListenerSettings)MemberwiseClone();
+        }
+    }
+}

@@ -17,12 +17,21 @@
     "appId": "com.jinyuwan.petai",
     "productName": "PetAI",
     "directories": {
-      "output": "dist"
+      "output": "dist-taskt"
     },
+    "extraResources": [{ "from": "taskt-runtime", "to": "taskt" }],
+    "asarUnpack": [
+      "tools/automation-helper.ps1",
+      "tools/automation-helper.cs"
+    ],
     "files": [
       "main.js",
       "preload.js",
       "agent.js",
+      "automation.js",
+      "taskt.js",
+      "tools/automation-helper.ps1",
+      "tools/automation-helper.cs",
       "renderer/**/*",
       "skins/**/*",
       "assets/**/*",

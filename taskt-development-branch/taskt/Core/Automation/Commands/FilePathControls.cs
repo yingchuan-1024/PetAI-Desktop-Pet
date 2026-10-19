@@ -1,0 +1,742 @@
+﻿using System.IO;
+using taskt.Core.Automation.Attributes.PropertyAttributes;
+
+namespace taskt.Core.Automation.Commands
+{
+    /// <summary>
+    ///  for file path methods
+    /// </summary>
+    internal static class FilePathControls
+    {
+        #region VirtualProperty
+
+        /// <summary>
+        /// for file path and url (recommened use PropertyFilePathSetting attribute)
+        /// </summary>
+        [PropertyVirtualProperty(nameof(FilePathControls), nameof(FilePathControls.v_FilePath))]
+        [PropertyDetailSampleUsage("**http://exmample.com/mytext.txt**", PropertyDetailSampleUsage.ValueType.Value, "Path")]
+        [PropertyDetailSampleUsage("**{{{vURL}}}**", PropertyDetailSampleUsage.ValueType.VariableValue, "Path")]
+        public static string v_FilePathAndURL { get; }
+
+        /// <summary>
+        /// for file path (recommended use PropertyFilePathSetting attribute)
+        /// </summary>
+        [PropertyVirtualProperty(nameof(FilePathControls), nameof(FilePathControls.v_NoSample_FilePath))]        
+        [PropertyDetailSampleUsage("**C:\\temp\\myfile.txt**", PropertyDetailSampleUsage.ValueType.Value, "File Path")]
+        [PropertyDetailSampleUsage("**{{{vFilePath}}}**", PropertyDetailSampleUsage.ValueType.VariableValue, "File Path")]
+        //[PropertyDescription("File Path")]
+        //[InputSpecification("File Path", true)]
+        //[PropertyUIHelper(PropertyUIHelper.UIAdditionalHelperType.ShowVariableHelper)]
+        //[PropertyUIHelper(PropertyUIHelper.UIAdditionalHelperType.ShowFileSelectionHelper)]
+        //[PropertyParameterDirection(PropertyParameterDirection.ParameterDirection.Input)]
+        //[PropertyValidationRule("File Path", PropertyValidationRule.ValidationRuleFlags.Empty)]
+        //[PropertyDisplayText(true, "File")]
+        //[PropertyShowSampleUsageInDescription(true)]
+        //[Remarks("")]
+        //[PropertyTextBoxSetting(1, false)]
+        //[PropertyParameterOrder(5000)]
+        public static string v_FilePath { get; }
+
+        /// <summary>
+        /// for file path (recommended use PropertyFilePathSetting attribute)
+        /// </summary>
+        [PropertyVirtualProperty(nameof(GeneralPropertyControls), nameof(GeneralPropertyControls.v_DisallowNewLine_OneLineTextBox))]
+        [PropertyDescription("File Path")]
+        [InputSpecification("File Path", true)]
+        [PropertyShowSampleUsageInDescription(true)]
+        [PropertyUIHelper(PropertyUIHelper.UIAdditionalHelperType.ShowVariableHelper)]
+        [PropertyUIHelper(PropertyUIHelper.UIAdditionalHelperType.ShowFileSelectionHelper)]
+        [PropertyValidationRule("File Path", PropertyValidationRule.ValidationRuleFlags.Empty)]
+        [PropertyDisplayText(true, "File")]
+        //[Remarks("")]
+        //[PropertyTextBoxSetting(1, false)]
+        //[PropertyParameterDirection(PropertyParameterDirection.ParameterDirection.Input)]
+        //[PropertyParameterOrder(5000)]
+        public static string v_NoSample_FilePath { get; }
+
+        /// <summary>
+        /// file does not exists behavior
+        /// </summary>
+        [PropertyVirtualProperty(nameof(SelectionItemsControls), nameof(SelectionItemsControls.v_ComboBoxHasErrorIgnore))]
+        [PropertyDescription("When the File does Not Exists")]
+        [PropertyIsOptional(true, "Error")]
+        [PropertyDisplayText(false, "When the File does Not Exists")]
+        //[PropertyUISelectionOption("Ignore")]
+        //[PropertyUISelectionOption("Error")]
+        //[PropertyDetailSampleUsage("**Ignore**", "Continue Script File")]
+        //[PropertyDetailSampleUsage("**Error**", "Rise A Error")]
+        //[InputSpecification("", true)]
+        //[Remarks("")]
+        //[PropertyRecommendedUIControl(PropertyRecommendedUIControl.RecommendeUIControlType.ComboBox)]
+        //[PropertyParameterDirection(PropertyParameterDirection.ParameterDirection.Input)]
+        //[PropertyParameterOrder(5000)]
+        public static string v_WhenFileDoesNotExists { get; }
+
+        /// <summary>
+        /// for wait time
+        /// </summary>
+        [PropertyVirtualProperty(nameof(WaitControls), nameof(WaitControls.v_WaitTime))]
+        [PropertyDescription("Wait Time for the File to Exist (sec)")]
+        [Remarks("Specify how long to Wait before an Error will occur because the File is not Found.")]
+        [PropertyIsOptional(true, "10")]
+        [PropertyFirstValue("10")]
+        //[InputSpecification("Number Greater than or Equal 0")]
+        //[PropertyDetailSampleUsage("**10**", PropertyDetailSampleUsage.ValueType.Value, "Wait Time")]
+        //[PropertyDetailSampleUsage("**{{{vWaitTime}}}**", PropertyDetailSampleUsage.ValueType.VariableValue, "Wait Time")]
+        //[PropertyDisplayText(true, "Wait", "s")]
+        //[PropertyShowSampleUsageInDescription(true)]
+        //[PropertyTextBoxSetting(1, false)]
+        //[PropertyParameterDirection(PropertyParameterDirection.ParameterDirection.Input)]
+        //[PropertyParameterOrder(5000)]
+        public static string v_WaitTime { get; }
+
+        /// <summary>
+        /// file path result
+        /// </summary>
+        [PropertyVirtualProperty(nameof(GeneralPropertyControls), nameof(GeneralPropertyControls.v_Result))]
+        [PropertyDescription("Variable Name to Store File Path")]
+        [InputSpecification("Variable Name", true)]
+        [PropertyDetailSampleUsage("**vPath**", PropertyDetailSampleUsage.ValueType.VariableName)]
+        [PropertyDetailSampleUsage("**{{{vPath}}}**", PropertyDetailSampleUsage.ValueType.VariableName)]
+        [PropertyValidationRule("File Path Result", PropertyValidationRule.ValidationRuleFlags.None)]
+        [PropertyDisplayText(false, "")]
+        //[Remarks("")]
+        //[PropertyShowSampleUsageInDescription(true)]
+        //[PropertyIsVariablesList(true)]
+        //[PropertyIsOptional(true)]
+        //[PropertyRecommendedUIControl(PropertyRecommendedUIControl.RecommendeUIControlType.ComboBox)]
+        //[PropertyParameterDirection(PropertyParameterDirection.ParameterDirection.Output)]
+        //[PropertyParameterOrder(5000)]
+        public static string v_FilePathResult { get; }
+        #endregion
+
+        #region check methods
+
+        ///// <summary>
+        ///// check file path is full path
+        ///// </summary>
+        ///// <param name="path"></param>
+        ///// <returns></returns>
+        //public static bool IsFullPath(string path)
+        //{
+        //    //return (path != Path.GetFileName(path));
+        //    return !string.IsNullOrEmpty(Path.GetPathRoot(path));
+        //}
+
+        ///// <summary>
+        ///// check file path has extension
+        ///// </summary>
+        ///// <param name="path"></param>
+        ///// <returns></returns>
+        //public static bool HasExtension(string path)
+        //{
+        //    return (Path.GetExtension(path).Length > 0);
+        //}
+
+        ///// <summary>
+        ///// get last FileCounter Variable name and position
+        ///// </summary>
+        ///// <param name="path">don't convert variable</param>
+        ///// <param name="engine"></param>
+        ///// <returns></returns>
+        //private static (string variableName, int index) GetLastFileCounter(string path, Engine.AutomationEngineInstance engine)
+        //{
+        //    var f0 = VariableNameControls.GetWrappedVariableName(SystemVariables.FileCounter_F0.VariableName, engine);
+        //    var f00 = VariableNameControls.GetWrappedVariableName(SystemVariables.FileCounter_F00.VariableName, engine);
+        //    var f000 = VariableNameControls.GetWrappedVariableName(SystemVariables.FileCounter_F000.VariableName, engine);
+
+        //    var indices = new Dictionary<string, int>()
+        //    {
+        //        { f0, path.LastIndexOf(f0) },
+        //        { f00, path.LastIndexOf(f00) },
+        //        { f000, path.LastIndexOf(f000) },
+        //    };
+        //    var maxItem = indices.OrderByDescending(c => c.Value).First();
+
+        //    return (maxItem.Key, maxItem.Value);
+        //}
+
+        ///// <summary>
+        ///// check file path contains FileCounter variable
+        ///// </summary>
+        ///// <param name="path">don't convert variable</param>
+        ///// <param name="engine"></param>
+        ///// <returns></returns>
+        //public static bool ContainsFileCounter(string path, Engine.AutomationEngineInstance engine)
+        //{
+        //    path = path ?? "";
+        //    (_, var index) = GetLastFileCounter(path, engine);
+
+        //    return (index >= 0);
+        //}
+
+        ///// <summary>
+        ///// check file path is URL
+        ///// </summary>
+        ///// <param name="path"></param>
+        ///// <returns></returns>
+        //public static bool IsURL(string path)
+        //{
+        //    return (path.StartsWith("http:") || path.StartsWith("https:"));
+        //}
+
+        #endregion
+
+        #region convert methods
+
+        ///// <summary>
+        ///// Get Before FileCounter Text, FileCounter Variable Name, After FileCounter Text
+        ///// </summary>
+        ///// <param name="path"></param>
+        ///// <param name="engine"></param>
+        ///// <returns></returns>
+        ///// <exception cref="Exception"></exception>
+        //private static (string beforeCounter, string counterVariable, string afterCounter) ParseFileCounter(string path, Engine.AutomationEngineInstance engine)
+        //{
+        //    var r = GetLastFileCounter(path, engine);
+        //    if (r.index < 0)
+        //    {
+        //        throw new Exception($"No FileCounter Variables contains. Path: '{path}'");
+        //    }
+        //    else
+        //    {
+        //        return (path.Substring(0, r.index), r.variableName, path.Substring(r.index + r.variableName.Length));
+        //    }
+        //}
+
+        ///// <summary>
+        ///// expand value or user variable as FilePath support FileCounter
+        ///// </summary>
+        ///// <param name="parameterValue"></param>
+        ///// <param name="setting"></param>
+        ///// <param name="engine"></param>
+        ///// <returns></returns>
+        ///// <exception cref="Exception"></exception>
+        //private static string ExpandValueOrUserVariableAsFilePath_SupportFileCounter(string parameterValue, PropertyFilePathSetting setting, Engine.AutomationEngineInstance engine)
+        //{
+        //    // check contains FileCounter
+        //    if (!ContainsFileCounter(parameterValue, engine))
+        //    {
+        //        // don't contains FileCounter
+        //        return ExpandValueOrUserVariableAsFilePath_NoSupportFileCounter(parameterValue, setting, engine);
+        //    }
+
+        //    (var beforeVariable, var wrappedCounterVariableName, var afterVariable) = ParseFileCounter(parameterValue, engine);
+
+        //    beforeVariable = beforeVariable.ExpandValueOrUserVariable(engine);
+        //    afterVariable = afterVariable.ExpandValueOrUserVariable(engine);
+        //    var counterVariableName = VariableNameControls.GetVariableName(wrappedCounterVariableName, engine);
+
+        //    // URL Check
+        //    var checkPath = $"{beforeVariable}0{afterVariable}";
+        //    if (IsURL(checkPath))
+        //    {
+        //        // path is URL, FileCounter, supportExtension does not work
+        //        if (!setting.allowURL)
+        //        {
+        //            throw new Exception($"Path is URL. Value: '{beforeVariable}{wrappedCounterVariableName}{afterVariable}'");
+        //        }
+        //        else
+        //        {
+        //            return checkPath;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // not URL
+        //        //// check folder path
+        //        //if (!IsFullPath(checkPath))
+        //        //{
+        //        //    beforeVariable = Path.Combine(Path.GetDirectoryName(engine.FileName), beforeVariable);
+        //        //}
+        //        //// check extension
+        //        //if (!HasExtension(checkPath) && (setting.supportExtension == PropertyFilePathSetting.ExtensionBehavior.RequiredExtension))
+        //        //{
+        //        //    var extensions = setting.GetExtensions();
+        //        //    if (extensions.Count > 0)
+        //        //    {
+        //        //        afterVariable = afterVariable + "." + extensions[0];
+        //        //    }
+        //        //}
+
+        //        //string fmt = "";
+        //        //switch (counterVariableName)
+        //        //{
+        //        //    case "FileCounter.F0":
+        //        //        fmt = "0";
+        //        //        break;
+        //        //    case "FileCounter.F00":
+        //        //        fmt = "00";
+        //        //        break;
+        //        //    case "FileCounter.F000":
+        //        //        fmt = "000";
+        //        //        break;
+        //        //}
+
+        //        //int max = engine.engineSettings.MaxFileCounter;
+        //        //switch(setting.supportFileCounter)
+        //        //{
+        //        //    case PropertyFilePathSetting.FileCounterBehavior.FirstNotExists:
+        //        //        for (int i = 1; i <= max; i++)
+        //        //        {
+        //        //            var testPath = beforeVariable + i.ToString(fmt) + afterVariable;
+        //        //            if (!File.Exists(testPath))
+        //        //            {
+        //        //                return testPath;
+        //        //            }
+        //        //        }
+        //        //        break;
+
+        //        //    case PropertyFilePathSetting.FileCounterBehavior.LastExists:
+        //        //        for (int i = 1; i <= max; i++)
+        //        //        {
+        //        //            var testPath = beforeVariable + i.ToString(fmt) + afterVariable;
+        //        //            if (!File.Exists(testPath))
+        //        //            {
+        //        //                if (i > 1)
+        //        //                {
+        //        //                    return beforeVariable + (i - 1).ToString(fmt) + afterVariable;
+        //        //                }
+        //        //                else
+        //        //                {
+        //        //                    return testPath;
+        //        //                }
+        //        //            }
+        //        //        }
+        //        //        break;
+        //        //}
+        //        //// not found :-(
+        //        //return beforeVariable + max.ToString(fmt) + afterVariable;
+
+        //        int digits = 0;
+        //        if (counterVariableName == SystemVariables.FileCounter_F0.VariableName)
+        //        {
+        //            digits = 1;
+        //        }
+        //        else if (counterVariableName == SystemVariables.FileCounter_F00.VariableName)
+        //        {
+        //            digits = 2;
+        //        }
+        //        else if (counterVariableName == SystemVariables.FileCounter_F000.VariableName)
+        //        {
+        //            digits = 3;
+        //        }
+
+        //        if (digits > 0)
+        //        {
+        //            var folderPath = Path.GetDirectoryName(beforeVariable);
+        //            var fileNameBeforeCounter = Path.GetFileName(beforeVariable);
+
+        //            var fileNameAfterCounter = Path.GetFileNameWithoutExtension(afterVariable);
+        //            var fileExtension = Path.GetExtension(afterVariable);
+
+        //            string res;
+        //            switch (setting.supportFileCounter)
+        //            {
+        //                case PropertyFilePathSetting.FileCounterBehavior.FirstNotExists:
+        //                    using (var fn = new InnerScriptVariable(engine))
+        //                    {
+        //                        var notExists = new GetNonExistentFilePathCommand()
+        //                        {
+        //                            v_TargetFolderPath = folderPath,
+        //                            v_BeforeFileCounter = fileNameBeforeCounter,
+        //                            v_Digits = digits.ToString(),
+        //                            v_AfterFileCounter = fileNameAfterCounter,
+        //                            v_Extension = fileExtension,
+        //                            v_Result = fn.VariableName,
+        //                        };
+        //                        notExists.RunCommand(engine);
+        //                        res = fn.VariableValue.ToString();
+        //                    }
+        //                    break;
+        //                case PropertyFilePathSetting.FileCounterBehavior.LastExists:
+        //                    using (var fn = new InnerScriptVariable(engine))
+        //                    {
+        //                        var lastExists = new GetLastExistentNumberedFilePathCommand()
+        //                        {
+        //                            v_TargetFolderPath = folderPath,
+        //                            v_BeforeFileCounter = fileNameBeforeCounter,
+        //                            v_Digits = digits.ToString(),
+        //                            v_AfterFileCounter = fileNameAfterCounter,
+        //                            v_Extension = fileExtension,
+        //                            v_Result = fn.VariableName,
+        //                        };
+        //                        lastExists.RunCommand(engine);
+        //                        res = fn.VariableValue.ToString();
+        //                    }
+        //                    break;
+        //                default:
+        //                    throw new Exception($"Strange FilePathSetting Attribute Value. Value: '{setting.supportFileCounter.ToString()}'");
+        //            }
+        //            return res;
+        //        }
+        //        else
+        //        {
+        //            throw new Exception($"Strange File Counter Variable. Name: '{counterVariableName}'");
+        //        }
+        //    }
+        //}
+
+        ///// <summary>
+        ///// expand value or User variable as FilePath not support FileCounter
+        ///// </summary>
+        ///// <param name="parameterValue"></param>
+        ///// <param name="setting"></param>
+        ///// <param name="engine"></param>
+        ///// <returns></returns>
+        ///// <exception cref="Exception"></exception>
+        //private static string ExpandValueOrUserVariableAsFilePath_NoSupportFileCounter(string parameterValue, PropertyFilePathSetting setting, Engine.AutomationEngineInstance engine)
+        //{
+        //    var path = parameterValue.ExpandValueOrUserVariable(engine);
+
+        //    if (IsURL(path))
+        //    {
+        //        // path is URL
+        //        if (!setting.allowURL)
+        //        {
+        //            throw new Exception("Path is URL. Value: '" + path + "'");
+        //        }
+        //        else
+        //        {
+        //            return path;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // path is not URL
+        //        // when folder path not contains
+        //        if (!IsFullPath(path))
+        //        {
+        //            path = Path.Combine(Path.GetDirectoryName(engine.FileName), path);
+        //        }
+
+        //        if (HasExtension(path))
+        //        {
+        //            // has extension. no more path convert process
+        //            return path;
+        //        }
+        //        else
+        //        {
+        //            // don't has extension
+
+        //            var extensions = setting.GetExtensions();
+        //            switch (setting.supportExtension)
+        //            {
+        //                case PropertyFilePathSetting.ExtensionBehavior.AllowNoExtension:
+        //                    return path;
+
+        //                case PropertyFilePathSetting.ExtensionBehavior.RequiredExtension:
+        //                    if (extensions.Count > 0)
+        //                    {
+        //                        return path + "." + extensions[0];
+        //                    }
+        //                    break;
+
+        //                case PropertyFilePathSetting.ExtensionBehavior.RequiredExtensionAndExists:
+        //                    foreach(var ext in extensions)
+        //                    {
+        //                        var testPath = path + "." + ext;
+        //                        if (File.Exists(testPath))
+        //                        {
+        //                            return testPath;
+        //                        }
+        //                    }
+        //                    break;
+        //            }
+
+        //            if (extensions.Count > 0)
+        //            {
+        //                return path + "." + extensions[0];
+        //            }
+        //            else
+        //            {
+        //                return path;
+        //            }
+        //        }
+        //    }
+        //}
+
+        ///// <summary>
+        ///// expand value or user variable as FilePath. this method use the specified PropertyFilePathSetting
+        ///// </summary>
+        ///// <param name="parameterValue"></param>
+        ///// <param name="setting"></param>
+        ///// <param name="engine"></param>
+        ///// <returns></returns>
+        //public static string ExpandValueOrUserVariableAsFilePath(this string parameterValue, PropertyFilePathSetting setting, Engine.AutomationEngineInstance engine)
+        //{
+        //    string p;
+        //    if ((setting.supportFileCounter != PropertyFilePathSetting.FileCounterBehavior.NoSupport) &&
+        //        (setting.supportExtension != PropertyFilePathSetting.ExtensionBehavior.RequiredExtensionAndExists))
+        //    {
+        //        p = ExpandValueOrUserVariableAsFilePath_SupportFileCounter(parameterValue, setting, engine);
+        //    }
+        //    else
+        //    {
+        //        p = ExpandValueOrUserVariableAsFilePath_NoSupportFileCounter(parameterValue, setting, engine);
+        //    }
+
+        //    var invs = Path.GetInvalidPathChars();
+        //    if (p.IndexOfAny(invs) < 0)
+        //    {
+        //        return p;
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("File Path contains Invalid chars. Path: '" + p + "'");
+        //    }
+        //}
+
+        ///// <summary>
+        ///// expand value or user variable to FilePath. this method use PropertyFilePathSetting
+        ///// </summary>
+        ///// <param name="command"></param>
+        ///// <param name="parameterName"></param>
+        ///// <param name="engine"></param>
+        ///// <returns></returns>
+        //public static string ExpandValueOrUserVariableAsFilePath(this ScriptCommand command, string parameterName, Engine.AutomationEngineInstance engine)
+        //{
+        //    var prop = command.GetProperty(parameterName);
+        //    var vProp = prop.GetVirtualProperty();
+        //    string parameterValue = prop.GetValue(command)?.ToString() ?? "";
+
+        //    var pathSetting = PropertyControls.GetCustomAttributeWithVirtual<PropertyFilePathSetting>(prop, vProp) ?? new PropertyFilePathSetting();
+
+        //    return ExpandValueOrUserVariableAsFilePath(parameterValue, pathSetting, engine);
+        //}
+
+        ///// <summary>
+        ///// expand value or user variable as File Name
+        ///// </summary>
+        ///// <param name="fileName"></param>
+        ///// <param name="engine"></param>
+        ///// <returns></returns>
+        ///// <exception cref="Exception">value is not file name</exception>
+        //public static string ExpandValueOrUserVariableAsFileName(this string fileName, Engine.AutomationEngineInstance engine)
+        //{
+        //    var fn = fileName.ExpandValueOrUserVariable(engine);
+        //    var invs = Path.GetInvalidFileNameChars();
+        //    if (fn.IndexOfAny(invs) < 0)
+        //    {
+        //        return fn;
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("File Name contains invalid chars. File: '" + fn + "'");
+        //    }
+        //}
+
+        /// <summary>
+        /// format file/folder path to specified format
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="format"></param>
+        /// <returns></returns>
+        public static string FormatFileFolderPath(string path, string format)
+        {
+            // todo: separate when path is folder or file
+            switch (format.ToLower())
+            {
+                case "file":
+                case "filename":
+                case "fn":
+                    return Path.GetFileName(path);
+
+                case "folder":
+                case "directory":
+                case "dir":
+                    return Path.GetDirectoryName(path);
+
+                case "filewithoutextension":
+                case "filenamewithoutextension":
+                case "fnwoext":
+                    return Path.GetFileNameWithoutExtension(path);
+
+                case "extension":
+                case "ext":
+                    return Path.GetExtension(path);
+
+                case "drive":
+                case "drivename":
+                case "root":
+                    return Path.GetPathRoot(path);
+
+                default:
+                    return "";
+            }
+        }
+
+        #endregion
+
+        #region wait for file
+        ///// <summary>
+        ///// Wait For File
+        ///// </summary>
+        ///// <param name="path"></param>
+        ///// <param name="waitTime"></param>
+        ///// <param name="engine"></param>
+        ///// <returns>file path</returns>
+        ///// <exception cref="Exception"></exception>
+        //public static string WaitForFile(string path, int waitTime, Engine.AutomationEngineInstance engine)
+        //{
+        //    var ret = WaitControls.WaitProcess(waitTime, "File Path", new Func<(bool, object)>(() =>
+        //    {
+        //        if (IsURL(path))
+        //        {
+        //            // if path is URL, don't check existance
+        //            return (true, path);
+        //        }
+        //        else
+        //        {
+        //            if (File.Exists(path))
+        //            {
+        //                return (true, path);
+        //            }
+        //            else
+        //            {
+        //                return (false, null);
+        //            }
+        //        }
+        //    }), engine);
+
+        //    if (ret is string returnPath)
+        //    {
+        //        return returnPath;
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("Strange Value returned in WaitForFile. Type: " + ret.GetType().FullName);
+        //    }
+        //}
+
+        ///// <summary>
+        ///// wait for file. this method NOT use PropertyFilePathSetting
+        ///// </summary>
+        ///// <param name="pathValue">NOT use PropertyFilePathSetting</param>
+        ///// <param name="waitTimeValue"></param>
+        ///// <param name="engine"></param>
+        ///// <returns></returns>
+        //public static string WaitForFile(string pathValue, string waitTimeValue, Engine.AutomationEngineInstance engine)
+        //{
+        //    var path = pathValue.ExpandValueOrUserVariable(engine);
+        //    var invs = Path.GetInvalidPathChars();
+        //    if (path.IndexOfAny(invs) >= 0)
+        //    {
+        //        throw new Exception("File Path contains Invalid chars. Path: '" + path + "'");
+        //    }
+
+        //    var waitTime = waitTimeValue.ExpandValueOrUserVariableAsInteger("Wait Time", engine);
+        //    return WaitForFile(path, waitTime, engine);
+        //}
+
+        ///// <summary>
+        ///// wait for file. this method use PropertyFilePathSetting
+        ///// </summary>
+        ///// <param name="command"></param>
+        ///// <param name="pathName">use PropertyFilePathSetting</param>
+        ///// <param name="waitTimeName"></param>
+        ///// <param name="engine"></param>
+        ///// <returns></returns>
+        //public static string WaitForFile(ScriptCommand command, string pathName, string waitTimeName, Engine.AutomationEngineInstance engine)
+        //{
+        //    var path = command.ExpandValueOrUserVariableAsFilePath(pathName, engine);
+        //    var waitTime = command.ExpandValueOrUserVariableAsInteger(waitTimeName, "Wait Time", engine);
+        //    return WaitForFile(path, waitTime, engine);
+        //}
+
+        ///// <summary>
+        ///// general file action. This method search target file before execute actionFunc, and try store Found File Path after execute actionFunc.
+        ///// </summary>
+        ///// <param name="command"></param>
+        ///// <param name="pathName"></param>
+        ///// <param name="waitTimeName"></param>
+        ///// <param name="engine"></param>
+        ///// <param name="actionFunc"></param>
+        ///// <param name="pathResultName"></param>
+        ///// <param name="errorFunc"></param>
+        //private static void FileAction(ScriptCommand command, string pathName, string waitTimeName, Engine.AutomationEngineInstance engine, Action<string> actionFunc, string pathResultName = "", Action<Exception> errorFunc = null)
+        //{
+        //    try
+        //    {
+        //        var path = WaitForFile(command, pathName, waitTimeName, engine);
+
+        //        actionFunc(path);
+
+        //        if (!string.IsNullOrEmpty(pathResultName))
+        //        {
+        //            var pathResult = command.GetRawPropertyValueAsString(pathResultName, "Path Result");
+        //            if (!string.IsNullOrEmpty(pathResult))
+        //            {
+        //                path.StoreInUserVariable(engine, pathResult);
+        //            }
+        //        }
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        if (errorFunc != null)
+        //        {
+        //            errorFunc(ex);
+        //        }
+        //        else
+        //        {
+        //            throw ex;
+        //        }
+        //    }
+        //}
+
+        ///// <summary>
+        ///// general file action. This method search target file before execute actionFunc, and try store Found File Path after execute actionFunc. This method specifies the parameter from the value of PropertyVirtualProperty
+        ///// </summary>
+        ///// <param name="command"></param>
+        ///// <param name="engine"></param>
+        ///// <param name="actionFunc"></param>
+        ///// <param name="errorFunc"></param>
+        //public static void FileAction(ScriptCommand command, Engine.AutomationEngineInstance engine, Action<string> actionFunc, Action<Exception> errorFunc = null)
+        //{
+        //    //var filePath = command.GetProperty(new PropertyVirtualProperty(nameof(FilePathControls), nameof(v_FilePath)))?.Name ??
+        //    //                command.GetProperty(new PropertyVirtualProperty(nameof(FilePathControls), nameof(v_NoSample_FilePath)))?.Name ?? "";
+        //    //var waitTime = command.GetProperty(new PropertyVirtualProperty(nameof(FilePathControls), nameof(v_WaitTime)))?.Name ?? "";
+        //    //var pathResult = command.GetProperty(new PropertyVirtualProperty(nameof(FilePathControls), nameof(v_FilePathResult)))?.Name ?? "";
+
+        //    var props = command.GetParameterProperties();
+        //    var filePath = props.GetProperty(new PropertyVirtualProperty(nameof(FilePathControls), nameof(v_FilePath)))?.Name ??
+        //                    props.GetProperty(new PropertyVirtualProperty(nameof(FilePathControls), nameof(v_NoSample_FilePath)))?.Name ?? "";
+        //    var waitTime = props.GetProperty(new PropertyVirtualProperty(nameof(FilePathControls), nameof(v_WaitTime)))?.Name ?? "";
+        //    var pathResult = props.GetProperty(new PropertyVirtualProperty(nameof(FilePathControls), nameof(v_FilePathResult)))?.Name ?? "";
+
+        //    FileAction(command, filePath, waitTime, engine, actionFunc, pathResult, errorFunc);
+        //}
+        #endregion
+
+        /// <summary>
+        /// get format information
+        /// </summary>
+        /// <returns></returns>
+        public static string GetFormatHelp()
+        {
+            string help =
+                @"File
+FileName
+fn
+    File name.
+Folder
+Directory
+dir
+    Folder name.
+FileWithoutExtension
+FileNameWithoutExtension
+fnwoext
+    File name without extension.
+Extension
+ext
+    File extension.
+Drive
+DriveName
+root
+    Drive name.
+
+!!These are Case insensitive!!";
+            return help;
+        }
+    }
+}

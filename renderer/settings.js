@@ -47,8 +47,151 @@
     panels.forEach((p) => p.classList.toggle('active', p.id === 'panel-' + name));
     // 每次进入"对话"面板时刷新历史（可能有新消息）
     if (name === 'chat') renderChatHistory();
+    if (name === 'automation') renderAutomationTasks();
   }
   navItems.forEach((b) => b.addEventListener('click', () => showPanel(b.dataset.panel)));
+
+  const automationStatus = document.getElementById('automation-status');
+  const automationHelp = document.getElementById('automation-help');
+  const automationProgress = document.getElementById('automation-progress');
+  const automationList = document.getElementById('automation-list');
+  const automationCommands = new Map();
+  let automationCommandSequence = 0;
+  let automationState = { mode: 'idle' };
+  let automationStateRevision = 0;
+  let automationListRequest = 0;
+  function setAutomationStatus(message, ok, details = {}) {
+    const failedStep = Number(details.failedStep);
+    const failure = ok === false && failedStep > 0 && !/第\s*\d+\s*(?:\/\s*\d+\s*)?步/.test(message || '') ? `第 ${failedStep} 步失败。` : '';
+    const completed = Number(details.completedSteps);
+    const total = Number(details.totalSteps);
+    const progress = automationState.mode === 'running' && total > 0 && Number.isFinite(completed) ? `已完成 ${completed}/${total} 步。` : '';
+    automationStatus.textContent = failure + progress + (message || '');
+    automationStatus.className = 'ai-status' + (ok === true ? ' ok' : ok === false ? ' err' : '');
+    const help = details.cancelRequested && !details.cancelConfirmed ? '已请求取消，尚未确认引擎停止；外部进程可能仍活动。' : '';
+    automationHelp.textContent = help;
+    automationHelp.hidden = !help;
+  }
+  function escapeAutomationText(value) {
+    return String(value || '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
+  }
+  function updateAutomationControls() {
+    const busy = automationState.mode !== 'idle' || automationCommands.size > 0;
+    document.getElementById('automation-record').disabled = busy;
+    document.getElementById('automation-name').disabled = busy;
+    document.getElementById('automation-description').disabled = busy;
+    document.getElementById('automation-stop-record').disabled = false;
+    const stop = document.getElementById('automation-stop');
+    stop.disabled = ['idle', 'stopping'].includes(automationState.mode) || automationCommands.has('stop');
+    stop.textContent = '请求停止';
+    automationList.querySelectorAll('button').forEach(button => {
+      button.disabled = busy;
+      if (button.dataset.action === 'run') button.textContent = automationState.mode === 'running' && button.dataset.taskId === automationState.taskId ? '执行中…' : button.dataset.idleLabel;
+    });
+    automationList.querySelectorAll('input').forEach(input => { input.disabled = busy; });
+  }
+  function applyAutomationState(state, showStatus = true) {
+    if (!state || typeof state.mode !== 'string') return;
+    automationState = state;
+    if (showStatus) setAutomationStatus(state.message, state.ok, { ...state.progress, ...state });
+    const progress = state.progress || state;
+    const total = Number(progress.totalSteps);
+    const completed = Number(progress.completedSteps);
+    automationProgress.hidden = state.mode !== 'running' || !(total > 0) || !Number.isFinite(completed);
+    if (!automationProgress.hidden) {
+      automationProgress.max = total;
+      automationProgress.value = Math.max(0, Math.min(total, completed));
+    }
+    updateAutomationControls();
+  }
+  async function automationCommand(key, message, action) {
+    if (automationCommands.has(key)) return;
+    const command = ++automationCommandSequence;
+    const stateRevision = automationStateRevision;
+    automationCommands.set(key, command);
+    setAutomationStatus(message);
+    updateAutomationControls();
+    try {
+      const result = await action();
+      // 后台广播已包含最终结果；迟到的 IPC 回包不能覆盖更新的状态。
+      if (command === automationCommandSequence && stateRevision === automationStateRevision) setAutomationStatus(result.message, result.ok, result);
+      if (command === automationCommandSequence) return result;
+    } catch (error) {
+      if (command === automationCommandSequence && (stateRevision === automationStateRevision || automationState.mode !== 'idle')) setAutomationStatus(error.message || '操作失败，请重试', false);
+    } finally {
+      if (automationCommands.get(key) === command) automationCommands.delete(key);
+      updateAutomationControls();
+    }
+  }
+  async function renderAutomationTasks({ showStatus = true } = {}) {
+    const request = ++automationListRequest;
+    const stateRevision = automationStateRevision;
+    automationList.setAttribute('aria-busy', 'true');
+    let result;
+    try { result = await window.pet.listAutomationTasks(); }
+    catch (error) { result = { ok: false, message: error.message || '任务列表读取失败，请点击刷新重试' }; }
+    if (request !== automationListRequest) return;
+    automationList.setAttribute('aria-busy', 'false');
+    if (!result.ok) {
+      automationList.textContent = result.message;
+      return;
+    }
+    if (stateRevision === automationStateRevision) applyAutomationState(result.state, showStatus);
+    automationList.replaceChildren();
+    if (!result.tasks.length) {
+      const empty = document.createElement('p');
+      empty.className = 'automation-empty';
+      empty.textContent = '还没有 Taskt 任务。先在 Taskt 编辑器保存 XML，再填写名称并选择 XML 登记。';
+      automationList.appendChild(empty);
+    }
+    for (const task of result.tasks) {
+      const item = document.createElement('article');
+      item.className = 'automation-item';
+      item.innerHTML = `<strong>${escapeAutomationText(task.name)}</strong>${task.description ? `<p>${escapeAutomationText(task.description)}</p>` : ''}<small>${escapeAutomationText(task.scriptPath)}</small>`;
+      const actions = document.createElement('div'); actions.className = 'automation-actions';
+      const run = document.createElement('button'); run.className = 'ai-btn save'; run.textContent = '运行';
+      run.dataset.action = 'run'; run.dataset.taskId = task.id; run.dataset.idleLabel = '运行';
+      run.addEventListener('click', async () => {
+        if (automationState.mode !== 'idle' || automationCommands.size) return;
+        await automationCommand('run', '正在启动任务；F9 可请求取消', () => window.pet.runAutomationTask({ taskId: task.id }));
+        await renderAutomationTasks({ showStatus: false });
+      });
+      const remove = document.createElement('button'); remove.className = 'ai-btn cancel'; remove.textContent = '删除';
+      remove.addEventListener('click', async () => {
+        if (automationState.mode !== 'idle' || automationCommands.size) return;
+        await automationCommand('remove', '正在删除任务', () => window.pet.removeAutomationTask(task.id));
+        await renderAutomationTasks({ showStatus: false });
+      });
+      const edit = document.createElement('button'); edit.className = 'ai-btn cancel'; edit.textContent = '编辑 XML';
+      edit.addEventListener('click', () => automationCommand('edit', '正在打开 Taskt', () => window.pet.openTaskt(task.id)));
+      actions.append(edit, run, remove); item.appendChild(actions); automationList.appendChild(item);
+    }
+    updateAutomationControls();
+  }
+  document.getElementById('automation-record').addEventListener('click', async () => {
+    if (automationState.mode !== 'idle' || automationCommands.size) return;
+    const name = document.getElementById('automation-name');
+    if (!name.value.trim()) { setAutomationStatus('请先填写任务名称', false); name.focus(); return; }
+    await automationCommand('register', '请选择 XML，随后执行只读预校验', () => window.pet.registerTasktTask({ name: name.value.trim(), description: document.getElementById('automation-description').value }));
+    await renderAutomationTasks({ showStatus: false });
+  });
+  document.getElementById('automation-stop-record').addEventListener('click', async () => {
+    await automationCommand('open', '正在打开 Taskt', () => window.pet.openTaskt());
+    await renderAutomationTasks({ showStatus: false });
+  });
+  document.getElementById('automation-stop').addEventListener('click', async () => {
+    await automationCommand('stop', '正在停止', () => window.pet.stopAutomation());
+    await renderAutomationTasks({ showStatus: false });
+  });
+  document.getElementById('automation-refresh').addEventListener('click', () => renderAutomationTasks());
+  window.pet.onAutomationState(state => {
+    ++automationStateRevision;
+    const previousMode = automationState.mode;
+    // 引擎退出后清理仍在等待 IPC 回包的命令。
+    if (state.mode === 'idle' && previousMode !== 'idle') automationCommands.clear();
+    applyAutomationState(state);
+    if (state.mode === 'idle' && previousMode !== 'idle') renderAutomationTasks({ showStatus: false });
+  });
 
   /* ---------- 主题色调（显示面板） ---------- */
 

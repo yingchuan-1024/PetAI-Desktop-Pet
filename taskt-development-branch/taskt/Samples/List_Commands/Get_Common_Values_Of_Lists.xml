@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="c24d2783-b40e-4e64-a81a-d99a4ea5a665" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Get Common Values Of Lists sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="306fd2fd-d648-4e9b-9578-fd6017b412c7" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" v_Comment="ListA [ A, B, C ]" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CreateListCommand" CommandID="d6875bc6-e9e8-4c48-a7fc-62ad95e201c3" CommandName="CreateListCommand" IsCommented="false" SelectionName="Create List" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vListA">
+        <v_ListValues>
+          <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+            <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="ListValues022025.103329" msdata:UseCurrentLocale="true">
+              <xs:complexType>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                  <xs:element name="ListValues022025.103329">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Values" type="xs:string" minOccurs="0" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:choice>
+              </xs:complexType>
+            </xs:element>
+          </xs:schema>
+          <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
+            <DocumentElement>
+              <ListValues022025.103329 diffgr:id="ListValues022025.1033291" msdata:rowOrder="0" diffgr:hasChanges="modified">
+                <Values>A</Values>
+              </ListValues022025.103329>
+              <ListValues022025.103329 diffgr:id="ListValues022025.1033292" msdata:rowOrder="1" diffgr:hasChanges="modified">
+                <Values>B</Values>
+              </ListValues022025.103329>
+              <ListValues022025.103329 diffgr:id="ListValues022025.1033293" msdata:rowOrder="2" diffgr:hasChanges="modified">
+                <Values>C</Values>
+              </ListValues022025.103329>
+            </DocumentElement>
+            <diffgr:before>
+              <ListValues022025.103329 diffgr:id="ListValues022025.1033291" msdata:rowOrder="0">
+                <Values>A</Values>
+              </ListValues022025.103329>
+              <ListValues022025.103329 diffgr:id="ListValues022025.1033292" msdata:rowOrder="1">
+                <Values>B</Values>
+              </ListValues022025.103329>
+              <ListValues022025.103329 diffgr:id="ListValues022025.1033293" msdata:rowOrder="2">
+                <Values>C</Values>
+              </ListValues022025.103329>
+            </diffgr:before>
+          </diffgr:diffgram>
+        </v_ListValues>
+      </ScriptCommand>
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="561c97d0-d090-4c8b-ad95-c53cf9f290b8" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" v_Comment="ListB [ C, B, D, E ]" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CreateListCommand" CommandID="b6b11dcc-f3f8-4d80-a539-b09db02b0f69" CommandName="CreateListCommand" IsCommented="false" SelectionName="Create List" DefaultPause="0" LineNumber="5" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vListB">
+        <v_ListValues>
+          <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+            <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="ListValues022025.103337" msdata:UseCurrentLocale="true">
+              <xs:complexType>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                  <xs:element name="ListValues022025.103337">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Values" type="xs:string" minOccurs="0" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:choice>
+              </xs:complexType>
+            </xs:element>
+          </xs:schema>
+          <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
+            <DocumentElement>
+              <ListValues022025.103337 diffgr:id="ListValues022025.1033371" msdata:rowOrder="0" diffgr:hasChanges="modified">
+                <Values>C</Values>
+              </ListValues022025.103337>
+              <ListValues022025.103337 diffgr:id="ListValues022025.1033372" msdata:rowOrder="1" diffgr:hasChanges="modified">
+                <Values>B</Values>
+              </ListValues022025.103337>
+              <ListValues022025.103337 diffgr:id="ListValues022025.1033373" msdata:rowOrder="2" diffgr:hasChanges="modified">
+                <Values>D</Values>
+              </ListValues022025.103337>
+              <ListValues022025.103337 diffgr:id="ListValues022025.1033374" msdata:rowOrder="3" diffgr:hasChanges="modified">
+                <Values>E</Values>
+              </ListValues022025.103337>
+            </DocumentElement>
+            <diffgr:before>
+              <ListValues022025.103337 diffgr:id="ListValues022025.1033371" msdata:rowOrder="0">
+                <Values>C</Values>
+              </ListValues022025.103337>
+              <ListValues022025.103337 diffgr:id="ListValues022025.1033372" msdata:rowOrder="1">
+                <Values>B</Values>
+              </ListValues022025.103337>
+              <ListValues022025.103337 diffgr:id="ListValues022025.1033373" msdata:rowOrder="2">
+                <Values>D</Values>
+              </ListValues022025.103337>
+              <ListValues022025.103337 diffgr:id="ListValues022025.1033374" msdata:rowOrder="3">
+                <Values>E</Values>
+              </ListValues022025.103337>
+            </diffgr:before>
+          </diffgr:diffgram>
+        </v_ListValues>
+      </ScriptCommand>
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="514f1b9c-6c71-4422-9de5-5395c71af906" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="6" PauseBeforeExeucution="false" v_Comment="Get Common Items" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="GetCommonValuesOfListsCommand" CommandID="5d708434-c7ec-49e5-b53a-55612d099de6" CommandName="GetCommonValuesOfListsCommand" IsCommented="false" SelectionName="Get Common Values Of Lists" DefaultPause="0" LineNumber="7" PauseBeforeExeucution="false" CommandEnabled="true" v_ListA="vListA" v_ListB="vListB" v_CommonValues="vCommon" v_CaseSenstive="" v_DuplicatesAreOne="" v_ListAOnly="vOnlyA" v_ListBOnly="vOnlyB" v_NotCommonValues="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="6335e989-ec6c-4b92-83b1-7d674b218f1b" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="8" PauseBeforeExeucution="false" v_Comment="Show Results" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertListToVisualizedTextCommand" CommandID="7df1fc77-14e5-488a-8dcc-9e1e6b9d47f5" CommandName="ConvertListToVisualizedTextCommand" IsCommented="false" SelectionName="Convert List To Visualized Text" DefaultPause="0" LineNumber="9" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vCommon" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="12c09c9f-4465-42e8-b743-9ac9265a4017" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="10" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="Common Items&#xD;&#xA;⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertListToVisualizedTextCommand" CommandID="1f8aacb1-8243-412e-b6fb-1083cdb08cef" CommandName="ConvertListToVisualizedTextCommand" IsCommented="false" SelectionName="Convert List To Visualized Text" DefaultPause="0" LineNumber="11" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vOnlyA" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="72f488d8-3ce8-4950-b106-7aca4363a2de" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="12" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="Only ListA Items&#xD;&#xA;⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertListToVisualizedTextCommand" CommandID="55220c07-7a12-4e2a-9914-78e51854477c" CommandName="ConvertListToVisualizedTextCommand" IsCommented="false" SelectionName="Convert List To Visualized Text" DefaultPause="0" LineNumber="13" PauseBeforeExeucution="false" CommandEnabled="true" v_List="vOnlyB" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="d790bfdb-df4c-4d32-88f1-1593b3b7be5c" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="14" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="Only ListB Items&#xD;&#xA;⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.22</TasktVersion>
+    <Author />
+    <LastRunTime>2025-02-20T22:36:03.7182062+09:00</LastRunTime>
+    <RunTimes>1</RunTimes>
+    <Revision>2</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>vCommon</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>view</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vListA</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vListB</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vOnlyA</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>vOnlyB</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

@@ -1,0 +1,4 @@
+# Execute Remote Script File by bash
+
+b64file=$(echo -n "Script-File-Name.xml" | base64)
+curl -X POST -H "Content-Type: application/json" "http://IP-Address:19312/ExecuteScript" -d "{\"ScriptLocation\": \"${b64file}\"}"

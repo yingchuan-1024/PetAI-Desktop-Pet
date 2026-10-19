@@ -1,0 +1,94 @@
+﻿using System;
+using System.Xml.Serialization;
+using taskt.Core.Automation.Attributes.PropertyAttributes;
+using Newtonsoft.Json.Linq;
+
+namespace taskt.Core.Automation.Commands
+{
+    [Serializable]
+    [Attributes.ClassAttributes.Group("JSON")]
+    [Attributes.ClassAttributes.SubGruop("Action")]
+    [Attributes.ClassAttributes.CommandSettings("Remove JSON Object Property")]
+    [Attributes.ClassAttributes.Description("This command allows you to remove a property in JSON")]
+    [Attributes.ClassAttributes.UsesDescription("")]
+    [Attributes.ClassAttributes.ImplementationDescription("")]
+    [Attributes.ClassAttributes.CommandIcon(nameof(Properties.Resources.command_function))]
+    [Attributes.ClassAttributes.EnableAutomateRender(true)]
+    [Attributes.ClassAttributes.EnableAutomateDisplayText(true)]
+    public sealed class RemoveJSONObjectPropertyCommand : AJSONJSONPathCommands
+    {
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(JSONControls), nameof(JSONControls.v_BothJSONName))]
+        //[PropertyDescription("JSON Object Variable Name")]
+        //public string v_Json { get; set; }
+
+        //[XmlAttribute]
+        //[PropertyVirtualProperty(nameof(JSONControls), nameof(JSONControls.v_JSONPath))]
+        //public string v_JsonExtractor { get; set; }
+
+        [XmlAttribute]
+        [PropertyVirtualProperty(nameof(JSONControls), nameof(JSONControls.v_PropertyName))]
+        [PropertyParameterOrder(7000)]
+        public string v_PropertyName { get; set; }
+
+        public RemoveJSONObjectPropertyCommand()
+        {
+            //this.CommandName = "Remove JSON Property";
+            //this.SelectionName = "Remove JSON Property";
+            //this.CommandEnabled = true;
+            //this.CustomRendering = true;
+        }
+
+        public override void RunCommand(Engine.AutomationEngineInstance engine)
+        {
+            //Action<JToken> removeFunc = new Action<JToken>((searchResult) =>
+            //{
+            //    var p = searchResult.Parent;
+            //    if (p is JProperty prop)
+            //    {
+            //        prop.Remove();
+            //    }
+            //    else if (p is JArray ary)
+            //    {
+            //        ary.Remove(searchResult);
+            //    }
+            //    else
+            //    {
+            //        throw new Exception("Strange Search Result. Fail Remove. Value: '" + searchResult.ToString() + "'");
+            //    }
+            //});
+            //this.JSONModifyByJSONPath(nameof(v_Json), nameof(v_JsonExtractor), removeFunc, removeFunc, engine);
+
+            (var root, var json, _) = this.ExpandUserVariableAsJSONByJSONPath(engine);
+
+            //var p = json?.Parent;
+            //if (p is JProperty prop)
+            //{
+            //    prop.Remove();
+            //    this.StoreJSONInUserVariable(root, engine);
+            //}
+            //else if (p is JArray ary)
+            //{
+            //    ary.Remove(json);
+            //    this.StoreJSONInUserVariable(root, engine);
+            //}
+            if (json is JObject obj)
+            {
+                var propName = this.ExpandValueOrUserVariable(nameof(v_PropertyName), "Property Name", engine);
+                if (obj.ContainsKey(propName))
+                {
+                    obj.Remove(propName);
+                    this.StoreJSONInUserVariable(root, engine);
+                }
+                else
+                {
+                    throw new Exception($"Specified property does not Exists. Property: '{v_PropertyName}', Expand: '{propName}'");
+                }
+            }
+            else
+            {
+                throw new Exception($"Search Result is not supported Value. Result: '{json}', JSONPath: '{v_JsonExtractor}'");
+            }
+        }
+    }
+}

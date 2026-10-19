@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="b11ccefc-1bdf-4fc3-ba1b-238ec603ed3e" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Get Window And Tab URLs As Dictionary sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserCreateWebBrowserInstanceCommand" CommandID="8e42d3d1-41e9-44bc-a324-fa7abf0e4734" CommandName="SeleniumBrowserCreateWebBrowserInstanceCommand" IsCommented="false" SelectionName="Create Web Browser Instance" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" CommandEnabled="true" v_InstanceName="RPABrowser" v_EngineType="Edge" v_InstanceTracking="" v_BrowserWindowOption="" v_SeleniumOptions="" v_Handle="" v_BrowserPath="" v_WebDriverPath="" v_HeadlessMode="No" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserNavigateToURLCommand" CommandID="e632d67a-e9e0-40ca-8af6-27b7e0b7954f" CommandName="SeleniumBrowserNavigateToURLCommand" IsCommented="false" SelectionName="Navigate To URL" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_InstanceName="RPABrowser" v_URL="https://rcktrncn.github.io/rpa-web/popup_window_parent.html" v_UseHttps="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="5ef404dc-3140-43fa-9c6b-b11986cc0f3b" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" v_Comment="Click button, open New Window" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserWebElementActionCommand" CommandID="f2138203-6edd-47a0-a250-a7727d863b72" CommandName="SeleniumBrowserWebElementActionCommand" IsCommented="false" SelectionName="WebElement Action" DefaultPause="0" LineNumber="5" PauseBeforeExeucution="false" CommandEnabled="true" v_InstanceName="RPABrowser" v_SeleniumSearchType="Find Element By XPath" v_SeleniumSearchParameter="//button[@id=&quot;popupbutton&quot;]" v_SeleniumElementIndex="" v_SeleniumElementAction="Click WebElement" v_WaitTime="120" v_ScrollToElement="">
+        <v_WebActionParameterTable>
+          <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+            <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="WebActionParameterTable010225.024416" msdata:UseCurrentLocale="true">
+              <xs:complexType>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                  <xs:element name="WebActionParameterTable010225.024416">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Parameter_x0020_Name" type="xs:string" minOccurs="0" />
+                        <xs:element name="Parameter_x0020_Value" type="xs:string" minOccurs="0" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:choice>
+              </xs:complexType>
+            </xs:element>
+          </xs:schema>
+          <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
+            <DocumentElement>
+              <WebActionParameterTable010225.024416 diffgr:id="WebActionParameterTable010225.0244161" msdata:rowOrder="0" diffgr:hasChanges="modified">
+                <Parameter_x0020_Name>Click Type</Parameter_x0020_Name>
+                <Parameter_x0020_Value>Invoke Click</Parameter_x0020_Value>
+              </WebActionParameterTable010225.024416>
+              <WebActionParameterTable010225.024416 diffgr:id="WebActionParameterTable010225.0244162" msdata:rowOrder="1" diffgr:hasChanges="modified">
+                <Parameter_x0020_Name>X Offset</Parameter_x0020_Name>
+                <Parameter_x0020_Value></Parameter_x0020_Value>
+              </WebActionParameterTable010225.024416>
+              <WebActionParameterTable010225.024416 diffgr:id="WebActionParameterTable010225.0244163" msdata:rowOrder="2" diffgr:hasChanges="modified">
+                <Parameter_x0020_Name>Y Offset</Parameter_x0020_Name>
+                <Parameter_x0020_Value></Parameter_x0020_Value>
+              </WebActionParameterTable010225.024416>
+            </DocumentElement>
+            <diffgr:before>
+              <WebActionParameterTable010225.024416 diffgr:id="WebActionParameterTable010225.0244161" msdata:rowOrder="0">
+                <Parameter_x0020_Name>Click Type</Parameter_x0020_Name>
+                <Parameter_x0020_Value>Invoke Click</Parameter_x0020_Value>
+              </WebActionParameterTable010225.024416>
+              <WebActionParameterTable010225.024416 diffgr:id="WebActionParameterTable010225.0244162" msdata:rowOrder="1">
+                <Parameter_x0020_Name>X Offset</Parameter_x0020_Name>
+                <Parameter_x0020_Value></Parameter_x0020_Value>
+              </WebActionParameterTable010225.024416>
+              <WebActionParameterTable010225.024416 diffgr:id="WebActionParameterTable010225.0244163" msdata:rowOrder="2">
+                <Parameter_x0020_Name>Y Offset</Parameter_x0020_Name>
+                <Parameter_x0020_Value></Parameter_x0020_Value>
+              </WebActionParameterTable010225.024416>
+            </diffgr:before>
+          </diffgr:diffgram>
+        </v_WebActionParameterTable>
+      </ScriptCommand>
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="6ecb4cef-740e-4601-8fbe-e069e1bf7ace" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="6" PauseBeforeExeucution="false" v_Comment="Get Window and Tab URLs" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserGetWindowAndTabURLsAsDictionaryCommand" CommandID="be9dad23-e7a4-4510-9a2e-c59a10ad1c2f" CommandName="SeleniumBrowserGetWindowAndTabURLsAsDictionaryCommand" IsCommented="false" SelectionName="Get Window And Tab URLs As Dictionary" DefaultPause="0" LineNumber="7" PauseBeforeExeucution="false" CommandEnabled="true" v_InstanceName="RPABrowser" v_Result="vDic" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="2880e2f7-a9f7-4177-a7c6-f9536413daeb" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="8" PauseBeforeExeucution="false" v_Comment="Show URLs, Dictionary Key is Handles" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ConvertDictionaryToVisualizedTextCommand" CommandID="89028225-5734-4313-bef2-098fbf152b9e" CommandName="ConvertDictionaryToVisualizedTextCommand" IsCommented="false" SelectionName="Covnert Dictionary To Visualized Text" DefaultPause="0" LineNumber="9" PauseBeforeExeucution="false" CommandEnabled="true" v_Dictionary="vDic" v_Result="view" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="2a892dd4-d203-498a-8906-b7c22b3bf422" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="10" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="⦃view⦄" v_AutoCloseAfter="0" v_FontName="MS Gothic" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserCloseWebBrowserInstanceCommand" CommandID="1cbc11cc-fbb4-4788-844e-14a83a4d7130" CommandName="SeleniumBrowserCloseWebBrowserInstanceCommand" IsCommented="false" SelectionName="Close Web Browser Instance" DefaultPause="0" LineNumber="11" PauseBeforeExeucution="false" CommandEnabled="true" v_InstanceName="RPABrowser" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.17</TasktVersion>
+    <Author />
+    <LastRunTime>2025-01-02T14:54:51.5248862+09:00</LastRunTime>
+    <RunTimes>5</RunTimes>
+    <Revision>9</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>vDic</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+    <ScriptVariable>
+      <VariableName>view</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

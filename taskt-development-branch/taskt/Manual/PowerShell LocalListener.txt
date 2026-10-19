@@ -1,0 +1,72 @@
+# Execute Remote Script File by PowerShell
+
+Invoke-RestMethod -Uri "http://IP-Address:19312/executescript" -Method Post -Body (@{"ScriptLocation"=[Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("Script-File-Name.xml"))}|ConvertTo-JSON)
+
+or
+
+$uri = "http://IP-Address:19312/executescript"
+$file = "Script-File-Name.xml"
+$b64file = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($file))
+Invoke-RestMethod -Uri $uri -Method Post -Body (@{"ScriptLocation"=$b64file}|ConvertTo-JSON)
+
+
+# Execute Remote Script File by PowerShell Required AuthKey
+
+$uri = "http://IP-Address:19312/executescript"
+$file = "Script-File-Name.xml"
+$b64file = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($file))
+$authKey = "01234567-89ab-cdef-0123-456789abcdef"
+$param = @{
+	"ScriptLocation"=$b64file
+	"AuthKey"=$authKey
+}
+Invoke-RestMethod -Uri $uri -Method Post -Body ($param|ConvertTo-JSON)
+
+
+# Execute Local Script File by PowerShell
+
+$uri = "http://IP-Address:19312/executescript"
+$file = "File-Path.xml"
+$content = Get-Content $file -Raw
+$b64content = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($content))
+Invoke-RestMethod -Uri $uri -Method Post -Body (@{"ScriptData"=$b64content}|ConvertTo-JSON)
+
+
+# URL
+
+/executescript
+/execute_script
+	Execute Script
+	URL is not case sensitive
+
+/awaitscript
+/await_script
+	Execute Script and Wait for it to Finish
+	URL is not case sensitive
+
+/enginestatus
+/engine_status
+	Get taskt Script Engine status
+	URL is not case sensitive
+
+/restarttaskt
+/restart_taskt
+	Restart taskt
+	URL is not case sensitive
+
+# Body Parameter
+
+scriptlocation
+	Script File Path in Remote Computer
+	converted to Base64
+	Parameter Name is not case sensitive
+
+scriptdata
+	Script File Data
+	converted to Base64
+	Parameter Name is not case sensitive
+
+authkey
+	auth key
+	not convert Base64
+	Parameter Name is not case sensitive

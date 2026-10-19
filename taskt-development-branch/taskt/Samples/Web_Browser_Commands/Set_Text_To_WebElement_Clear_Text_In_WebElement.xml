@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commands>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="871bf4d7-4a47-4fff-9131-a7ea0814ee52" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="1" PauseBeforeExeucution="false" v_Comment="Set Text To WebElement, Clear Text In WebElement sample" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="053191a7-41e1-453c-8920-1fbbd786fb93" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="2" PauseBeforeExeucution="false" v_Comment="Execute Edge" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserCreateWebBrowserInstanceCommand" CommandID="50b75ff4-9161-49e1-8757-cede74b8a991" CommandName="SeleniumBrowserCreateWebBrowserInstanceCommand" IsCommented="false" SelectionName="Create Web Browser Instance" DefaultPause="0" LineNumber="3" PauseBeforeExeucution="false" CommandEnabled="true" v_InstanceName="RPABrowser" v_EngineType="Edge" v_InstanceTracking="" v_BrowserWindowOption="" v_SeleniumOptions="" v_Handle="" v_BrowserPath="" v_WebDriverPath="" v_HeadlessMode="No" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="4b04f96e-064d-4ebe-a8cc-9ebd0123185b" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="4" PauseBeforeExeucution="false" v_Comment="Move to https://rcktrncn.githu.io/rpa-web/" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserNavigateURLCommand" CommandID="3add5e2d-aa3e-442e-a030-1fc2bafa5055" CommandName="SeleniumBrowserNavigateURLCommand" IsCommented="false" SelectionName="Navigate to URL" DefaultPause="0" LineNumber="5" PauseBeforeExeucution="false" CommandEnabled="true" v_InstanceName="RPABrowser" v_URL="https://rcktrncn.github.io/rpa-web/sample_form.html" v_UseHttps="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="fa85fa05-3ab3-4fca-b19e-24004575043c" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="6" PauseBeforeExeucution="false" v_Comment="Search textbox" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserSearchWebElementCommand" CommandID="6809c680-37d1-4b9f-bdfb-9c0c93fa3673" CommandName="SeleniumBrowserSearchWebElementCommand" IsCommented="false" SelectionName="Search WebElement" DefaultPause="0" LineNumber="7" PauseBeforeExeucution="false" CommandEnabled="true" v_InstanceName="RPABrowser" v_SeleniumSearchType="Find Element By XPath" v_SeleniumSearchParameter="//input[@id=&quot;name&quot;]" v_ElementIndex="" v_Result="vElem" v_WaitTime="120" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="c0550c82-a3a6-411f-9995-6c077175ef17" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="8" PauseBeforeExeucution="false" v_Comment="Set Text" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserSetTextToWebElementCommand" CommandID="b27572c8-6fa0-418c-aed4-9fb43bfdcbd8" CommandName="SeleniumBrowserSetTextToWebElementCommand" IsCommented="false" SelectionName="Set Text To WebElement" DefaultPause="0" LineNumber="9" PauseBeforeExeucution="false" CommandEnabled="true" v_WebElement="⦃vElem⦄" v_TextToSet="Hello taskt!" v_ClearTextBeforeSetting="" v_EncryptedText="" v_WhenSetNotSupported="" v_ScrollToElement="" v_InstanceName="RPABrowser" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="15e7fb41-ccbd-49fc-8e1a-76171891bf07" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="10" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="Check Edge" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="ce46cb03-3044-485a-8295-211906963873" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="11" PauseBeforeExeucution="false" v_Comment="Clear Text" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserClearTextInWebElementCommand" CommandID="2feb782b-2744-4fd6-ba9b-271519f7bf62" CommandName="SeleniumBrowserClearTextInWebElementCommand" IsCommented="false" SelectionName="Clear Text In WebElement" DefaultPause="0" LineNumber="12" PauseBeforeExeucution="false" CommandEnabled="true" v_WebElement="⦃vElem⦄" v_WhenClearNotSupported="" v_ScrollToElement="" v_InstanceName="RPABrowser" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="ShowMessageCommand" CommandID="9b3f2a7c-b761-4284-a943-2c375b12fffb" CommandName="ShowMessageCommand" IsCommented="false" SelectionName="Show Message" DefaultPause="0" LineNumber="13" PauseBeforeExeucution="false" CommandEnabled="true" v_Message="Check Edge" v_AutoCloseAfter="0" v_FontName="" v_FontSize="" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="CommentCommand" CommandID="30b65654-4491-4b05-8fe9-e32736163778" CommandName="CommentCommand" IsCommented="false" SelectionName="Comment" DefaultPause="0" LineNumber="14" PauseBeforeExeucution="false" v_Comment="Close Edge" CommandEnabled="true" />
+    </ScriptAction>
+    <ScriptAction>
+      <ScriptCommand xsi:type="SeleniumBrowserCloseWebBrowserInstanceCommand" CommandID="98221321-73ba-4d01-b13d-0f72692c2e19" CommandName="SeleniumBrowserCloseWebBrowserInstanceCommand" IsCommented="false" SelectionName="Close Web Browser Instance" DefaultPause="0" LineNumber="15" PauseBeforeExeucution="false" CommandEnabled="true" v_InstanceName="RPABrowser" />
+    </ScriptAction>
+  </Commands>
+  <Info>
+    <TasktVersion>3.5.2.9</TasktVersion>
+    <Author />
+    <LastRunTime>2024-10-26T15:50:25.2256181+09:00</LastRunTime>
+    <RunTimes>3</RunTimes>
+    <Revision>5</Revision>
+    <ScriptVersion>0.0.0</ScriptVersion>
+    <Description />
+  </Info>
+  <Variables>
+    <ScriptVariable>
+      <VariableName>vElem</VariableName>
+      <VariableValue xsi:type="xsd:string"></VariableValue>
+    </ScriptVariable>
+  </Variables>
+</Script>

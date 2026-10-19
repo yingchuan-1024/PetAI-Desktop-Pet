@@ -1,0 +1,19 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="UseLocallyGeneratedInterop" BeforeTargets="ResolveAssemblyReferences">
+    <ItemGroup>
+      <COMReference Remove="@(COMReference)" />
+      <Reference Remove="AxInterop.MSTSCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+      <Reference Include="$(MSBuildThisFileDirectory)interop\Interop.*.dll">
+        <EmbedInteropTypes>True</EmbedInteropTypes>
+        <Private>True</Private>
+      </Reference>
+      <Reference Include="$(MSBuildThisFileDirectory)interop\MSTSCLib.dll;$(MSBuildThisFileDirectory)interop\AxInterop.MSTSCLib.dll">
+        <EmbedInteropTypes>False</EmbedInteropTypes>
+        <Private>True</Private>
+      </Reference>
+    </ItemGroup>
+  </Target>
+  <Target Name="CompileSatelliteWithRoslyn" AfterTargets="GenerateSatelliteAssemblies" Condition="'@(_SatelliteAssemblyResourceInputs)' != ''">
+    <Csc Sources="@(SatelliteAssemblyInfo)" Resources="@(_SatelliteAssemblyResourceInputs)" OutputAssembly="$(IntermediateOutputPath)%(_SatelliteAssemblyResourceInputs.Culture)\$(TargetName).resources.dll" TargetType="Library" References="@(ReferencePath)" ToolPath="$(RoslynTargetsPath)" />
+  </Target>
+</Project>
