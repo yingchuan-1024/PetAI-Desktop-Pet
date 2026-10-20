@@ -875,8 +875,8 @@
       document.getElementById('app-about-desc').textContent = info.description || 'AI 桌面宠物';
       document.getElementById('app-about-version').textContent = 'v' + (info.version || '—');
       const rows = [
-        ['作者', info.author || '—'],
-        ['主页', info.homepage || '—'],
+        ['二次开发与维护', info.author || '—'],
+        ['项目主页', info.homepage || '—'],
       ];
       const aboutAppInfo = document.getElementById('about-app-info');
       // 只重建作者 / 主页行；版本行（含更新按钮）保持原位，避免丢失点击事件

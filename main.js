@@ -1166,12 +1166,12 @@ ipcMain.handle('app:get-info', () => {
     pkg = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
   } catch (e) { /* ignore */ }
   appInfoCache = {
-    name: pkg.productName || pkg.name || 'PetAI',
+    name: pkg.build?.productName || pkg.productName || pkg.name || 'PetAI',
     description: pkg.description || '',
     version: app.getVersion() || pkg.version || '',
     author: pkg.author || '',
-    repo: 'https://github.com/jinyuwan/PetAI-Desktop-Pet',
-    homepage: 'https://github.com/jinyuwan',
+    repo: 'https://github.com/yingchuan-1024/PetAI-Desktop-Pet',
+    homepage: pkg.homepage || 'https://github.com/yingchuan-1024/PetAI-Desktop-Pet',
   };
   return appInfoCache;
 });
@@ -1190,7 +1190,7 @@ ipcMain.on('app:quit', () => {
 
 /* ---------- 自动更新（GitHub Releases） ---------- */
 
-const REPO_API = 'https://api.github.com/repos/jinyuwan/PetAI-Desktop-Pet';
+const REPO_API = 'https://api.github.com/repos/yingchuan-1024/PetAI-Desktop-Pet';
 
 /** 比较语义化版本号：a > b 返回 1，相等返回 0，a < b 返回 -1 */
 function compareVersions(a, b) {

@@ -1,8 +1,9 @@
 {
   "name": "desktop-pet",
   "version": "1.1.1",
-  "description": "AI 桌面宠物 · 蕾米（透明悬浮窗 + Spine 皮肤 + AI 对话）",
-  "author": "金鱼碗",
+  "description": "AI 桌面宠物（AI 对话 · 自定义工具 · Taskt 自动化）",
+  "author": "颍川",
+  "homepage": "https://github.com/yingchuan-1024/PetAI-Desktop-Pet",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -35,6 +36,7 @@
       "renderer/**/*",
       "skins/**/*",
       "assets/**/*",
+      "LICENSE",
       "package.json"
     ],
     "win": {
