@@ -29,6 +29,7 @@
         <button class="nav-item" data-panel="pose">姿势</button>
         <button class="nav-item" data-panel="reminder">提醒</button>
         <button class="nav-item" data-panel="automation">自动化</button>
+        <button class="nav-item" data-panel="agent">状态接入</button>
         <button class="nav-item" data-panel="chat">对话</button>
         <button class="nav-item" data-panel="about-skin">关于皮肤</button>
         <button class="nav-item" data-panel="about-app">关于 PetAI</button>
@@ -333,6 +334,42 @@
             <progress id="automation-progress" aria-label="任务执行进度" hidden></progress>
             <div class="automation-list-heading"><h3>已保存的任务</h3><button class="automation-refresh" id="automation-refresh" type="button">刷新</button></div>
             <div class="automation-list" id="automation-list" aria-label="已保存的自动化任务"></div>
+          </div>
+        </div>
+
+        <!-- AI 状态接入 -->
+        <div class="panel" id="panel-agent">
+          <div class="automation-section">
+            <h2>AI 状态接入</h2>
+            <p class="row-desc">本机监听 AI 工具（Trae / Cursor 等）Hook 推送的状态，头顶胶囊实时显示；任务完成时气泡提醒。</p>
+            <div class="switch-row" id="row-agent">
+              <div class="row-info">
+                <span class="row-title">启用状态接入</span>
+                <span class="row-desc" id="agent-run-desc">已关闭</span>
+              </div>
+              <button class="switch" id="sw-agent" role="switch" aria-checked="false">
+                <span class="knob"></span>
+              </button>
+            </div>
+            <form class="pet-size-section" id="agent-port-form">
+              <div class="row-info">
+                <span class="row-title">监听端口</span>
+                <span class="row-desc">仅监听本机 127.0.0.1；修改后点「应用」立即生效</span>
+              </div>
+              <div class="pet-size-inputs">
+                <label class="ai-field"><span class="ai-label">端口</span><input class="ai-input" id="agent-port" type="number" min="1024" max="65535" step="1" required></label>
+                <button class="reset-size-btn" type="submit">应用</button>
+              </div>
+              <div class="ai-status" id="agent-status" role="status" aria-live="polite"></div>
+            </form>
+            <div class="ai-status" id="agent-last-event" role="status" aria-live="polite"></div>
+            <details class="automation-guide"><summary>Hook 配置示例</summary>
+              <p>hook_pusher.ps1（任意目录，供各工具的 Hook 调用）：</p>
+              <pre>param([string]$Agent = "trae", [string]$State = "working", [string]$Event = "TaskRunning", [string]$Title = "")
+$payload = @{ agentId = $Agent; sessionId = "default"; state = $State; event = $Event; title = $Title; activityUpdatedAt = [DateTimeOffset]::Now.ToUnixTimeMilliseconds() } | ConvertTo-Json
+Invoke-RestMethod -Uri "http://127.0.0.1:17384/api/hook" -Method Post -Body $payload -ContentType "application/json"</pre>
+              <p>在工具的 Hooks 中按阶段调用：thinking（开始思考）、working（开始执行）、attention（完成等待确认）、idle（空闲）、error（出错）。从 working / thinking 转入 attention 时视为任务完成，气泡提示「称呼 · 已完成任务」，称呼使用「对话」页设置的称呼。</p>
+            </details>
           </div>
         </div>
 

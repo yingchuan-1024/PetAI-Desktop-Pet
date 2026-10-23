@@ -29,6 +29,7 @@
       "main.js",
       "preload.js",
       "agent.js",
+      "agent-bridge.js",
       "automation.js",
       "taskt.js",
       "tools/automation-helper.ps1",

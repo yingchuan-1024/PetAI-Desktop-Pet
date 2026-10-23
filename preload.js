@@ -108,6 +108,15 @@ contextBridge.exposeInMainWorld('pet', {
   removeAutomationTask: (taskId) => ipcRenderer.invoke('automation:remove', taskId),
   onAutomationState: (cb) => ipcRenderer.on('automation:state', (e, state) => cb(state)),
 
+  /** AI 状态接入：读取配置与运行状态（{ config, running, lastEvent }） */
+  getAgentBridgeConfig: () => ipcRenderer.invoke('agent:get-config'),
+
+  /** AI 状态接入：保存配置（{ enabled, port }），立即启停监听 */
+  saveAgentBridgeConfig: (cfg) => ipcRenderer.invoke('agent:set-config', cfg),
+
+  /** AI 状态接入：监听 Hook 状态事件（payload 含 completed / userName） */
+  onAgentState: (cb) => ipcRenderer.on('agent:state', (e, payload) => cb(payload)),
+
   /** 屏幕识别：截取当前屏幕，返回 { ok, image(JPEG data URL), message } */
   captureScreen: () => ipcRenderer.invoke('screen:capture'),
 

@@ -22,6 +22,11 @@
     <!-- 互动菜单：长按 ♡ 弹出 -->
     <div class="interact-menu" id="interact-menu" hidden></div>
     <div id="player-container"></div>
+    <!-- AI 状态胶囊：AI 工具通过 Hook 推送状态时显示在头顶（设置 → 状态接入） -->
+    <div class="agent-capsule" id="agent-capsule" data-state="idle">
+      <span class="agent-capsule-dot" id="agent-capsule-dot"></span>
+      <span class="agent-capsule-text" id="agent-capsule-text"></span>
+    </div>
     <!-- 情绪 / 提醒气泡：平时隐藏，互动或提醒时在宠物上方弹出 -->
     <div class="bubble" id="bubble">
       <span class="bubble-emoji" id="bubble-emoji"></span>

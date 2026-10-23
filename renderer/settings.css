@@ -38,6 +38,18 @@ body {
 .automation-section .ai-input { width: 100%; min-width: 0; }
 .automation-guide summary, .automation-steps summary { cursor: pointer; color: var(--accent-bright); }
 .automation-guide p { margin-top: 6px; }
+.automation-guide pre {
+  margin: 8px 0 0;
+  padding: 10px;
+  background: #241d30;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #d2cbd9;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 .automation-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .automation-actions .ai-btn { min-width: 78px; letter-spacing: .5px; }
 .automation-list-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px; }

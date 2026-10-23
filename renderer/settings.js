@@ -867,6 +867,78 @@
 
   // 设置窗口打开时 / 皮肤切换后 → 刷新高亮（切换监听见上方「宠物名」块，合并处理）
 
+  /* ---------- AI 状态接入 ---------- */
+
+  const swAgent = document.getElementById('sw-agent');
+  const agentPortInput = document.getElementById('agent-port');
+  const agentStatus = document.getElementById('agent-status');
+  const agentRunDesc = document.getElementById('agent-run-desc');
+  const agentLastEvent = document.getElementById('agent-last-event');
+  const AGENT_STATE_LABEL = { idle: '空闲', thinking: '思考中', working: '工作中', attention: '等待确认', error: '出错' };
+  const AGENT_EVENT_LABEL = {
+    userpromptsubmit: '收到新任务', pretooluse: '准备调用工具', posttooluse: '工具执行完成',
+    stop: '本轮已结束', notification: '等待确认', sessionstart: '会话已开始',
+    taskrunning: '任务运行中', taskcomplete: '任务已完成', task_complete: '任务已完成',
+    complete: '任务已完成', completed: '任务已完成'
+  };
+  const AGENT_TOOL_LABEL = {
+    read: '读取文件', grep: '搜索内容', glob: '查找文件', edit: '编辑文件', write: '写入文件',
+    runcommand: '运行命令', checkcommandstatus: '检查命令状态', stopcommand: '停止命令',
+    websearch: '搜索网页', webfetch: '读取网页', browser_navigate: '打开网页',
+    browser_click: '点击网页元素', browser_evaluate: '执行网页操作',
+    askuserquestion: '请求用户选择', todowrite: '更新任务清单'
+  };
+
+  function formatAgentEvent(ev) {
+    if (!ev || !ev.state) return '';
+    const t = new Date(ev.receivedAt || ev.activityUpdatedAt || Date.now());
+    const hh = [t.getHours(), t.getMinutes(), t.getSeconds()].map((n) => String(n).padStart(2, '0')).join(':');
+    const label = AGENT_STATE_LABEL[ev.state] || ev.state;
+    const rawTitle = (ev.title || '').trim();
+    const title = AGENT_TOOL_LABEL[rawTitle.toLowerCase()] || rawTitle;
+    const event = AGENT_EVENT_LABEL[String(ev.event || '').toLowerCase()] || ev.event;
+    return '最近事件 ' + hh + ' · ' + (ev.agentId || 'unknown') + ' · ' + label +
+      (event ? ' · ' + event : '') + (title ? ' · ' + title : '');
+  }
+
+  function syncAgentBridge(data) {
+    if (!data || !data.config) return;
+    swAgent.setAttribute('aria-checked', data.running ? 'true' : 'false');
+    agentRunDesc.textContent = data.running ? '运行中 · 127.0.0.1:' + data.config.port : '已关闭';
+    agentPortInput.value = data.config.port;
+    agentLastEvent.textContent = formatAgentEvent(data.lastEvent);
+  }
+
+  async function saveAgentBridge(part, pendingMessage) {
+    agentStatus.textContent = pendingMessage || '';
+    agentStatus.className = 'ai-status';
+    try {
+      const result = await window.pet.saveAgentBridgeConfig(part);
+      agentStatus.textContent = result.message || '';
+      agentStatus.className = 'ai-status ' + (result.ok ? 'ok' : 'err');
+      syncAgentBridge(result);
+    } catch (e) {
+      agentStatus.textContent = '保存失败：' + (e.message || e);
+      agentStatus.className = 'ai-status err';
+    }
+  }
+
+  swAgent.addEventListener('click', () => {
+    const enable = swAgent.getAttribute('aria-checked') !== 'true';
+    saveAgentBridge({ enabled: enable }, enable ? '正在启动…' : '正在关闭…');
+  });
+
+  document.getElementById('agent-port-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!event.currentTarget.reportValidity()) return;
+    saveAgentBridge({ port: agentPortInput.valueAsNumber }, '正在应用端口…');
+  });
+
+  window.pet.getAgentBridgeConfig().then(syncAgentBridge).catch(() => {});
+  window.pet.onAgentState((payload) => {
+    if (payload && payload.state) agentLastEvent.textContent = formatAgentEvent(payload);
+  });
+
   /* ---------- 关于 PetAI ---------- */
 
   function renderAppAbout() {
