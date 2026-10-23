@@ -10,6 +10,8 @@ const { spawn } = require('child_process');
 const { pathToFileURL } = require('url');
 const { runAgent, DEFAULT_TOOLS_CONFIG, normalizeToolsConfig } = require('./agent');
 const { createTasktService } = require('./taskt');
+const { createAgentBridge } = require('./agent-bridge');
+const { DEFAULT_PORT: DEFAULT_AGENT_PORT } = require('./agent-bridge');
 let automation = null;
 let automationRunning = false;
 let automationDisposed = false;
@@ -53,7 +55,18 @@ const companionFile = () => path.join(app.getPath('userData'), 'companion.json')
 const prefsFile = () => path.join(app.getPath('userData'), 'prefs.json');
 
 let companion = { firstSeen: Date.now(), lastSeen: Date.now(), interactions: 0, chats: 0 };
-let prefs = { userName: '', chatSize: null, lastUpdatePrompted: '', theme: '#e8a0bf', skinId: '', tools: DEFAULT_TOOLS_CONFIG };
+let prefs = { userName: '', chatSize: null, lastUpdatePrompted: '', theme: '#e8a0bf', skinId: '', tools: DEFAULT_TOOLS_CONFIG, agentBridge: { enabled: false, port: DEFAULT_AGENT_PORT } };
+
+/** AI 状态接入配置归一化（端口 1024–65535，默认关闭） */
+function normalizeAgentBridgeConfig(raw) {
+  const cfg = { enabled: false, port: DEFAULT_AGENT_PORT };
+  if (raw && typeof raw === 'object') {
+    cfg.enabled = raw.enabled === true;
+    const port = Math.floor(Number(raw.port));
+    if (Number.isFinite(port) && port >= 1024 && port <= 65535) cfg.port = port;
+  }
+  return cfg;
+}
 
 function loadCompanion() {
   try {
@@ -94,6 +107,7 @@ function loadPrefs() {
     if (raw && typeof raw.skinId === 'string') {
       prefs.skinId = raw.skinId.slice(0, 64);
     }
+    prefs.agentBridge = normalizeAgentBridgeConfig(raw && raw.agentBridge);
     prefs.tools = normalizeToolsConfig(raw && raw.tools);
   } catch (e) { /* 默认 */ }
   return prefs;
@@ -1625,6 +1639,87 @@ ipcMain.handle('automation:run', (e, options) => runAutomationTask(options));
 ipcMain.handle('automation:stop', () => automation ? automation.stop() : { ok: false, message: '自动化服务不可用' });
 ipcMain.handle('automation:remove', (e, taskId) => automation ? automation.remove(taskId) : { ok: false, message: '自动化服务不可用' });
 
+/* ---------- AI 状态接入（本地桥接：Trae / Cursor 等 Hook 推送） ---------- */
+
+let agentBridge = null;
+let lastAgentEvent = null;
+// 显式完成事件名（不区分大小写）；thinking/working → attention 也视为完成
+const AGENT_COMPLETED_EVENTS = /^(stop|taskcomplete|task_complete|complete|completed)$/i;
+// 确认类事件（如 TRAE Notification）：只亮「等你确认」胶囊，不算任务完成
+const AGENT_CONFIRM_EVENTS = /^(notification|confirm|confirmrequest|wait|pause)$/i;
+
+/** 广播状态事件到宠物 / 设置 / 对话窗口 */
+function broadcastAgentState(payload) {
+  for (const w of [win, settingsWin, chatWin]) {
+    if (w && !w.isDestroyed()) w.webContents.send('agent:state', payload);
+  }
+}
+
+/** 收到 Hook 状态：判定任务完成（附称呼）后广播 */
+function handleAgentEvent(event) {
+  const prev = lastAgentEvent;
+  lastAgentEvent = event;
+  const wasBusy = !!prev && (prev.state === 'working' || prev.state === 'thinking');
+  const completed = (wasBusy && event.state === 'attention' && !AGENT_CONFIRM_EVENTS.test(event.event || '')) ||
+    (event.state !== 'error' && AGENT_COMPLETED_EVENTS.test(event.event || ''));
+  broadcastAgentState(Object.assign({}, event, {
+    completed,
+    userName: (prefs.userName || '').trim().slice(0, 20) || '主人',
+  }));
+}
+
+/** 按当前配置启停桥接服务（端口变化时自动重启） */
+async function applyAgentBridge() {
+  if (!agentBridge) return { ok: false, message: '桥接服务未初始化' };
+  const st = agentBridge.status();
+  const wantRun = prefs.agentBridge.enabled;
+  const portChanged = st.listening && st.port !== prefs.agentBridge.port;
+  try {
+    if (wantRun && (!st.listening || portChanged)) {
+      if (st.listening) await agentBridge.stop();
+      await agentBridge.start(prefs.agentBridge.port);
+      return { ok: true, message: `已启动，监听 127.0.0.1:${prefs.agentBridge.port}` };
+    }
+    if (!wantRun && st.listening) {
+      await agentBridge.stop();
+      return { ok: true, message: '已关闭' };
+    }
+    return { ok: true, message: wantRun ? `运行中 · 127.0.0.1:${prefs.agentBridge.port}` : '已关闭' };
+  } catch (e) {
+    // 启动失败（常见：端口被占用）：回退为关闭，保证配置与实际状态一致
+    prefs.agentBridge.enabled = false;
+    savePrefs();
+    return { ok: false, message: '启动失败：' + (e.message || e) };
+  }
+}
+
+ipcMain.handle('agent:get-config', () => ({
+  config: Object.assign({}, prefs.agentBridge),
+  running: !!(agentBridge && agentBridge.status().listening),
+  lastEvent: agentBridge ? agentBridge.status().lastEvent : null,
+}));
+
+ipcMain.handle('agent:set-config', async (e, cfg) => {
+  if (!cfg || typeof cfg !== 'object') return { ok: false, message: '参数无效' };
+  if (cfg.port !== undefined) {
+    const port = Math.floor(Number(cfg.port));
+    if (!Number.isFinite(port) || port < 1024 || port > 65535) {
+      return { ok: false, message: '端口需为 1024–65535 的整数' };
+    }
+    prefs.agentBridge.port = port;
+  }
+  if (cfg.enabled !== undefined) prefs.agentBridge.enabled = cfg.enabled === true;
+  savePrefs();
+  const apply = await applyAgentBridge();
+  return {
+    ok: apply.ok,
+    message: apply.message,
+    config: Object.assign({}, prefs.agentBridge),
+    running: !!(agentBridge && agentBridge.status().listening),
+    lastEvent: agentBridge ? agentBridge.status().lastEvent : null,
+  };
+});
+
 /* ---------- 应用生命周期 ---------- */
 
 app.whenReady().then(() => {
@@ -1632,6 +1727,8 @@ app.whenReady().then(() => {
   loadCompanion();
   companionDailyCheck();
   loadPrefs();
+  agentBridge = createAgentBridge({ port: prefs.agentBridge.port, onEvent: handleAgentEvent });
+  if (prefs.agentBridge.enabled) applyAgentBridge(); // 启动即恢复上次的开关状态
   loadReminders();
   cleanupStaleUpdates(); // 清理上次更新残留的临时安装包
   registerSkinProtocol(); // skin:// 协议：支持从外部目录加载皮肤
@@ -1654,6 +1751,7 @@ app.on('before-quit', () => {
     automationDisposed = true;
     automation.dispose().catch(() => {});
   }
+  if (agentBridge) agentBridge.stop().catch(() => {});
 });
 
 app.on('window-all-closed', () => {

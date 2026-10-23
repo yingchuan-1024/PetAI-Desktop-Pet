@@ -227,3 +227,68 @@ body {
   word-break: normal;
   overflow-wrap: anywhere;
 }
+
+/* AI 状态胶囊：Hook 推送状态时显示在头顶，比气泡更靠上且互不遮挡 */
+.agent-capsule {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: max-content;
+  max-width: 88%;
+  padding: 4px 13px;
+  border-radius: 999px;
+  background: rgba(34, 21, 50, 0.92);
+  border: 1px solid rgba(var(--accent-rgb), 0.4);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 26;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.agent-capsule.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.agent-capsule-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+.agent-capsule-text {
+  min-width: 0;
+  font-size: 12px;
+  color: var(--text);
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.agent-capsule[data-state='thinking'] .agent-capsule-dot {
+  background: #8ab4ff;
+  animation: agent-pulse 1.2s ease-in-out infinite;
+}
+.agent-capsule[data-state='working'] .agent-capsule-dot {
+  background: #7ee2a8;
+  animation: agent-pulse 1.2s ease-in-out infinite;
+}
+.agent-capsule[data-state='attention'] .agent-capsule-dot {
+  background: #ffc46b;
+}
+.agent-capsule[data-state='error'] .agent-capsule-dot {
+  background: #ff7d7d;
+}
+@keyframes agent-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.8); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agent-capsule-dot { animation: none !important; }
+}

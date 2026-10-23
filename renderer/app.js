@@ -364,6 +364,60 @@
     }
   });
 
+  /* ---------- AI 状态胶囊（本地桥接：Trae / Cursor 等 Hook 推送） ---------- */
+  const agentCapsule = document.getElementById('agent-capsule');
+  const agentCapsuleText = document.getElementById('agent-capsule-text');
+  const AGENT_STATE_LABEL = { idle: '空闲', thinking: '思考中…', working: '工作中…', attention: '等你确认', error: '出错了' };
+  const AGENT_EVENT_LABEL = {
+    userpromptsubmit: '收到新任务', pretooluse: '准备调用工具', posttooluse: '工具执行完成',
+    stop: '本轮已结束', notification: '等待确认', sessionstart: '会话已开始',
+    taskrunning: '任务运行中', taskcomplete: '任务已完成', task_complete: '任务已完成',
+    complete: '任务已完成', completed: '任务已完成'
+  };
+  const AGENT_TOOL_LABEL = {
+    read: '读取文件', grep: '搜索内容', glob: '查找文件', edit: '编辑文件', write: '写入文件',
+    runcommand: '运行命令', checkcommandstatus: '检查命令状态', stopcommand: '停止命令',
+    websearch: '搜索网页', webfetch: '读取网页', browser_navigate: '打开网页',
+    browser_click: '点击网页元素', browser_evaluate: '执行网页操作',
+    askuserquestion: '请求用户选择', todowrite: '更新任务清单'
+  };
+  let agentIdleTimer = null;
+
+  function localizeAgentTitle(title, event) {
+    const text = String(title || '').trim();
+    if (!text) return AGENT_STATE_LABEL[event && event.state] || event && event.state || '';
+    const toolLabel = AGENT_TOOL_LABEL[text.toLowerCase()];
+    if (toolLabel) return toolLabel;
+    const eventLabel = event && AGENT_EVENT_LABEL[String(event.event || '').toLowerCase()];
+    if (eventLabel) return eventLabel + ' · ' + text;
+    return text;
+  }
+
+  /** 头顶胶囊：显示当前 AI 状态（有任务标题时优先显示标题）；idle 延迟隐藏防抖 */
+  function showAgentCapsule(state, title, event) {
+    const text = localizeAgentTitle(title, event) || AGENT_STATE_LABEL[state] || state;
+    agentCapsule.dataset.state = state;
+    agentCapsuleText.textContent = text;
+    agentCapsule.classList.add('show');
+    clearTimeout(agentIdleTimer);
+    if (state === 'idle') {
+      agentIdleTimer = setTimeout(() => agentCapsule.classList.remove('show'), 2500);
+    }
+  }
+
+  window.pet.onAgentState((payload) => {
+    if (!payload || !payload.state) return;
+    showAgentCapsule(payload.state, payload.title, payload);
+    if (payload.completed) {
+      const name = payload.userName || '主人';
+      const task = (payload.title || '').trim();
+      lockInteraction(6000);
+      const pose = findPose(['done', 'win', 'cheer', 'happy', '完成', '开心', '胜利']) || basePose();
+      if (pose) setState(pose);
+      showBubble('🎉', task ? name + ' · 已完成任务「' + task + '」' : name + ' · 任务已完成', 5000);
+    }
+  });
+
   /* ---------- 设置：手柄 ☰ 键打开设置窗口 ---------- */
   document.getElementById('settings-btn').addEventListener('click', () => {
     window.pet.openSettings();
